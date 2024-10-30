@@ -15,6 +15,14 @@ function tp_only_alpha_num($string){
         return $string;
     }
 }
+
+function tp_allow_html_tag($string){
+    $allowed = ['h1','h2','h3','h4','h5','h6','p','span'];
+    if (in_array($string, $allowed)){
+        return $string;
+    }
+}
+
 function the_render_attribute($data,$value,$element){
 
     $value =  isset($value) && $value ? $value : '';
@@ -174,7 +182,7 @@ function thepack_build_html($option, $tag = '', $cls = '')
 }
 
 function thepack_icon_svg($option, $class = '')
-{
+{ 
     if ($option['library'] == 'svg') {
         return wp_get_attachment_image(esc_attr($option['value']['id']), 'full');
     } else {

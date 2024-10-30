@@ -40,7 +40,7 @@ $bticon = $this->generate_icon($settings['btnik']);
 
 <?php echo '<form class="tp-contact-wrap ' . esc_attr($icon_pos) . '" data-xld =\'' . wp_json_encode($options) . '\' novalidate>'; ?>
 <?php //phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-<?php echo thepack_build_html($content); ?>
+<?php echo $content; ?>
 <div class='tp-form-btn'>
     <?php //phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped ?>
     <button class="tbtr" type="submit"><span><?php echo thepack_build_html($btnlbl . $bticon); ?></span>

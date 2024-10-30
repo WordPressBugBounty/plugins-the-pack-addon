@@ -37,3 +37,4 @@ foreach ($settings['tabs'] as $a) {
 	<?php echo $tabti; ?>
 </ul>
 </div>
+

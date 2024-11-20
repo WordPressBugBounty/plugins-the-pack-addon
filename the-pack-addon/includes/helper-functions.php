@@ -174,9 +174,9 @@ function thepack_build_html($option, $tag = '', $cls = '')
     if ($option) {
         $class = $cls ? 'class=' . $cls . '' : '';
         if ($tag) {
-            return '<' . esc_attr($tag) . ' ' . esc_attr($class) . '>' . wp_kses_post($option) . '</' . esc_attr($tag) . '>';
+            return '<' . esc_attr($tag) . ' ' . esc_attr($class) . '>' . $option . '</' . esc_attr($tag) . '>';
         } else {
-            return wp_kses_post($option);
+            return $option;
         }
     }
 }
@@ -365,9 +365,11 @@ function thepack_overlay_link($url)
 
 function thepack_ft_images($id = '', $thumb = '')
 {
-    return wp_get_attachment_image($id, $thumb);
+    //return wp_get_attachment_image($id, $thumb);
+    $img_src = wp_get_attachment_image_url( $id, $thumb ); 
+    return '<img class="lazyload" data-src="'.$img_src.'" alt="" />';
 }
-
+ 
 function thepack_human_size_byte($bytes, $base = '1024')
 {
     if ($bytes == '0') {
@@ -622,4 +624,12 @@ function tp_show_video()
     echo wp_oembed_get($vid_url);
     exit();
 }
+
+add_filter( 'post_thumbnail_html', 'wpdd_modify_post_thumbnail_html', 10, 5 );
+
+function wpdd_modify_post_thumbnail_html( $html, $post_id, $post_thumbnail_id, $size, $attr )
+{
+    return str_replace( '<img', '<img loading="lazy"', $html );
+}
+
 

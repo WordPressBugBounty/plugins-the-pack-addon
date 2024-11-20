@@ -1216,7 +1216,7 @@
                             slider_elem.parents('html').find('.popwrap').empty();
                         });
                         slider_elem.parents('html').find('.popwrap').html(result);
-
+                        $('.loader').hide();
                         $('iframe').mediaWrapper({
                             intrinsic: false,
                             baseWidth: 16,
@@ -1232,10 +1232,6 @@
     };
 
     function tp_global_function() {
-
-        $('.launcher').on('click', function () {
-            $('.tp-quick-pop').toggleClass("show"); //you can list several class names 
-        });
 
         $(document).on("scroll", function () {
             var pixels = $(document).scrollTop();

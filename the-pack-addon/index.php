@@ -348,5 +348,3 @@ function run_the_pack_addon()
 }
 
 add_action( 'plugins_loaded', 'run_the_pack_addon' );
-
-

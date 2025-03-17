@@ -46,6 +46,6 @@ $bticon = $this->generate_icon($settings['btnik']);
     <button class="tbtr" type="submit"><span><?php echo thepack_build_html($btnlbl . $bticon); ?></span>
         <div class="loader"></div>
     </button>
-</div>
+</div> 
 <div class="response"></div>
 </form>

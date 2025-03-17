@@ -150,7 +150,6 @@ function thepack_get_that_link($link)
     $ext = isset($link['is_external']) && $link['is_external'] ? ' target= "_blank" ' : '';
     $nofollow = isset($link['nofollow']) && $link['nofollow'] ? ' rel= "nofollow" ' : '';
     $link = $url . $ext . $nofollow;
-
     return $link;
 }
 

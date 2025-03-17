@@ -81,12 +81,12 @@
 
             if ('undefined' === typeof Swiper) {
                 const asyncSwiper = elementorFrontend.utils.swiper;
-                new asyncSwiper(slider, options).then((newSwiperInstance) => {
+                new asyncSwiper(slider[0], options).then((newSwiperInstance) => {
                     var swiper = newSwiperInstance;
                 });
 
             } else {
-                var swiper = new Swiper(slider, options);
+                var swiper = new Swiper(slider[0], options);
             }
 
         });
@@ -133,12 +133,12 @@
             };
             if ('undefined' === typeof Swiper) {
                 const asyncSwiper = elementorFrontend.utils.swiper;
-                new asyncSwiper($(this), options).then((newSwiperInstance) => {
+                new asyncSwiper($(this)[0], options).then((newSwiperInstance) => {
                     var swiper = newSwiperInstance;
                 });
 
             } else {
-                var swiper = new Swiper($(this), options);
+                var swiper = new Swiper($(this)[0], options);
             }
 
         });
@@ -163,12 +163,12 @@
             };
             if ('undefined' === typeof Swiper) {
                 const asyncSwiper = elementorFrontend.utils.swiper;
-                new asyncSwiper($(this), options).then((newSwiperInstance) => {
+                new asyncSwiper($(this)[0], options).then((newSwiperInstance) => {
                     var swiper = newSwiperInstance;
                 });
 
             } else {
-                var swiper = new Swiper($(this), options);
+                var swiper = new Swiper($(this)[0], options);
             }
 
         });
@@ -289,12 +289,12 @@
             };
             if ('undefined' === typeof Swiper) {
                 const asyncSwiper = elementorFrontend.utils.swiper;
-                new asyncSwiper(slider_elem, options).then((newSwiperInstance) => {
+                new asyncSwiper(slider_elem[0], options).then((newSwiperInstance) => {
                     var swiper = newSwiperInstance;
                 });
 
             } else {
-                var swiper = new Swiper(slider_elem, options);
+                var swiper = new Swiper(slider_elem[0], options);
             }
 
         });
@@ -342,12 +342,12 @@
 
             if ('undefined' === typeof Swiper) {
                 const asyncSwiper = elementorFrontend.utils.swiper;
-                new asyncSwiper(slider_elem, options).then((newSwiperInstance) => {
+                new asyncSwiper(slider_elem[0], options).then((newSwiperInstance) => {
                     var swiper = newSwiperInstance;
                 });
 
             } else {
-                var swiper = new Swiper(slider_elem, options);
+                var swiper = new Swiper(slider_elem[0], options);
             }
         });
     };
@@ -392,12 +392,12 @@
 
             if ('undefined' === typeof Swiper) {
                 const asyncSwiper = elementorFrontend.utils.swiper;
-                new asyncSwiper(slider_elem, options).then((newSwiperInstance) => {
+                new asyncSwiper(slider_elem[0], options).then((newSwiperInstance) => {
                     var swiper = newSwiperInstance;
                 });
 
             } else {
-                var swiper = new Swiper(slider_elem, options);
+                var swiper = new Swiper(slider_elem[0], options);
             }
 
         });
@@ -539,12 +539,12 @@
 
             if ('undefined' === typeof Swiper) {
                 const asyncSwiper = elementorFrontend.utils.swiper;
-                new asyncSwiper(slider_elem, options).then((newSwiperInstance) => {
+                new asyncSwiper(slider_elem[0], options).then((newSwiperInstance) => {
                     var swiper = newSwiperInstance;
                 });
 
             } else {
-                var swiper = new Swiper(slider_elem, options);
+                var swiper = new Swiper(slider_elem[0], options);
             }
         });
     };
@@ -585,12 +585,12 @@
 
             if ('undefined' === typeof Swiper) {
                 const asyncSwiper = elementorFrontend.utils.swiper;
-                new asyncSwiper($(this), options).then((newSwiperInstance) => {
+                new asyncSwiper($(this)[0], options).then((newSwiperInstance) => {
                     var swiper = newSwiperInstance;
                 });
 
             } else {
-                var swiper = new Swiper($(this), options);
+                var swiper = new Swiper($(this)[0], options);
             }
         });
     };
@@ -698,12 +698,12 @@
 
             if ('undefined' === typeof Swiper) {
                 const asyncSwiper = elementorFrontend.utils.swiper;
-                new asyncSwiper(slider_elem, options).then((newSwiperInstance) => {
+                new asyncSwiper(slider_elem[0], options).then((newSwiperInstance) => {
                     var swiper = newSwiperInstance;
                 });
 
             } else {
-                var swiper = new Swiper(slider_elem, options);
+                var swiper = new Swiper(slider_elem[0], options);
             }
 
         });
@@ -996,12 +996,12 @@
 
             if ('undefined' === typeof Swiper) {
                 const asyncSwiper = elementorFrontend.utils.swiper;
-                new asyncSwiper($(this), options).then((newSwiperInstance) => {
+                new asyncSwiper($(this)[0], options).then((newSwiperInstance) => {
                     var swiper = newSwiperInstance;
                 });
 
             } else {
-                var swiper = new Swiper($(this), options);
+                var swiper = new Swiper($(this)[0], options);
             }
 
 
@@ -1026,7 +1026,6 @@
                     var options = $(this).data("xld");
                     var form_value = $(this).find(":input").val();
                     var placeholder = $(this).find(":input").attr('placeholder');
-
                     mf.push({
                         'id': options['id'],
                         'type': options['type'],
@@ -1036,7 +1035,7 @@
                     });
                 });
 
-                mf.push({
+                mf.push({ 
                     'to': settings['email'],
                     'success_msg': settings['success'],
                     'fail_msg': settings['fail'],
@@ -1114,12 +1113,12 @@
             };
             if ('undefined' === typeof Swiper) {
                 const asyncSwiper = elementorFrontend.utils.swiper;
-                new asyncSwiper(main_wrap, options).then((newSwiperInstance) => {
+                new asyncSwiper(main_wrap[0], options).then((newSwiperInstance) => {
                     var swiper = newSwiperInstance;
                 });
 
             } else {
-                var swiper = new Swiper(main_wrap, options);
+                var swiper = new Swiper(main_wrap[0], options);
             }
             if (jQuery().jarallax && settings['parallax']) {
                 $('.slide-bg-image').jarallax({ imgPosition: '0% ' + settings['bgpos'] + '%' });
@@ -1344,7 +1343,7 @@
             });
         });
     };
-
+ 
     var TpImgGallery = function ($scope, $) {
         $scope.find('.elementor-widget-container').each(function () {
             var settings = $(this).parent().data('tpimgallery');
@@ -1359,17 +1358,18 @@
     var TpAutoTab = function ($scope, $) {
         $scope.find('.auto-tab').each(function () {
             var settings = $(this).data('xld');
-            var sliderContainer = $(this).find('.swiper-default');
+            var sliderContainer = $(this).find('.swiper-default')[0];
             var nxt = $(this).find('.khbprev');
             var prv = $(this).find('.khbnxt');
 
             var sliderSettings = {
                 'loop': true,
+                'centeredSlides': settings['center'],
                 'spaceBetween': 0,
                 'effect': 'fade',
                 'navigation': {
-                    nextEl: nxt,
-                    prevEl: prv,
+                    nextEl: nxt[0],
+                    prevEl: prv[0],
                 },
                 'autoplay': {
                     delay: settings['speed'],
@@ -1388,7 +1388,7 @@
                 },
             };
 
-            var thumbsContainer = $(this).find('.swiper-sync');
+            var thumbsContainer = $(this).find('.swiper-sync')[0];
             var thumbsSettings = {
                 'loop': true,
                 'spaceBetween': settings['space'],
@@ -1470,12 +1470,12 @@
             };
             if ('undefined' === typeof Swiper) {
                 const asyncSwiper = elementorFrontend.utils.swiper;
-                new asyncSwiper($(this), options).then((newSwiperInstance) => {
+                new asyncSwiper($(this)[0], options).then((newSwiperInstance) => {
                     var swiper = newSwiperInstance;
                 });
 
             } else {
-                var swiper = new Swiper($(this), options);
+                var swiper = new Swiper($(this)[0], options);
             }
 
         });
@@ -1591,7 +1591,7 @@
             'tpmegamenu': TpHeader,
             'tpbgheader-1': TpHeader,
             'tp-contact': TpContact,
-            'tbbgvid': TpProVideoPop, 
+            'tbbgvid': TpProVideoPop,  
             'tp-scrollto': TpScrollTo,
             'tp-syn-hightlighter': TpSynHighlighter,
             'tp-offmenu': TpOffSidebar,

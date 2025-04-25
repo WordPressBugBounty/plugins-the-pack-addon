@@ -268,7 +268,7 @@ class thepack_team1 extends Widget_Base
             Group_Control_Background::get_type(),
             [
                 'name' => 'overlay_color',
-                'label' => esc_html__('Background', 'elementor'),
+                'label' => esc_html__('Background', 'the-pack-addon' ),
                 'types' => ['none', 'classic', 'gradient'],
                 'selector' => '{{WRAPPER}} .team-content',
             ]
@@ -338,7 +338,7 @@ class thepack_team1 extends Widget_Base
         $this->add_control(
             'q_pad',
             [
-                'label' => esc_html__('Margin', 'elementor'),
+                'label' => esc_html__('Margin', 'the-pack-addon' ),
                 'type' => Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', 'em', '%'],
                 'selectors' => [
@@ -379,7 +379,7 @@ class thepack_team1 extends Widget_Base
         $this->add_control(
             'p_pad',
             [
-                'label' => esc_html__('Margin', 'elementor'),
+                'label' => esc_html__('Margin', 'the-pack-addon' ),
                 'type' => Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', 'em', '%'],
                 'selectors' => [
@@ -577,7 +577,7 @@ class thepack_team1 extends Widget_Base
         $this->add_control(
             'sxipd',
             [
-                'label' => esc_html__('Padding', 'elementor'),
+                'label' => esc_html__('Padding', 'the-pack-addon' ),
                 'type' => Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', 'em', '%'],
                 'selectors' => [

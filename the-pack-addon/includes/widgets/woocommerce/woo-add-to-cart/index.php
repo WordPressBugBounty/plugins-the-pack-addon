@@ -339,7 +339,7 @@ class The_Pack_Woo_Add_To_Cart extends Widget_Base
     
                 break;
                 default:
-                    return esc_html__( 'Read More', 'wctext' );
+                    return esc_html__( 'Read More', 'the-pack-addon' );
             }
         }
     }
@@ -364,7 +364,7 @@ class The_Pack_Woo_Add_To_Cart extends Widget_Base
             add_action( 'woocommerce_product_single_add_to_cart_text', [ $this, 'single_add_cart' ] ,9);
         }
 
-        $preview  = isset( $_GET['preview'] ) ? sanitize_text_field($_GET['preview']) : '';//phpcs:disable WordPress.Security.NonceVerification.Recommended 
+        $preview  = isset( $_GET['preview'] ) ? sanitize_text_field(wp_unslash($_GET['preview'])) : '';//phpcs:disable WordPress.Security.NonceVerification.Recommended 
         if (Plugin::instance()->editor->is_edit_mode() | $preview == 'true' ) {
             $product = wc_get_product($settings['preview']);
         }        

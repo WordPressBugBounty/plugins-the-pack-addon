@@ -149,7 +149,7 @@ class thepack_progressbars extends Widget_Base
             Group_Control_Background::get_type(),
             [
                 'name' => 'pri_color',
-                'label' => esc_html__('Background', 'elementor'),
+                'label' => esc_html__('Background', 'the-pack-addon' ),
                 'types' => ['none', 'classic', 'gradient'],
                 'selector' => '{{WRAPPER}} .bar',
             ]
@@ -241,7 +241,7 @@ class thepack_progressbars extends Widget_Base
             Group_Control_Background::get_type(),
             [
                 'name' => 'pcen_bg',
-                'label' => esc_html__('Background', 'elementor'),
+                'label' => esc_html__('Background', 'the-pack-addon' ),
                 'types' => ['none', 'classic', 'gradient'],
                 'selector' => '{{WRAPPER}} .bar-percentage',
             ]

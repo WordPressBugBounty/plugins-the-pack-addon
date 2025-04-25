@@ -17,7 +17,7 @@ foreach ($settings['lists'] as $item) {
     $btn1 = $item['btn1'] ? '<a ' . thepack_get_that_link($item['url1']) . '>' . $item['btn1'] . '</a>' : '';
     $btn2 = $item['btn2'] ? '<a ' . thepack_get_that_link($item['url2']) . '>' . $item['btn2'] . '</a>' : '';
     $main .= '
-              <div class="swiper-slide  elementor-repeater-item-' . $item['_id'] . '">
+              <div class="swiper-slide  elementor-repeater-item-' . esc_attr($item['_id']) . '">
                 <div class="slide-inner">
                   <div ' . $img . ' class="slide-bg-image"></div>
                   <div class="content-wrap"><div class="content-inner">

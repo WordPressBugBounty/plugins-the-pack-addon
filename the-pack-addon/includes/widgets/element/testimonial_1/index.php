@@ -282,7 +282,7 @@ class thepack_testim_1 extends Widget_Base
         $this->start_controls_tab(
             'qt1',
             [
-                'label' => esc_html__('Title', 'xltab'),
+                'label' => esc_html__('Title', 'the-pack-addon' ),
             ]
         );
 
@@ -300,7 +300,7 @@ class thepack_testim_1 extends Widget_Base
         $this->add_control(
             'h_mr',
             [
-                'label' => esc_html__('Margin', 'elementor'),
+                'label' => esc_html__('Margin', 'the-pack-addon' ),
                 'type' => Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', 'em', '%'],
                 'selectors' => [
@@ -323,7 +323,7 @@ class thepack_testim_1 extends Widget_Base
         $this->start_controls_tab(
             'qt2',
             [
-                'label' => esc_html__('Rating', 'xltab'),
+                'label' => esc_html__('Rating', 'the-pack-addon' ),
             ]
         );
 
@@ -365,7 +365,7 @@ class thepack_testim_1 extends Widget_Base
         $this->start_controls_tab(
             'qt3',
             [
-                'label' => esc_html__('Content', 'xltab'),
+                'label' => esc_html__('Content', 'the-pack-addon' ),
             ]
         );
         $this->add_control(
@@ -382,7 +382,7 @@ class thepack_testim_1 extends Widget_Base
         $this->add_control(
             'q_pad',
             [
-                'label' => esc_html__('Padding', 'elementor'),
+                'label' => esc_html__('Padding', 'the-pack-addon' ),
                 'type' => Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', 'em', '%'],
                 'selectors' => [
@@ -506,7 +506,7 @@ class thepack_testim_1 extends Widget_Base
         $this->start_controls_tab(
             'av1',
             [
-                'label' => esc_html__('Thumb', 'xltab'),
+                'label' => esc_html__('Thumb', 'the-pack-addon' ),
             ]
         );
 
@@ -595,7 +595,7 @@ class thepack_testim_1 extends Widget_Base
         $this->start_controls_tab(
             'av2',
             [
-                'label' => esc_html__('Content', 'xltab'),
+                'label' => esc_html__('Content', 'the-pack-addon' ),
             ]
         );
 
@@ -635,7 +635,7 @@ class thepack_testim_1 extends Widget_Base
         $this->add_responsive_control(
             'pos_pad',
             [
-                'label' => esc_html__('Position Padding', 'elementor'),
+                'label' => esc_html__('Position Padding', 'the-pack-addon' ),
                 'type' => Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', 'em', '%'],
                 'selectors' => [

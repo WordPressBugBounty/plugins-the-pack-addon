@@ -314,7 +314,7 @@ class thepack_cta_2 extends Widget_Base
         $this->add_control(
             'btpad',
             [
-                'label' => esc_html__('Padding', 'elementor'),
+                'label' => esc_html__('Padding', 'the-pack-addon'),
                 'type' => Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', 'em', '%'],
                 'selectors' => [

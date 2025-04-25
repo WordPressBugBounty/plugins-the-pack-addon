@@ -157,7 +157,7 @@ class thepack_cphone extends Widget_Base
             Group_Control_Background::get_type(),
             [
                 'name' => 'overlay_color',
-                'label' => esc_html__('Text background', 'elementor'),
+                'label' => esc_html__('Text background', 'the-pack-addon'),
                 'types' => ['none', 'classic', 'gradient'],
                 'selector' => '{{WRAPPER}} .info',
             ]

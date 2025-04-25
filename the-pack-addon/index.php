@@ -7,7 +7,7 @@ Author: Webangon
 Author URI: https://webangon.com
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
-Version: 2.1.2
+Version: 2.1.3
 Text Domain: the-pack-addon
 Domain Path: /languages/
 */
@@ -151,7 +151,7 @@ if (!class_exists('thepack_elementor_addon_widget')) {
         {
             $tabs['themify-icons'] = [
                 'name' => 'themify-icons',
-                'label' => esc_html__('Themify', 'icon-element'),
+                'label' => esc_html__('Themify', 'the-pack-addon' ),
                 'labelIcon' => 'ti-wand',
                 'prefix' => 'ti-',
                 'displayPrefix' => 'tivo',
@@ -162,7 +162,7 @@ if (!class_exists('thepack_elementor_addon_widget')) {
 
             $tabs['uicons'] = [
                 'name' => 'uicons',
-                'label' => esc_html__('Uicons', 'icon-element'),
+                'label' => esc_html__('Uicons', 'the-pack-addon' ),
                 'labelIcon' => 'fi-rr-0',
                 'prefix' => 'fi-rr-',
                 'displayPrefix' => 'uic',

@@ -276,22 +276,22 @@ class thepack_accordion_1 extends Widget_Base
 
         $this->start_controls_section(
             'section_dsc',
-            [
+            [  
                 'label' => esc_html__('Description', 'the-pack-addon'),
-                'tab' => Controls_Manager::TAB_STYLE,
+                'tab' => Controls_Manager::TAB_STYLE, 
             ]
         );
 
         $this->add_responsive_control(
-            'dtsp',
+            'dtsp',   
             [
-                'label' => esc_html__('Top spacing', 'the-pack-addon'),
-                'type' => Controls_Manager::SLIDER,
+                'label' => esc_html__('Top spacing', 'the-pack-addon'), 
+                'type' => Controls_Manager::SLIDER,                    
                 'range' => [
                     'px' => [
-                        'min' => 0,
-                        'max' => 200,
-                        'step' => 1,
+                        'min' => 0, 
+                        'max' => 200, 
+                        'step' => 1,   
                     ]
                 ],
                 'size_units' => ['px'],

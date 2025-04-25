@@ -220,7 +220,7 @@ class thepack_case_grid extends Widget_Base
             Group_Control_Background::get_type(),
             [
                 'name' => 'fover',
-                'label' => esc_html__('Background overlay', 'elementor'),
+                'label' => esc_html__('Background overlay', 'the-pack-addon'),
                 'types' => ['none', 'classic', 'gradient'],
                 'selector' => '{{WRAPPER}} .inner::before',
             ]

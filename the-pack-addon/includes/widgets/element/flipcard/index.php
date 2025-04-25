@@ -266,7 +266,7 @@ class thepack_flipcard extends Widget_Base
             Group_Control_Background::get_type(),
             [
                 'name' => 'fover',
-                'label' => esc_html__('Background', 'elementor'),
+                'label' => esc_html__('Background', 'the-pack-addon' ),
                 'types' => ['none', 'classic', 'gradient'],
                 'selector' => '{{WRAPPER}} .tb-card-front::before',
             ]
@@ -284,7 +284,7 @@ class thepack_flipcard extends Widget_Base
             Group_Control_Background::get_type(),
             [
                 'name' => 'bover',
-                'label' => esc_html__('Background', 'elementor'),
+                'label' => esc_html__('Background', 'the-pack-addon' ),
                 'types' => ['none', 'classic', 'gradient'],
                 'selector' => '{{WRAPPER}} .tb-card-back::before',
             ]
@@ -314,7 +314,7 @@ class thepack_flipcard extends Widget_Base
         $this->add_control(
             'h_mr',
             [
-                'label' => esc_html__('Margin', 'elementor'),
+                'label' => esc_html__('Margin', 'the-pack-addon' ),
                 'type' => Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', 'em', '%'],
                 'selectors' => [
@@ -356,7 +356,7 @@ class thepack_flipcard extends Widget_Base
         $this->add_control(
             'q_pad',
             [
-                'label' => esc_html__('Margin', 'elementor'),
+                'label' => esc_html__('Margin', 'the-pack-addon' ),
                 'type' => Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', 'em', '%'],
                 'selectors' => [
@@ -418,7 +418,7 @@ class thepack_flipcard extends Widget_Base
         $this->add_control(
             'bt_pad',
             [
-                'label' => esc_html__('Padding', 'elementor'),
+                'label' => esc_html__('Padding', 'the-pack-addon' ),
                 'type' => Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', 'em', '%'],
                 'selectors' => [

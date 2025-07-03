@@ -1074,7 +1074,7 @@ class The_Pack_Woo_Archive_Product extends Widget_Base
         $args['attributes']['data-icon'] = the_pack_render_icon($settings['crticon']); 
         return $args;        
     }  
-    
+
     protected function render()
     {
         $settings = $this->get_settings();

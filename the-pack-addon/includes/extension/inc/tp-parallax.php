@@ -74,7 +74,7 @@ class The_Pack_Elementor_Parallax_Layer
                     'px' => [
                         'min' => 0,
                         'max' => 360,
-                    ]
+                    ]  
                 ],
                 'selectors' => [
                     '{{WRAPPER}} {{CURRENT_ITEM}}' => 'transform: rotate({{SIZE}}deg);',

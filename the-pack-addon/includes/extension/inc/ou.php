@@ -16,7 +16,7 @@ class The_Pack_Overlay_Underlay
     public static function init()
     {
         add_action('elementor/element/common/_section_style/after_section_end', [__CLASS__, 'add_section']);
-        add_action('elementor/element/after_add_attributes', [__CLASS__, 'add_attributes']);
+        add_action('elementor/frontend/widget/before_render', [__CLASS__, 'add_attributes']);
 
         add_action('elementor/element/button/section_style/after_section_end', [
             __CLASS__,
@@ -33,7 +33,7 @@ class The_Pack_Overlay_Underlay
                 'tab' => Controls_Manager::TAB_STYLE,
             ]
         );
-        
+         
         $element->add_responsive_control(
             'tp_bt_wd',
             [
@@ -51,7 +51,7 @@ class The_Pack_Overlay_Underlay
                 'selectors' => [
                     '{{WRAPPER}} .elementor-button' => 'width: {{SIZE}}{{UNIT}};',
                 ],
-            ]
+            ] 
         );
 
         $element->add_responsive_control(
@@ -123,16 +123,39 @@ class The_Pack_Overlay_Underlay
             ]
         );
 
+        $element->add_control(
+            'bihoc',
+            [
+                'label' => esc_html__('Circle hover', 'the-pack-addon'),
+                'type' => Controls_Manager::SWITCHER,
+                 'prefix_class' => 'tp-btn-chover-'
+            ]
+        );
+
+        $element->add_control(
+            'bisltx',
+            [
+                'label' => esc_html__('Slide text hover', 'the-pack-addon'),
+                'type' => Controls_Manager::SWITCHER,
+                 'prefix_class' => 'tp-btn-slthover-'
+            ]
+        );
+
+        $element->add_control(
+            'biica',
+            [
+                'label' => esc_html__('Left expand hover', 'the-pack-addon'),
+                'type' => Controls_Manager::SWITCHER,
+                 'prefix_class' => 'tp-left-ex-'
+            ]
+        );
+
         $element->end_controls_section();
     }
 
     public static function add_attributes(Element_Base $element)
     {
-        if (in_array($element->get_name(), ['section', 'column'])) {
-            return;
-        }
-
-        if (\Elementor\Plugin::instance()->editor->is_edit_mode()) {
+        if (in_array($element->get_name(), ['section', 'column','container'])) {
             return;
         }
 
@@ -221,7 +244,7 @@ class The_Pack_Overlay_Underlay
                 'label' => esc_html__('Position and Size', 'the-pack-addon'),
                 'type' => Controls_Manager::POPOVER_TOGGLE,
                 'return_value' => 'yes',
-                'frontend_available' => true,
+                //'frontend_available' => true,
                 'condition' => [
                     '_tp_ele_overlay_background' => ['classic', 'gradient'],
                 ],
@@ -339,7 +362,7 @@ class The_Pack_Overlay_Underlay
             [
                 'label' => esc_html__('Rotate', 'the-pack-addon'),
                 'type' => Controls_Manager::SLIDER,
-                'range' => [
+                'range' => [ 
                     'px' => [
                         'min' => -360,
                         'max' => 360,
@@ -357,7 +380,7 @@ class The_Pack_Overlay_Underlay
             [
                 'label' => esc_html__('Border radius', 'the-pack-addon'),
                 'type' => Controls_Manager::DIMENSIONS,
-                'size_units' => ['em', 'px'],
+                'size_units' => ['em', 'px','%'],
                 'selectors' => [
                     '{{WRAPPER}}.tp-has-beaf > .elementor-widget-container:before' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
@@ -609,7 +632,7 @@ class The_Pack_Overlay_Underlay
             [
                 'label' => esc_html__('Border radius', 'the-pack-addon'),
                 'type' => Controls_Manager::DIMENSIONS,
-                'size_units' => ['em', 'px'],
+                'size_units' => ['em', 'px','%'],
                 'selectors' => [
                     '{{WRAPPER}}.tp-has-beaf > .elementor-widget-container:after' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],

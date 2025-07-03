@@ -136,7 +136,7 @@ class The_Pack_Heading_Extra_Control
                 ],
                 'size_units' => ['px', '%'],                
                 'selectors' => [
-                    '{{WRAPPER}} .elementor-heading-title' => 'max-width: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .elementor-heading-title' => 'width: {{SIZE}}{{UNIT}};',
                 ]
 
             ]

@@ -299,58 +299,7 @@
 
         });
     };
-    var Team1 = function ($scope, $) {
-        $scope.find('.team1carou').each(function () {
-            var slider_elem = $(this);
-            var settings = slider_elem.data('xld');
-            var options = {
-                paginationClickable: true,
-                spaceBetween: settings['space'],
-                navigation: {
-                    nextEl: '.khbprev',
-                    prevEl: '.khbnxt',
-                },
-                breakpoints: {     
-                    1025: {
-                        slidesPerView: settings['item'],
-                    },
-                    768: {
-                        slidesPerView: settings['item_tab'],
-                    },
-                    480: {
-                        slidesPerView: 1,
-                    },
-                },
-                pagination: {
-                    el: ".swiper-pagination",
-                    clickable: true,
-                    type: 'bullets',
-                },
-                loop: true,
-                autoplay: {
-                    delay: settings['speed'],
-                },
-                mousewheel: settings['mouse'],
-                on: {
-                    init: function () {
-                        if (settings['center']) {
-                            slider_elem.find('.swiper-slide').addClass("centermode");
-                        }
-                    },
-                },
-            };
 
-            if ('undefined' === typeof Swiper) {
-                const asyncSwiper = elementorFrontend.utils.swiper;
-                new asyncSwiper(slider_elem[0], options).then((newSwiperInstance) => {
-                    var swiper = newSwiperInstance;
-                });
-
-            } else {
-                var swiper = new Swiper(slider_elem[0], options);
-            }
-        });
-    };
     var Team2 = function ($scope, $) {
         $scope.find('.tbteam2.hascarou').each(function () {
             var slider_elem = $(this);
@@ -550,27 +499,39 @@
     };
 
     var Testimonial = function ($scope, $) {
-        $scope.find('.testimonial-1').each(function () {
+        $scope.find('.tpswiper').each(function () {
             var settings = $(this).data('xld');
-
             var options = {
-                slidesPerView: 1,
+                //slidesPerView: "auto",
+                //init: false,
+                autoHeight: true,
+                direction: settings['direction'],
+                effect: settings['effect'],
                 pagination: {
                     el: $(this).find('.swiper-pagination')[0],
                     clickable: true,
                 },
+                coverflowEffect: {
+                    rotate: 15,
+                    slideShadows: false,
+                },  
+                cardEffect: {
+                    slideShadows: false,
+                },                                              
+                speed: parseInt(settings['speed']),
                 autoplay: {
-                    delay: settings['speed'],
+                    delay: parseInt(settings['delay']),
                     enabled: settings['auto'],
+                    reverseDirection: settings['reverse'],
+                    disableOnInteraction: false,
                 },
-                spaceBetween: settings['space'],
-
+                spaceBetween: parseInt(settings['space']),
                 breakpoints: {
                     1140: {
-                        slidesPerView: settings['item'],
+                        slidesPerView: parseInt(settings['item']),
                     },
                     768: {
-                        slidesPerView: settings['itemtab'],
+                        slidesPerView: parseInt(settings['itemtab']),
                     },
                     1: {
                         slidesPerView: 1,
@@ -578,8 +539,8 @@
                 },
                 loop: true,
                 navigation: {
-                    nextEl: $(this).find('.khbprev'),
-                    prevEl: $(this).find('.khbnxt'),
+                    nextEl: $(this).find('.khbprev')[0],
+                    prevEl: $(this).find('.khbnxt')[0],
                 }
             };
 
@@ -588,10 +549,12 @@
                 new asyncSwiper($(this)[0], options).then((newSwiperInstance) => {
                     var swiper = newSwiperInstance;
                 });
-
             } else {
                 var swiper = new Swiper($(this)[0], options);
-            }
+                //swiper.params.autoplay.enabled = true;
+                //swiper.init();
+            }  
+
         });
     };
 
@@ -1016,8 +979,6 @@
                 e.preventDefault();
                 var this_form = $(this);
                 var settings = this_form.data('xld');
-
-
                 this_form.find('.tp-form-btn button').addClass('working');
                 var mf = [];
                 this_form.find('.item').each(function () {
@@ -1335,6 +1296,28 @@
         });
     };
 
+    var Tp_Swiper_Arrow = function ($scope, $) {
+        $scope.find('.tp-swiper-arrow').each(function () {
+            var _parent = $(this).data('slider');
+            var prev = $(this).find(".prev");
+            var nxt = $(this).find(".next");
+
+            var prev_arrow = $(_parent).find(".khbnxt");
+            var nxt_arrow = $(_parent).find(".khbprev");
+            $(_parent).find(".tpswiper").addClass('arrow-disabled');
+
+            prev.click(function(){
+                prev_arrow.click(); 
+                return false;
+            });
+            nxt.click(function(){
+                nxt_arrow.click(); 
+                return false;
+            });
+
+        });
+    };
+
     var TpFloatingNav = function ($scope, $) {
         $scope.find('.tp-floating-nav').each(function () {
             var settings = $(this).data('xld');
@@ -1353,6 +1336,32 @@
 
             }
         });
+    };
+
+    var TP_Icon_Effect = function ($scope, $) {
+        
+        $scope.each(function () {
+            var _This = $(this).hasClass("tp_icon_slide_yes")
+            var _Parent = $(this).find('.elementor-icon')
+            var _Icon = $(this).find('.elementor-icon i')
+            if(_This){
+                var $button = _Icon.clone();
+                _Parent.append($button);
+            }
+        })
+    };
+
+    var TP_Button_Effect = function ($scope, $) {
+        
+        $scope.each(function () {
+            var _This = $(this).hasClass("tp-btn-slthover-yes")
+            var _Parent = $(this).find('.elementor-button-content-wrapper')
+            var _Icon = $(this).find('.elementor-button-text')
+            if(_This){
+                var $button = _Icon.clone();
+                _Parent.append($button);
+            }
+        })
     };
 
     var TpAutoTab = function ($scope, $) {
@@ -1509,7 +1518,10 @@
 
                 let $thisBtn = $(this),
                     product_id = $thisBtn.val() || '',
-                    cartFormData = $form.serialize();
+                    cartFormData = $form.serialize(),
+                    product_qty = $('input[name="quantity"]').val() || '',
+                    cart_num = $('.tp-quick-cart .cart-count').text() || '',
+                    total_cart = parseInt(cart_num)+parseInt(product_qty);
 
                 $.ajax({
                     type: 'POST', 
@@ -1527,12 +1539,14 @@
 
                             return;
                         }
-
+                        
                         setTimeout(function () {
                             $thisBtn.removeClass('added');
                         }, 1000);
 
-                        $(document.body).trigger('wc_fragment_refresh');
+                        $('.tp-quick-cart .cart-count').text(total_cart);
+
+                        $(document.body).trigger('wc_fragments_refreshed');
                         $(document.body).trigger('added_to_cart', [response.fragments, response.cart_hash, $thisBtn]);
 
                         if (typeof wc_add_to_cart_params === 'undefined') {
@@ -1557,10 +1571,11 @@
 
             'ae-accor1': Tpaccordion1,
 
-            'tb_testim_1': Testimonial,
+            'tb_testim_1': Testimonial, 
             'tb_gallery1': ImgCarousel,
             'tb_imgbx4': ImgCarousel,
             'tb_imgbox1': ImgCarousel,
+            'tp-swiper-arrow': Tp_Swiper_Arrow,
 
             'tp-carousel1': FolioCarousel,
             'tp-slidershop': FolioCarousel,
@@ -1568,10 +1583,13 @@
             'tp-slkcrsl': SlickImgCar,
             'wa-gallery': Gallery2,
             'tb_foliohvr': HvrFolio,
-            'tb_team1': Team1,
+            'tb_team1': Testimonial,
             'tb_team2': Team2,
-            'tb_team3': Team1,
+            //'tb_team3': Team1,
             'tb_caroparlx': CaroPrlx,
+
+            'icon': TP_Icon_Effect,
+            'button': TP_Button_Effect,
 
 
             'tb_testim_5': Testi5,
@@ -1634,9 +1652,28 @@
 
     });
 
-    AOS.init({
-        easing: 'ease-in-out-sine'
-    });
+    if (typeof ScrollReveal !== 'undefined' && $.isFunction(ScrollReveal)) {
+        window.sr = ScrollReveal();
+        sr.reveal('.reveal-top, .reveal-bottom, .reveal-left, .reveal-right', {
+            delay: 300,
+            easing: 'ease',
+            duration: 700,
+            scale: 0,
+            reset: true,
+        });
+        sr.reveal('.reveal-top', {
+            origin: 'top',
+        }, 250);
+        sr.reveal('.reveal-bottom', {
+            origin: 'bottom',
+        }, 250);
+        sr.reveal('.reveal-left', {
+            origin: 'left',
+        }, 250);
+        sr.reveal('.reveal-right', {
+            origin: 'right',
+        }, 250);
+    }
 
     var tbtops = document.querySelector(".tp-progress-wrap");
     if (tbtops) {
@@ -1679,8 +1716,10 @@
             });
         });
     }
+ 
 
-    // Page loader
+
+    // Page loader parallax 
     $(".tp-page-loader-wrap").fadeOut("slow");
 
     $(document).on('click', '.quantity .minus', function () {
@@ -1761,9 +1800,9 @@
         $('.tp-pop-response').find('.popwrap').html('');
     });
 
-    function tp_add_to_cart($btn){
-        console.log($btn);
-    }
+    $('body').on('added_to_cart',function(e, fragments, cart_hash, this_button){
+        alert('Product added');
+    });
 
     ////
 })(jQuery);

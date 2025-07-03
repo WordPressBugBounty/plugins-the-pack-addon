@@ -245,6 +245,31 @@ class The_Pack_Iconbox_Extra_Control
                 ],
             ]
         );
+        $element->add_responsive_control(
+            'irote',
+            [
+                'label' => esc_html__('Rotate', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'range' => [
+                    'px' => [
+                        'min' => 0,
+                        'max' => 360,
+                    ]
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .elementor-icon>*' => 'transform: rotate({{SIZE}}deg);',
+                ],
+            ]
+        );
+
+        $element->add_group_control(
+            Group_Control_Border::get_type(),
+            [
+                'name' => 'ixbdr',
+                'selector' => '{{WRAPPER}} .elementor-icon',
+                'label' => esc_html__('Icon border', 'the-pack-addon'),
+            ]
+        );
 
         $element->end_controls_section();
     }

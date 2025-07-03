@@ -21,7 +21,16 @@ class The_Pack_Woo_Helper {
 
 		add_action('wp_ajax_the_pack_quickview',[__CLASS__,'the_pack_quickview']);
 		add_action('wp_ajax_nopriv_the_pack_quickview',[__CLASS__,'the_pack_quickview']);
+		add_filter('woocommerce_add_to_cart_fragments',[__CLASS__,'cart_count_fragments']);
 
+	}
+
+	static function cart_count_fragments( $fragments ) {
+		global $woocommerce;
+		$count = $woocommerce->cart->cart_contents_count;
+
+		$fragments['.cart-count'] = '<span class="cart-count">'.$count.'</span>';
+		return $fragments;
 	}
 
 	static function get_cookie_name() {

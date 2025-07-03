@@ -31,25 +31,9 @@ class Tp_Translate_Element
     {
         $settings = $element->get_settings_for_display();
 
-        if (isset($settings['tp_e_prlx']) && !empty($settings['tp_e_prlx']) ) {
-
-            $element->add_render_attribute('_wrapper', 'class','rellax');
-            if ( isset($settings['tp_e_sped'] )) {
-                $element->add_render_attribute('_wrapper', 'data-rellax-speed',$settings['tp_e_sped']['size']);
-            }
-            if ( $settings['tp_v_axis']) {
-                $element->add_render_attribute('_wrapper', 'data-rellax-vertical-scroll-axis',$settings['tp_v_axis']);
-            }
-             
-        }
         if (isset($settings['anim']) && $settings['anim']) {
-            $element->add_render_attribute('_wrapper', 'data-aos',$settings['anim']);
-            if (isset($settings['aosdu'])) {
-                $element->add_render_attribute('_wrapper', 'data-aos-duration',$settings['aosdu']['size']);
-            }
-            if (isset($settings['aosdl'])) {
-                $element->add_render_attribute('_wrapper', 'data-aos-delay',$settings['aosdl']['size']);
-            }
+            $element->add_render_attribute('_wrapper', 'class',$settings['anim']);
+
         }    
         
         if ( $settings['tp_m_prlx'] ) {
@@ -137,30 +121,6 @@ class Tp_Translate_Element
         );
 
         $element->add_responsive_control(
-            'tphtras',
-            [
-                'label' => esc_html__('Horizontal translate', 'the-pack-addon'),
-                'type' => Controls_Manager::SLIDER,
-                'range' => [
-                    'px' => [
-                        'min' => -1000,
-                        'max' => 1000,
-                        'step' => 1,
-                    ],
-                    '%' => [
-                        'min' => -100,
-                        'max' => 100,
-                        'step' => 1,
-                    ],
-                ],
-                'size_units' => ['px', '%'],
-                'selectors' => [
-                    '{{WRAPPER}}' => 'left:{{SIZE}}{{UNIT}};',
-                ],
-            ]
-        );
-
-        $element->add_responsive_control(
             'tprps',
             [
                 'label' => esc_html__('Right spacing', 'the-pack-addon'),
@@ -208,13 +168,13 @@ class Tp_Translate_Element
             ]
         );
 
-        $element->add_responsive_control(
+        $element->add_control(
             'no_b_spy',
             [
-                'label' => esc_html__('No bottom spacing', 'the-pack-addon'),
+                'label' => esc_html__('Absolute center', 'the-pack-addon'),
                 'type' => Controls_Manager::SWITCHER,
                 'selectors' => [
-                    '{{WRAPPER}}' => 'margin-bottom:0px;',
+                    '{{WRAPPER}}' => 'transform: translate(-50%,-50%);',
                 ],
             ]
         );
@@ -270,6 +230,100 @@ class Tp_Translate_Element
             ]
         );
 
+		$element->add_group_control(
+			\Elementor\Group_Control_Css_Filter::get_type(),
+			[
+				'name' => 'tpcsf',
+				'selector' => '{{WRAPPER}} .elementor-widget-container',
+			]
+		);
+
+        $element->add_control(
+            '_anim',
+            [
+                'label' => esc_html__('Animation', 'the-pack-addon'),
+                'type' => Controls_Manager::SELECT2,
+                'multiple' => false,
+                'options' => jl_elementor_animation(),
+                'selectors' => [
+                    '{{WRAPPER}} .elementor-widget-container' => 'animation-name: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $element->add_responsive_control(
+            '_anim_dr',
+            [
+                'label' => esc_html__('Animation duration', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'range' => [
+                    'px' => [
+                        'min' => 0,
+                        'max' => 10,
+                        'step' => .25,
+                    ],
+
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .elementor-widget-container' => 'animation-duration: {{SIZE}}s;animation-iteration-count:infinite;',
+                ],
+
+            ]
+        );
+
+        $element->add_responsive_control(
+            'tpbdf',
+            [
+                'label' => esc_html__('Backdrop blur', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'selectors' => [
+                    '{{WRAPPER}} >.elementor-widget-container' => 'backdrop-filter:blur({{SIZE}}{{UNIT}});-webkit-backdrop-filter:blur({{SIZE}}{{UNIT}});',
+                ],
+            ]
+        );
+
+        $element->end_controls_section();
+
+        $element->start_controls_section(
+            'section_tp_anim_brd',
+            [
+                'label' => esc_html__('Animated border', 'the-pack-addon'),
+                'tab' => Controls_Manager::TAB_STYLE,
+            ]
+        ); 
+
+        $element->add_control(
+            'tp_en_anbd',
+            [
+                'label' => esc_html__('Enable animated border', 'the-pack-addon'),
+                'type' => Controls_Manager::SWITCHER,
+                'prefix_class' => 'tp_anim_border_',
+            ]
+        );
+
+        $element->add_control(
+            'tp_en_anbd_cl',
+            [
+                'label' => esc_html__('Gradient color', 'the-pack-addon'),
+                'type' => Controls_Manager::TEXTAREA,
+                'selectors' => [
+                    '{{WRAPPER}}.tp_anim_border_yes>.elementor-widget-container:after' => 'background-image: linear-gradient(60deg,{{VALUE}});',
+                ],
+            ]
+        );
+
+        $element->add_control(
+            'tp_en_anbd_cldr',
+            [
+                'label' => esc_html__('Border radius' , 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'selectors' => [
+                    '{{WRAPPER}} .main-head i' => 'border-radius:{{SIZE}}{{UNIT}};',
+                ],
+
+            ]
+        );
+
         $element->end_controls_section();
 
         $element->start_controls_section(
@@ -283,28 +337,30 @@ class Tp_Translate_Element
         $element->add_control(
             'anim',
             [
-                'label' => esc_html__('Animation', 'the-pack-addon'),
-                'type' => Controls_Manager::SELECT2,
-                'options' => thepack_animations(),
-                'label_block' => true
-            ]
-        );
-
-        $element->add_responsive_control(
-            'aosdu',
-            [
-                'label' => esc_html__('Animation duration in ms', 'the-pack-addon'),
-                'type' => Controls_Manager::SLIDER,
-                'range' => [
-                    'px' => [
-                        'min' => 0,
-                        'max' => 6000,
-                        'step' => 250,
+                'label' => esc_html__('Scroll animation', 'the-pack-addon'),
+                'type' => Controls_Manager::CHOOSE,
+                'options' => [
+                    'reveal-top' => [
+                        'title' => esc_html__('Top', 'the-pack-addon'),
+                        'icon' => 'eicon-arrow-up',
                     ],
+
+                    'reveal-bottom' => [
+                        'title' => esc_html__('Bottom', 'the-pack-addon'),
+                        'icon' => 'eicon-arrow-down',
+                    ],
+
+                    'reveal-left' => [
+                        'title' => esc_html__('Left', 'the-pack-addon'),
+                        'icon' => 'eicon-arrow-left',
+                    ],
+
+                    'reveal-right' => [
+                        'title' => esc_html__('Right', 'the-pack-addon'),
+                        'icon' => 'eicon-arrow-right',
+                    ],
+
                 ],
-                'condition' => [
-                    'anim!' => '',
-                ],                  
             ]
         );
 
@@ -331,26 +387,6 @@ class Tp_Translate_Element
                 'condition' => [
                     'tp_e_prlx' => 'yes',
                 ],                
-            ]
-        );
-
-        $element->add_control(
-            'tp_v_axis',
-            [
-                'label' => esc_html__('Scroll axis', 'the-pack-addon'),
-                'type' => Controls_Manager::CHOOSE,
-                'options' => [
-                    'x' => [
-                        'title' => esc_html__('X', 'the-pack-addon'),
-                        'icon' => 'eicon-v-align-top',
-                    ],
-
-                    'xy' => [
-                        'title' => esc_html__('XY', 'the-pack-addon'),
-                        'icon' => 'eicon-v-align-bottom',
-                    ],
-
-                ],
             ]
         );
 

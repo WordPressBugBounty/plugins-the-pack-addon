@@ -125,6 +125,17 @@ class thepack_heading_4 extends Widget_Base
             ]
         );
 
+        $this->add_control(
+            'dinb',
+            [
+                'label' => esc_html__('Inline display', 'the-pack-addon'),
+                'type' => Controls_Manager::SWITCHER,
+                'selectors' => [
+                    '{{WRAPPER}} .main-head' => 'display: inline-block;',
+                ]
+            ]
+        );
+
         $this->end_controls_section();
 
         $this->start_controls_section(
@@ -471,6 +482,30 @@ class thepack_heading_4 extends Widget_Base
                 'condition' => [
                     'tmpl' => 'three',
                 ],
+            ]
+        );
+
+        $this->add_control(
+            'sprbdr',
+            [
+                'label' => esc_html__('Border radius' , 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'selectors' => [
+                    '{{WRAPPER}} .main-head i' => 'border-radius:{{SIZE}}{{UNIT}};',
+                ],
+
+            ]
+        );
+
+        $this->add_responsive_control(
+            'spde',
+            [
+                'label' => esc_html__('Padding', 'the-pack-addon'),
+                'type' => Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', 'em'],
+                'selectors' => [
+                    '{{WRAPPER}} .main-head i' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ]
             ]
         );
 

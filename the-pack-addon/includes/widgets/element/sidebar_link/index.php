@@ -147,7 +147,7 @@ class thepack_sidebar_link extends Widget_Base
                         'title' => esc_html__('Center', 'the-pack-addon'),
                         'icon' => 'eicon-v-align-top',
                     ],
-                    'flex-start' => [
+                    'flex-end' => [
                         'title' => esc_html__('End', 'the-pack-addon'),
                         'icon' => 'eicon-h-align-right',
                     ],

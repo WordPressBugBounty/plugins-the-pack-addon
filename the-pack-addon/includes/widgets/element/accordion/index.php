@@ -75,7 +75,7 @@ class thepack_accordion_1 extends Widget_Base
         $repeater->add_control(
             'content',
             [
-                'type' => Controls_Manager::WYSIWYG,
+                'type' => Controls_Manager::TEXTAREA,
                 'label' => esc_html__('Content', 'the-pack-addon'),
                 'label_block' => true,
             ]

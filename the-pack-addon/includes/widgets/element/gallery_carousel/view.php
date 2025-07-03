@@ -1,9 +1,9 @@
 <?php
 $slider_options = [
-    'item' => $settings['item']['size'],
-    'item_tab' => $settings['item_tab']['size'],
-    'speed' => $settings['speed']['size'],
-    'space' => $settings['space']['size'],
+    'item' => esc_attr($settings['item']['size']),
+    'item_tab' => esc_attr($settings['item_tab']['size']),
+    'speed' => esc_attr($settings['speed']['size']),
+    'space' => esc_attr($settings['space']['size']),
     'center' => ('yes' === $settings['centermode']),
     'mouse' => ('yes' === $settings['mouse']),
     'auto' => ('yes' === $settings['auto']),
@@ -15,7 +15,7 @@ $nextikn = $settings['nextikn'] ? '<div class="khbprnx khbprev"><i class="' . $s
 $center = $settings['centermode'] ? 'center_mode' : '';
 
 ?>
-<?php echo '<div class="swiper-container tp-gallery-slider tpswiper ' .esc_attr($center) . '" data-thop =\'' . wp_json_encode($slider_options) . '\'>'; ?>
+<?php echo '<div class="swiper-container tp-gallery-slider tpswiper ' .esc_attr($center) . '" data-thop =\'' . wp_kses_post(wp_json_encode($slider_options)) . '\'>'; ?>
 <div class="swiper-wrapper">
     <?php //phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 	<?php echo $this->content($settings['galleries'], $settings['img_size']); ?>

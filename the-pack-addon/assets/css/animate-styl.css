@@ -20,6 +20,12 @@
         -webkit-transform: translate(0, 0)
     }
 }
+@keyframes tp-hueRotate {
+  from {
+    filter: hue-rotate(0); }
+  to {
+    filter: hue-rotate(360deg); }
+}
 
 @keyframes tpsliderShape {
     0%, 100% {

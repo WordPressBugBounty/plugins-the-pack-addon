@@ -1,8 +1,8 @@
 <?php
 $swiper_opt = the_pack_swiper_markup($settings);
 $quote_icon = $settings['quote_icon']['value'] ? '<i class="tpquote ' . $settings['quote_icon']['value'] . '"></i>' : '';
-$out1 = '';
-foreach ($settings['items'] as $item) {
+$out1 = ''; 
+foreach ($settings['items'] as $item) {  
     $rating = $item['rating'] ? '<span class="tscore"><span style="width: ' . $item['rating']['size'] . '%"></span></span>' : '';
     $heading = $item['heading'] ? '<h3 class="heading">' . $item['heading'] . '</h3>' : '';
     $desc = $item['desc'] ? '<p class="desc">' . $item['desc'] . '</p>' : '';

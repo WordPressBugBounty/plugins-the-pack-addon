@@ -1,6 +1,6 @@
 <?php
 $abscls = $settings['abspos'] ? 'abspos' : 'realtivepos';
-$close_sidebar = $settings['tpoffclose']['value'] ? '<i class="tpclose' . esc_attr($settings['tpoffclose']['value']) . '"></i>' : '';
+$close_sidebar = $settings['tpoffclose']['value'] ? '<i class="tpclose' . esc_attr($settings['tpoffclose']['value']) . '"></i>' : ''; 
 ?>
 
 <div class="xlmega-header <?php echo esc_attr($abscls); ?>">

@@ -46,8 +46,8 @@ function tp_process_contact_form()
     if ( ! wp_verify_nonce( sanitize_text_field(wp_unslash($_POST['nonce'])), 'ajax-nonce' ) ) {
         wp_die();
     } 
-    //phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotValidated
-    foreach ( sanitize_text_field(wp_unslash($_POST['data'])) as $item ) {
+    //phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+    foreach ( wp_unslash($_POST['data']) as $item ) {
         $required = isset($item['required']) && empty($item['value']) ? 'yes' : '';
 
         if (isset($item['type']) == 'email') {

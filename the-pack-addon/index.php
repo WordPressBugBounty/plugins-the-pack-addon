@@ -7,7 +7,7 @@ Author: Webangon
 Author URI: https://webangon.com
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
-Version: 2.1.5
+Version: 2.1.6
 Text Domain: the-pack-addon
 Domain Path: /languages/
 */
@@ -239,15 +239,12 @@ if (!class_exists('thepack_elementor_addon_widget')) {
             wp_enqueue_script(['jquery', 'masonry']);
             wp_enqueue_script('lazysizes', THE_PACK_PLUGIN_URL . 'assets/js/lazysizes.min.js', [], THE_PACK_PLUGIN_VERSION, true);
             wp_enqueue_script('jquery-nav', THE_PACK_PLUGIN_URL . 'assets/js/jquery.nav.js', [], THE_PACK_PLUGIN_VERSION, true);
-            wp_enqueue_script('rellax', THE_PACK_PLUGIN_URL . 'assets/js/rellax.min.js', [], THE_PACK_PLUGIN_VERSION, true);
-            wp_enqueue_script('tilt', THE_PACK_PLUGIN_URL . 'assets/js/tilt.jquery.min.js', [], THE_PACK_PLUGIN_VERSION, true);
             wp_enqueue_style('e-animations');
             $scripts = [
                 'scrollreveal',
                 'circle-progress',
                 'plyr',
                 'countdown',
-                'slick',
                 'beerslider',
                 'flex-images',
                 'fitvideos',
@@ -278,7 +275,6 @@ if (!class_exists('thepack_elementor_addon_widget')) {
             $style = [
                 'beerslider-styl',
                 'plyr-styl',
-                'slick-styl',
                 'animate-styl',
                 'highlight'
             ];

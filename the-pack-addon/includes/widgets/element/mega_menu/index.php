@@ -1390,7 +1390,7 @@ class thepack_cleaning extends Widget_Base
                         'max' => 500,
                     ],
                 ],
-                'size_units' => ['px'],
+                'size_units' => ['px'], 
                 'selectors' => [
                     '{{WRAPPER}} .offmenuwraps .tpclosetivo' => 'top: {{SIZE}}{{UNIT}};right: {{SIZE}}{{UNIT}};',
                 ],                

@@ -9,7 +9,7 @@ $slider_options = [
     'auto' => ('yes' === $settings['auto']),
     'cover' => ('yes' === $settings['cover']),
 ];
-
+ 
 $previkn = $settings['previkn'] ? '<div class="khbprnx khbnxt"><i class="' . $settings['previkn']['value'] . '"></i></div>' : '';
 $nextikn = $settings['nextikn'] ? '<div class="khbprnx khbprev"><i class="' . $settings['nextikn']['value'] . '"></i></div>' : '';
 $center = $settings['centermode'] ? 'center_mode' : '';

@@ -633,10 +633,10 @@ class thepack_auto_tab extends Widget_Base
     protected function render()
     {
         $settings = $this->get_settings();
-        require dirname(__FILE__) . '/view.php';
+        //require dirname(__FILE__) . '/view.php';
     }
     protected function render_template($id){
-        return Plugin::instance()->frontend->get_builder_content_for_display($id);
+        //return Plugin::instance()->frontend->get_builder_content_for_display($id);
     }
         
 }

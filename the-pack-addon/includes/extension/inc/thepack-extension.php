@@ -484,7 +484,7 @@ use Elementor\Group_Control_Box_Shadow;
         {
             add_action( 'elementor/kit/register_tabs', [__CLASS__, 'register_controls']);
             add_action( 'wp_footer', [__CLASS__, 'render_html']);
-            add_action( 'wp_body_open', [__CLASS__, 'render_preloader']);
+            add_action( 'wp_head', [__CLASS__, 'render_preloader']);
             add_action( 'wp_enqueue_scripts', [__CLASS__, 'add_script_style']);
         } 
 

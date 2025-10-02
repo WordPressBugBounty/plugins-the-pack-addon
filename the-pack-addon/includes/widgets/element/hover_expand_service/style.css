@@ -1,0 +1,22 @@
+.tb-hxpand .item{
+    flex: 1;
+    position: relative;
+    overflow: hidden; 
+	display: flex;   
+	justify-content: space-between;
+}
+.tb-hxpand .inner{
+    position: relative;
+    overflow: hidden;
+}    
+.tb-hxpand .image {
+    background-size: cover;
+    background-position: 50%;
+	flex: 0 0 0;
+}
+.tb-hxpand{
+    justify-content: space-between;  
+}
+.tb-hxpand .item:hover,.item.active {
+    flex: 2 1 0%;
+}

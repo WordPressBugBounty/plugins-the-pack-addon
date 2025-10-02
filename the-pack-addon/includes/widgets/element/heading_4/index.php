@@ -100,7 +100,7 @@ class thepack_heading_4 extends Widget_Base
             ]
         );
 
-        $this->add_control(
+        $this->add_responsive_control(
             'align',
             [
                 'label' => esc_html__('Text align', 'the-pack-addon'),
@@ -213,7 +213,7 @@ class thepack_heading_4 extends Widget_Base
             'titbrad',
             [
                 'label' => esc_html__('Border radius', 'the-pack-addon'),
-                'type' => Controls_Manager::SLIDER,
+                'type' => Controls_Manager::SLIDER,   
                 'selectors' => [
                     '{{WRAPPER}} .main-head' => 'border-radius: {{SIZE}}{{UNIT}};',
                 ],
@@ -555,6 +555,23 @@ class thepack_heading_4 extends Widget_Base
                 'name' => 'spetyp',
                 'label' => esc_html__('Typography', 'the-pack-addon'),
                 'selector' => '{{WRAPPER}} .main-head i',
+            ]
+        );
+        $this->add_control(
+            'svpdf',
+            [
+                'label' => esc_html__('Vertical position' , 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'range' => [
+                    'px' => [
+                        'min' => -200,
+                        'max' => 200,
+                    ],
+                ],                
+                'selectors' => [
+                    '{{WRAPPER}} .main-head i' => 'top:{{SIZE}}{{UNIT}};',
+                ],
+
             ]
         );
 

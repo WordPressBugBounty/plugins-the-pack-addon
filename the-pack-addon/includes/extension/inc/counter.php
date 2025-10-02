@@ -22,6 +22,36 @@ class The_Pack_Counter_Extra_Control
     public static function tp_callback_function($element, $args)
     {
         $element->start_controls_section(
+            'tpcxtr',
+            [
+                'label' => esc_html__('Counter controll', 'the-pack-addon'),
+                'tab' => Controls_Manager::TAB_STYLE,
+            ]
+        );
+
+        $element->add_control(
+            'couf0',
+            [
+                'label' => esc_html__('Flex 0', 'the-pack-addon'),
+                'type' => Controls_Manager::SWITCHER,
+                'selectors' => [
+                    '{{WRAPPER}} .elementor-counter .elementor-counter-number-wrapper' => 'flex: 0;',
+                ],
+            ]
+        ); 
+        $element->add_responsive_control(
+            'cougpx',
+            [
+                'label' => esc_html__('Number title gap', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'selectors' => [
+                    '{{WRAPPER}} .elementor-counter' => 'gap:{{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+        $element->end_controls_section();
+
+        $element->start_controls_section(
             'tpcpret',
             [
                 'label' => esc_html__('Prefix', 'the-pack-addon'),
@@ -49,6 +79,40 @@ class The_Pack_Counter_Extra_Control
             ]
         );
 
+        $element->end_controls_section();
+
+        $element->start_controls_section(
+            'tpcv4',
+            [
+                'label' => esc_html__('Title extra', 'the-pack-addon'),
+                'tab' => Controls_Manager::TAB_STYLE,
+            ]
+        );        
+        $element->add_responsive_control(
+            'tal03',
+            [
+                'label' => esc_html__('Alignment', 'the-pack-addon'),
+                'type' => Controls_Manager::CHOOSE,
+                'options' => [
+                    'left' => [
+                        'title' => esc_html__('Left', 'the-pack-addon'),
+                        'icon' => 'eicon-h-align-left',
+                    ],
+                    'center' => [
+                        'title' => esc_html__('Center', 'the-pack-addon'),
+                        'icon' => 'eicon-v-align-top',
+                    ],
+                    'right' => [
+                        'title' => esc_html__('Right', 'the-pack-addon'),
+                        'icon' => 'eicon-h-align-right',
+                    ],
+
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .elementor-counter-title' => 'text-align: {{VALUE}};',
+                ],
+            ]
+        );
         $element->end_controls_section();
     }
 }

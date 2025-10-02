@@ -157,6 +157,25 @@ class thepack_accordion_1 extends Widget_Base
             ]
         );
 
+        $this->add_group_control(
+            Group_Control_Border::get_type(),
+            [
+                'name' => 'gbrd',
+                'label' => esc_html__('Border', 'the-pack-addon'),
+                'selector' => '{{WRAPPER}} .accordion li',
+            ]
+        );
+        $this->add_responsive_control(
+            'gbrade',   
+            [
+                'label' => esc_html__('Border radius', 'the-pack-addon'), 
+                'type' => Controls_Manager::SLIDER,                    
+                'selectors' => [
+                    '{{WRAPPER}} .accordion li' => 'border-radius: {{SIZE}}{{UNIT}};overflow: hidden;',
+                ],
+            ]
+        );
+
         $this->end_controls_section();
 
         $this->start_controls_section(
@@ -287,14 +306,6 @@ class thepack_accordion_1 extends Widget_Base
             [
                 'label' => esc_html__('Top spacing', 'the-pack-addon'), 
                 'type' => Controls_Manager::SLIDER,                    
-                'range' => [
-                    'px' => [
-                        'min' => 0, 
-                        'max' => 200, 
-                        'step' => 1,   
-                    ]
-                ],
-                'size_units' => ['px'],
                 'selectors' => [
                     '{{WRAPPER}} .accorbody' => 'margin-top: {{SIZE}}{{UNIT}};',
                 ],

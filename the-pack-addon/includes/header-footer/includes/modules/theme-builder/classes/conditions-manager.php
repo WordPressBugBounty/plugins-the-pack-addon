@@ -80,7 +80,7 @@ class Conditions_Manager {
 	}
 
 	/**
-	 * @access public
+	 * @access public   
 	 *
 	 * @param Ajax $ajax_manager
 	 */

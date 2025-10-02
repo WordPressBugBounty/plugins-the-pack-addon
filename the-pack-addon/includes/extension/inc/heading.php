@@ -37,7 +37,7 @@ class The_Pack_Heading_Extra_Control
                 'label' => esc_html__('Display inline', 'the-pack-addon'),
                 'type' => Controls_Manager::SWITCHER,
                 'selectors' => [
-                    '{{WRAPPER}} .elementor-heading-title' => 'display: inline-block;',
+                    '{{WRAPPER}} .elementor-heading-title' => 'display: inline-block;position:relative;z-index:1;',
                 ],
             ]
         );
@@ -164,15 +164,19 @@ class The_Pack_Heading_Extra_Control
 
             ] 
         );
-
+ 
         $element->add_group_control(
             Group_Control_Background::get_type(),
             [
                 'name' => 'clipbg',
                 'selector' => '{{WRAPPER}} .elementor-heading-title',
-                'label' => esc_html__('Background', 'the-pack-addon'),
+				'fields_options' => [
+					'background' => [
+						'label' => esc_html__( 'Background','the-pack-addon' ),
+					]
+				]                  
             ]
-        );
+        ); 
 
         $element->add_control(
             'clips',
@@ -188,25 +192,50 @@ class The_Pack_Heading_Extra_Control
         $element->add_control(
             'tvpos',
             [
-                'label' => esc_html__('Vertical align', 'the-pack-addon'),
-                'type' => Controls_Manager::CHOOSE,
-                'options' => [
-                    'center' => [
-                        'title' => esc_html__('Center', 'the-pack-addon'),
-                        'icon' => 'eicon-h-align-left',
-                    ],
-                    'flex-end' => [
-                        'title' => esc_html__('Right', 'the-pack-addon'),
-                        'icon' => 'eicon-h-align-right',
-                    ]
-                ],
+                'label' => esc_html__('Center text', 'the-pack-addon'),
+                'type' => Controls_Manager::SWITCHER,
                 'selectors' => [
-                    '{{WRAPPER}} .elementor-heading-title' => 'align-items: {{VALUE}};display:flex;',
+                    '{{WRAPPER}} .elementor-heading-title' => 'align-items: center;display:inline-flex;justify-content: center;',
                 ]                
             ]
         );
 
         $element->end_controls_section();
+
+        $element->start_controls_section(
+            'tvdrbsp',
+            [
+                'label' => esc_html__('Ribbon shape', 'the-pack-addon'),
+                'tab' => Controls_Manager::TAB_STYLE,
+            ]
+        );
+
+        $element->add_control(
+            'tprbs',
+            [
+                'label' => esc_html__('Ribbon', 'the-pack-addon'),
+                'type' => Controls_Manager::SELECT,
+                'options' => [
+                    '' => __( 'None', 'the-pack-addon'  ),
+                    'ribbon_one' => __( 'Ribbon One', 'the-pack-addon'  ),
+                    'ribbon_two' => __( 'Ribbon Two', 'the-pack-addon'  ),
+                    'ribbon_three' => __( 'Ribbon Three', 'the-pack-addon'  ),
+                ], 
+                'prefix_class' => ''               
+            ]
+        );
+        $element->add_control(
+            'tprbst',
+            [
+                'label' => esc_html__('Theme color', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,               
+                'selectors' => [
+                    '{{WRAPPER}}' => '--maintheme: {{VALUE}};',
+                ],
+            ]
+        );         
+        $element->end_controls_section();
+
     }
 }
 

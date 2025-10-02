@@ -93,7 +93,7 @@ class Conditions_Cache {
 
 	public function regenerate() {
 		$this->clear();
-
+ 
 		$document_types = thepack_kit()->elementor()->documents->get_document_types();
 
 		$post_types = [

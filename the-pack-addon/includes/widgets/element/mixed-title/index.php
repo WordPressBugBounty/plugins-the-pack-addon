@@ -18,7 +18,7 @@ class Tp_Mixed_Tilte extends Widget_Base {
     }
 
     public function get_title() {
-        return __('Mixed title', 'educat');
+        return __('Mixed title', 'the-pack-addon');
     }
 
     public function get_icon() {
@@ -34,7 +34,7 @@ class Tp_Mixed_Tilte extends Widget_Base {
         $this->start_controls_section(
             'section_heading',
             [
-                'label' => __('Data', 'educat'),
+                'label' => __('Data', 'the-pack-addon'),
             ]
         );
 
@@ -97,7 +97,7 @@ class Tp_Mixed_Tilte extends Widget_Base {
         $repeater->add_responsive_control(
             'tpd',
             [
-                'label' => esc_html__('Padding', 'educat'),
+                'label' => esc_html__('Padding', 'the-pack-addon'),
                 'type' => Controls_Manager::DIMENSIONS,
                 'condition' => [
                     'type' => ['text'],
@@ -110,7 +110,7 @@ class Tp_Mixed_Tilte extends Widget_Base {
 
         $repeater->add_control(
             'bg', [
-                'label' =>   esc_html__( 'Mask color', 'educat' ),
+                'label' =>   esc_html__( 'Mask color', 'the-pack-addon' ),
                 'type' => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} {{CURRENT_ITEM}}.txt::before' => 'background-color: {{VALUE}};',
@@ -123,7 +123,7 @@ class Tp_Mixed_Tilte extends Widget_Base {
 
         $repeater->add_control(
             'color', [
-                'label' =>   esc_html__( 'Color', 'educat' ),
+                'label' =>   esc_html__( 'Color', 'the-pack-addon' ),
                 'type' => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} {{CURRENT_ITEM}}.txt' => 'color: {{VALUE}};',
@@ -136,7 +136,7 @@ class Tp_Mixed_Tilte extends Widget_Base {
 
         $repeater->add_control(
             'bkl', [
-                'label' =>   esc_html__( 'Border color', 'educat' ),
+                'label' =>   esc_html__( 'Border color', 'the-pack-addon' ),
                 'type' => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} {{CURRENT_ITEM}}.txt' => 'border:1px solid {{VALUE}};',
@@ -171,7 +171,7 @@ class Tp_Mixed_Tilte extends Widget_Base {
         $repeater->add_responsive_control(
             'wid',
             [
-                'label' => esc_html__('Image width/ icon size', 'educat'),
+                'label' => esc_html__('Image width/ icon size', 'the-pack-addon'),
                 'type' => Controls_Manager::SLIDER,
                 'condition' => [
                     'type' => ['img','icon'],
@@ -186,7 +186,7 @@ class Tp_Mixed_Tilte extends Widget_Base {
         $repeater->add_responsive_control(
             'ht',
             [
-                'label' => esc_html__('Image height', 'educat'),
+                'label' => esc_html__('Image height', 'the-pack-addon'),
                 'type' => Controls_Manager::SLIDER,
                 'condition' => [
                     'type' => ['img'],
@@ -200,7 +200,7 @@ class Tp_Mixed_Tilte extends Widget_Base {
         $repeater->add_responsive_control(
             'brd',
             [
-                'label' => esc_html__('Border radius', 'educat'),
+                'label' => esc_html__('Border radius', 'the-pack-addon'),
                 'type' => Controls_Manager::SLIDER,                
                 'selectors' => [
                     '{{WRAPPER}} {{CURRENT_ITEM}}.txt,{{WRAPPER}} {{CURRENT_ITEM}}.img,{{WRAPPER}} {{CURRENT_ITEM}}.icon' => 'border-radius: {{SIZE}}{{UNIT}};',
@@ -211,7 +211,7 @@ class Tp_Mixed_Tilte extends Widget_Base {
         $repeater->add_responsive_control(
             'vps',
             [
-                'label' => esc_html__('Vertical position', 'educat'),
+                'label' => esc_html__('Vertical position', 'the-pack-addon'),
                 'type' => Controls_Manager::SLIDER,
                 'condition' => [
                     'type' => ['img','icon','text'],
@@ -253,7 +253,7 @@ class Tp_Mixed_Tilte extends Widget_Base {
         $this->start_controls_section(
             'section_general',
             [
-                'label' => __('General', 'educat'),
+                'label' => __('General', 'the-pack-addon'),
                 'tab' => Controls_Manager::TAB_STYLE,               
             ]
         );
@@ -261,19 +261,19 @@ class Tp_Mixed_Tilte extends Widget_Base {
         $this->add_control(
             'dal',
             [
-                'label' => esc_html__('Alignment', 'educat'),
+                'label' => esc_html__('Alignment', 'the-pack-addon'),
                 'type' => Controls_Manager::CHOOSE,
                 'options' => [
                     'left' => [
-                        'title' => esc_html__('Left', 'educat'),
+                        'title' => esc_html__('Left', 'the-pack-addon'),
                         'icon' => 'eicon-h-align-left',
                     ],
                     'center' => [
-                        'title' => esc_html__('Center', 'educat'),
+                        'title' => esc_html__('Center', 'the-pack-addon'),
                         'icon' => 'eicon-v-align-top',
                     ],
                     'right' => [
-                        'title' => esc_html__('Right', 'educat'),
+                        'title' => esc_html__('Right', 'the-pack-addon'),
                         'icon' => 'eicon-h-align-right',
                     ]
                 ],

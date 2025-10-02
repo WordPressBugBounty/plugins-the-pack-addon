@@ -13,14 +13,14 @@ class Group_Control_Motion_Fx extends Group_Control_Base {
 	public static function get_type() {
 		return 'motion_fx';
 	}
-
+ 
     protected function init_fields() {
         $fields = [
             'motion_fx_scrolling' => [
-                'label' => __( 'Scrolling Effects', 'lastudio-kit' ),
+                'label' => __( 'Scrolling Effects', 'the-pack-addon' ),
                 'type' => Controls_Manager::SWITCHER,
-                'label_off' => __( 'Off', 'lastudio-kit' ),
-                'label_on' => __( 'On', 'lastudio-kit' ),
+                'label_off' => __( 'Off', 'the-pack-addon' ),
+                'label_on' => __( 'On', 'the-pack-addon' ),
                 'render_type' => 'ui',
                 'frontend_available' => true,
             ],
@@ -51,20 +51,20 @@ class Group_Control_Motion_Fx extends Group_Control_Base {
         ];
 
         $fields['transform_origin_x'] = [
-            'label' => __( 'X Anchor Point', 'lastudio-kit' ),
+            'label' => __( 'X Anchor Point', 'the-pack-addon' ),
             'type' => Controls_Manager::CHOOSE,
             'default' => 'center',
             'options' => [
                 'left' => [
-                    'title' => __( 'Left', 'lastudio-kit' ),
+                    'title' => __( 'Left', 'the-pack-addon' ),
                     'icon' => 'eicon-h-align-left',
                 ],
                 'center' => [
-                    'title' => __( 'Center', 'lastudio-kit' ),
+                    'title' => __( 'Center', 'the-pack-addon' ),
                     'icon' => 'eicon-h-align-center',
                 ],
                 'right' => [
-                    'title' => __( 'Right', 'lastudio-kit' ),
+                    'title' => __( 'Right', 'the-pack-addon' ),
                     'icon' => 'eicon-h-align-right',
                 ],
             ],
@@ -75,20 +75,20 @@ class Group_Control_Motion_Fx extends Group_Control_Base {
         ];
 
         $fields['transform_origin_y'] = [
-            'label' => __( 'Y Anchor Point', 'lastudio-kit' ),
+            'label' => __( 'Y Anchor Point', 'the-pack-addon' ),
             'type' => Controls_Manager::CHOOSE,
             'default' => 'center',
             'options' => [
                 'top' => [
-                    'title' => __( 'Top', 'lastudio-kit' ),
+                    'title' => __( 'Top', 'the-pack-addon' ),
                     'icon' => 'eicon-v-align-top',
                 ],
                 'center' => [
-                    'title' => __( 'Center', 'lastudio-kit' ),
+                    'title' => __( 'Center', 'the-pack-addon' ),
                     'icon' => 'eicon-v-align-middle',
                 ],
                 'bottom' => [
-                    'title' => __( 'Bottom', 'lastudio-kit' ),
+                    'title' => __( 'Bottom', 'the-pack-addon' ),
                     'icon' => 'eicon-v-align-bottom',
                 ],
             ],
@@ -101,11 +101,11 @@ class Group_Control_Motion_Fx extends Group_Control_Base {
         ];
 
         $activeBreakpoints = [
-                'desktop' => __('Desktop', 'lastudio-kit'),
+                'desktop' => __('Desktop', 'the-pack-addon'),
             ];
 
         $fields['devices'] = [
-            'label' => __( 'Apply Effects On', 'lastudio-kit' ),
+            'label' => __( 'Apply Effects On', 'the-pack-addon' ),
             'type' => Controls_Manager::SELECT2,
             'multiple' => true,
             'label_block' => 'true',
@@ -119,12 +119,12 @@ class Group_Control_Motion_Fx extends Group_Control_Base {
         ];
 
 	    $fields['range'] = [
-		    'label' => __( 'Effects Relative To', 'lastudio-kit' ),
+		    'label' => __( 'Effects Relative To', 'the-pack-addon' ),
 		    'type' => Controls_Manager::SELECT,
 		    'options' => [
-			    '' => __( 'Default', 'lastudio-kit' ),
-			    'viewport' => __( 'Viewport', 'lastudio-kit' ),
-			    'page' => __( 'Entire Page', 'lastudio-kit' ),
+			    '' => __( 'Default', 'the-pack-addon' ),
+			    'viewport' => __( 'Viewport', 'the-pack-addon' ),
+			    'page' => __( 'Entire Page', 'the-pack-addon' ),
 		    ],
 		    'condition' => [
 			    'motion_fx_scrolling' => 'yes',
@@ -134,10 +134,10 @@ class Group_Control_Motion_Fx extends Group_Control_Base {
 	    ];
 
         $fields['motion_fx_mouse'] = [
-            'label' => __( 'Mouse Effects', 'lastudio-kit' ),
+            'label' => __( 'Mouse Effects', 'the-pack-addon' ),
             'type' => Controls_Manager::SWITCHER,
-            'label_off' => __( 'Off', 'lastudio-kit' ),
-            'label_on' => __( 'On', 'lastudio-kit' ),
+            'label_off' => __( 'Off', 'the-pack-addon' ),
+            'label_on' => __( 'On', 'the-pack-addon' ),
             'separator' => 'before',
             'render_type' => 'none',
             'frontend_available' => true,
@@ -157,18 +157,18 @@ class Group_Control_Motion_Fx extends Group_Control_Base {
     private function get_scrolling_effects() {
         return [
             'translateY' => [
-                'label' => __( 'Vertical Scroll', 'lastudio-kit' ),
+                'label' => __( 'Vertical Scroll', 'the-pack-addon' ),
                 'fields' => [
                     'direction' => [
-                        'label' => __( 'Direction', 'lastudio-kit' ),
+                        'label' => __( 'Direction', 'the-pack-addon' ),
                         'type' => Controls_Manager::SELECT,
                         'options' => [
-                            '' => __( 'Up', 'lastudio-kit' ),
-                            'negative' => __( 'Down', 'lastudio-kit' ),
+                            '' => __( 'Up', 'the-pack-addon' ),
+                            'negative' => __( 'Down', 'the-pack-addon' ),
                         ],
                     ],
                     'speed' => [
-                        'label' => __( 'Speed', 'lastudio-kit' ),
+                        'label' => __( 'Speed', 'the-pack-addon' ),
                         'type' => Controls_Manager::SLIDER,
                         'default' => [
                             'size' => 3,
@@ -181,7 +181,7 @@ class Group_Control_Motion_Fx extends Group_Control_Base {
                         ],
                     ],
                     'affectedRange' => [
-                        'label' => __( 'Viewport', 'lastudio-kit' ),
+                        'label' => __( 'Viewport', 'the-pack-addon' ),
                         'type' => Controls_Manager::SLIDER,
                         'default' => [
                             'sizes' => [
@@ -191,8 +191,8 @@ class Group_Control_Motion_Fx extends Group_Control_Base {
                             'unit' => '%',
                         ],
                         'labels' => [
-                            __( 'Bottom', 'lastudio-kit' ),
-                            __( 'Top', 'lastudio-kit' ),
+                            __( 'Bottom', 'the-pack-addon' ),
+                            __( 'Top', 'the-pack-addon' ),
                         ],
                         'scales' => 1,
                         'handles' => 'range',
@@ -200,18 +200,18 @@ class Group_Control_Motion_Fx extends Group_Control_Base {
                 ],
             ],
             'translateX' => [
-                'label' => __( 'Horizontal Scroll', 'lastudio-kit' ),
+                'label' => __( 'Horizontal Scroll', 'the-pack-addon' ),
                 'fields' => [
                     'direction' => [
-                        'label' => __( 'Direction', 'lastudio-kit' ),
+                        'label' => __( 'Direction', 'the-pack-addon' ),
                         'type' => Controls_Manager::SELECT,
                         'options' => [
-                            '' => __( 'To Left', 'lastudio-kit' ),
-                            'negative' => __( 'To Right', 'lastudio-kit' ),
+                            '' => __( 'To Left', 'the-pack-addon' ),
+                            'negative' => __( 'To Right', 'the-pack-addon' ),
                         ],
                     ],
                     'speed' => [
-                        'label' => __( 'Speed', 'lastudio-kit' ),
+                        'label' => __( 'Speed', 'the-pack-addon' ),
                         'type' => Controls_Manager::SLIDER,
                         'default' => [
                             'size' => 4,
@@ -224,7 +224,7 @@ class Group_Control_Motion_Fx extends Group_Control_Base {
                         ],
                     ],
                     'affectedRange' => [
-                        'label' => __( 'Viewport', 'lastudio-kit' ),
+                        'label' => __( 'Viewport', 'the-pack-addon' ),
                         'type' => Controls_Manager::SLIDER,
                         'default' => [
                             'sizes' => [
@@ -234,8 +234,8 @@ class Group_Control_Motion_Fx extends Group_Control_Base {
                             'unit' => '%',
                         ],
                         'labels' => [
-                            __( 'Bottom', 'lastudio-kit' ),
-                            __( 'Top', 'lastudio-kit' ),
+                            __( 'Bottom', 'the-pack-addon' ),
+                            __( 'Top', 'the-pack-addon' ),
                         ],
                         'scales' => 1,
                         'handles' => 'range',
@@ -243,10 +243,10 @@ class Group_Control_Motion_Fx extends Group_Control_Base {
                 ],
             ],
             'opacity' => [
-                'label' => __( 'Transparency', 'lastudio-kit' ),
+                'label' => __( 'Transparency', 'the-pack-addon' ),
                 'fields' => [
                     'direction' => [
-                        'label' => __( 'Direction', 'lastudio-kit' ),
+                        'label' => __( 'Direction', 'the-pack-addon' ),
                         'type' => Controls_Manager::SELECT,
                         'default' => 'out-in',
                         'options' => [
@@ -257,7 +257,7 @@ class Group_Control_Motion_Fx extends Group_Control_Base {
                         ],
                     ],
                     'level' => [
-                        'label' => __( 'Level', 'lastudio-kit' ),
+                        'label' => __( 'Level', 'the-pack-addon' ),
                         'type' => Controls_Manager::SLIDER,
                         'default' => [
                             'size' => 10,
@@ -271,7 +271,7 @@ class Group_Control_Motion_Fx extends Group_Control_Base {
                         ],
                     ],
                     'range' => [
-                        'label' => __( 'Viewport', 'lastudio-kit' ),
+                        'label' => __( 'Viewport', 'the-pack-addon' ),
                         'type' => Controls_Manager::SLIDER,
                         'default' => [
                             'sizes' => [
@@ -281,8 +281,8 @@ class Group_Control_Motion_Fx extends Group_Control_Base {
                             'unit' => '%',
                         ],
                         'labels' => [
-                            __( 'Bottom', 'lastudio-kit' ),
-                            __( 'Top', 'lastudio-kit' ),
+                            __( 'Bottom', 'the-pack-addon' ),
+                            __( 'Top', 'the-pack-addon' ),
                         ],
                         'scales' => 1,
                         'handles' => 'range',
@@ -290,10 +290,10 @@ class Group_Control_Motion_Fx extends Group_Control_Base {
                 ],
             ],
             'blur' => [
-                'label' => __( 'Blur', 'lastudio-kit' ),
+                'label' => __( 'Blur', 'the-pack-addon' ),
                 'fields' => [
                     'direction' => [
-                        'label' => __( 'Direction', 'lastudio-kit' ),
+                        'label' => __( 'Direction', 'the-pack-addon' ),
                         'type' => Controls_Manager::SELECT,
                         'default' => 'out-in',
                         'options' => [
@@ -304,7 +304,7 @@ class Group_Control_Motion_Fx extends Group_Control_Base {
                         ],
                     ],
                     'level' => [
-                        'label' => __( 'Level', 'lastudio-kit' ),
+                        'label' => __( 'Level', 'the-pack-addon' ),
                         'type' => Controls_Manager::SLIDER,
                         'default' => [
                             'size' => 7,
@@ -317,7 +317,7 @@ class Group_Control_Motion_Fx extends Group_Control_Base {
                         ],
                     ],
                     'range' => [
-                        'label' => __( 'Viewport', 'lastudio-kit' ),
+                        'label' => __( 'Viewport', 'the-pack-addon' ),
                         'type' => Controls_Manager::SLIDER,
                         'default' => [
                             'sizes' => [
@@ -327,8 +327,8 @@ class Group_Control_Motion_Fx extends Group_Control_Base {
                             'unit' => '%',
                         ],
                         'labels' => [
-                            __( 'Bottom', 'lastudio-kit' ),
-                            __( 'Top', 'lastudio-kit' ),
+                            __( 'Bottom', 'the-pack-addon' ),
+                            __( 'Top', 'the-pack-addon' ),
                         ],
                         'scales' => 1,
                         'handles' => 'range',
@@ -336,18 +336,18 @@ class Group_Control_Motion_Fx extends Group_Control_Base {
                 ],
             ],
             'rotateZ' => [
-                'label' => __( 'Rotate', 'lastudio-kit' ),
+                'label' => __( 'Rotate', 'the-pack-addon' ),
                 'fields' => [
                     'direction' => [
-                        'label' => __( 'Direction', 'lastudio-kit' ),
+                        'label' => __( 'Direction', 'the-pack-addon' ),
                         'type' => Controls_Manager::SELECT,
                         'options' => [
-                            '' => __( 'To Left', 'lastudio-kit' ),
-                            'negative' => __( 'To Right', 'lastudio-kit' ),
+                            '' => __( 'To Left', 'the-pack-addon' ),
+                            'negative' => __( 'To Right', 'the-pack-addon' ),
                         ],
                     ],
                     'speed' => [
-                        'label' => __( 'Speed', 'lastudio-kit' ),
+                        'label' => __( 'Speed', 'the-pack-addon' ),
                         'type' => Controls_Manager::SLIDER,
                         'default' => [
                             'size' => 1,
@@ -360,7 +360,7 @@ class Group_Control_Motion_Fx extends Group_Control_Base {
                         ],
                     ],
                     'affectedRange' => [
-                        'label' => __( 'Viewport', 'lastudio-kit' ),
+                        'label' => __( 'Viewport', 'the-pack-addon' ),
                         'type' => Controls_Manager::SLIDER,
                         'default' => [
                             'sizes' => [
@@ -370,8 +370,8 @@ class Group_Control_Motion_Fx extends Group_Control_Base {
                             'unit' => '%',
                         ],
                         'labels' => [
-                            __( 'Bottom', 'lastudio-kit' ),
-                            __( 'Top', 'lastudio-kit' ),
+                            __( 'Bottom', 'the-pack-addon' ),
+                            __( 'Top', 'the-pack-addon' ),
                         ],
                         'scales' => 1,
                         'handles' => 'range',
@@ -379,10 +379,10 @@ class Group_Control_Motion_Fx extends Group_Control_Base {
                 ],
             ],
             'scale' => [
-                'label' => __( 'Scale', 'lastudio-kit' ),
+                'label' => __( 'Scale', 'the-pack-addon' ),
                 'fields' => [
                     'direction' => [
-                        'label' => __( 'Direction', 'lastudio-kit' ),
+                        'label' => __( 'Direction', 'the-pack-addon' ),
                         'type' => Controls_Manager::SELECT,
                         'default' => 'out-in',
                         'options' => [
@@ -393,7 +393,7 @@ class Group_Control_Motion_Fx extends Group_Control_Base {
                         ],
                     ],
                     'speed' => [
-                        'label' => __( 'Speed', 'lastudio-kit' ),
+                        'label' => __( 'Speed', 'the-pack-addon' ),
                         'type' => Controls_Manager::SLIDER,
                         'default' => [
                             'size' => 4,
@@ -406,7 +406,7 @@ class Group_Control_Motion_Fx extends Group_Control_Base {
                         ],
                     ],
                     'range' => [
-                        'label' => __( 'Viewport', 'lastudio-kit' ),
+                        'label' => __( 'Viewport', 'the-pack-addon' ),
                         'type' => Controls_Manager::SLIDER,
                         'default' => [
                             'sizes' => [
@@ -416,8 +416,8 @@ class Group_Control_Motion_Fx extends Group_Control_Base {
                             'unit' => '%',
                         ],
                         'labels' => [
-                            __( 'Bottom', 'lastudio-kit' ),
-                            __( 'Top', 'lastudio-kit' ),
+                            __( 'Bottom', 'the-pack-addon' ),
+                            __( 'Top', 'the-pack-addon' ),
                         ],
                         'scales' => 1,
                         'handles' => 'range',
@@ -430,19 +430,19 @@ class Group_Control_Motion_Fx extends Group_Control_Base {
     private function get_mouse_effects() {
         return [
             'mouseTrack' => [
-                'label' => __( 'Mouse Track', 'lastudio-kit' ),
+                'label' => __( 'Mouse Track', 'the-pack-addon' ),
                 'fields' => [
                     'direction' => [
-                        'label' => __( 'Direction', 'lastudio-kit' ),
+                        'label' => __( 'Direction', 'the-pack-addon' ),
                         'type' => Controls_Manager::SELECT,
                         'default' => '',
                         'options' => [
-                            '' => __( 'Opposite', 'lastudio-kit' ),
-                            'negative' => __( 'Direct', 'lastudio-kit' ),
+                            '' => __( 'Opposite', 'the-pack-addon' ),
+                            'negative' => __( 'Direct', 'the-pack-addon' ),
                         ],
                     ],
                     'speed' => [
-                        'label' => __( 'Speed', 'lastudio-kit' ),
+                        'label' => __( 'Speed', 'the-pack-addon' ),
                         'type' => Controls_Manager::SLIDER,
                         'default' => [
                             'size' => 1,
@@ -457,19 +457,19 @@ class Group_Control_Motion_Fx extends Group_Control_Base {
                 ],
             ],
             'tilt' => [
-                'label' => __( '3D Tilt', 'lastudio-kit' ),
+                'label' => __( '3D Tilt', 'the-pack-addon' ),
                 'fields' => [
                     'direction' => [
-                        'label' => __( 'Direction', 'lastudio-kit' ),
+                        'label' => __( 'Direction', 'the-pack-addon' ),
                         'type' => Controls_Manager::SELECT,
                         'default' => '',
                         'options' => [
-                            '' => __( 'Direct', 'lastudio-kit' ),
-                            'negative' => __( 'Opposite', 'lastudio-kit' ),
+                            '' => __( 'Direct', 'the-pack-addon' ),
+                            'negative' => __( 'Opposite', 'the-pack-addon' ),
                         ],
                     ],
                     'speed' => [
-                        'label' => __( 'Speed', 'lastudio-kit' ),
+                        'label' => __( 'Speed', 'the-pack-addon' ),
                         'type' => Controls_Manager::SLIDER,
                         'default' => [
                             'size' => 4,

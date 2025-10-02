@@ -215,7 +215,7 @@ class thepack_tb_typing1 extends Widget_Base
 
         $this->end_controls_section();
     }
-
+ 
     protected function render()
     {
         $settings = $this->get_settings();

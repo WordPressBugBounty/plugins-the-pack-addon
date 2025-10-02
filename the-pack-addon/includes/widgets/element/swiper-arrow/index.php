@@ -18,7 +18,7 @@ class Tp_Swiper_Arrow extends Widget_Base {
     }
 
     public function get_title() {
-        return __('Swiper arrow', 'educat');
+        return __('Swiper arrow', 'the-pack-addon');
     }
 
     public function get_icon() {
@@ -34,7 +34,7 @@ class Tp_Swiper_Arrow extends Widget_Base {
         $this->start_controls_section(
             'section_heading',
             [
-                'label' => __('Data', 'educat'),
+                'label' => __('Data', 'the-pack-addon'),
             ]
         );
 
@@ -256,7 +256,18 @@ class Tp_Swiper_Arrow extends Widget_Base {
                 ],
             ]
         );
+        $this->add_responsive_control(
+            'gwh',
+            [
+                'label' => esc_html__('Width & height', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'selectors' => [
+                    '{{WRAPPER}} .tp-swiper-arrow>span' => 'width: {{SIZE}}{{UNIT}};height: {{SIZE}}{{UNIT}};',
+                ],
 
+            ]
+        );
+        
         $this->end_controls_section();
     }
 

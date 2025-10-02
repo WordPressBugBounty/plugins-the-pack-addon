@@ -96,16 +96,6 @@ class thepack_process_1 extends Widget_Base
             ]
         );
 
-        $this->add_control(
-            'anim',
-            [
-                'label' => esc_html__('Animation', 'the-pack-addon'),
-                'type' => Controls_Manager::SELECT,
-                'options' => thepack_animations(),
-                'label_block' => true
-            ]
-        );
-
         $this->add_responsive_control(
             'gwd',
             [
@@ -439,7 +429,7 @@ class thepack_process_1 extends Widget_Base
         require dirname(__FILE__) . '/view.php';
     }
 
-    private function content($content, $anim)
+    private function content($content)
     {
         $out = '';
         foreach ($content as $item) {
@@ -448,10 +438,10 @@ class thepack_process_1 extends Widget_Base
             $desc = $item['desc'] ? '<p class="desc">' . $item['desc'] . '</p>' : '';
 
             $out .= '
-                <div class="gridwrap ' . $anim . '">
+                <div class="gridwrap">
                     <div class="tb-process">
                         ' . $num . '
-                        <div class="inner">' . $title . $desc . '</div>
+                        <div class="inner tbtr">' . $title . $desc . '</div>
                     </div>
                 </div>
             ';

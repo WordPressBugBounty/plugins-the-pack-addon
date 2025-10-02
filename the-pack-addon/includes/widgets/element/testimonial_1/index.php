@@ -5,6 +5,7 @@ use Elementor\Widget_Base;
 use Elementor\Controls_Manager;
 use Elementor\Group_Control_Typography;
 use Elementor\Group_Control_Border;
+use Elementor\Group_Control_Box_Shadow;
 use Elementor\utils;
 
 if (!defined('ABSPATH')) {
@@ -64,6 +65,10 @@ class thepack_testim_1 extends Widget_Base
                         'title' => esc_html__('Text clip', 'the-pack-addon'),
                         'icon' => 'eicon-image',
                     ],
+                    'three' => [
+                        'title' => esc_html__('Text clip', 'the-pack-addon'),
+                        'icon' => 'eicon-image',
+                    ],                    
                 ],
                 'default' => 'one',
             ]
@@ -189,10 +194,10 @@ class thepack_testim_1 extends Widget_Base
         $this->add_control(
             'disp',
             [
-                'label' => esc_html__('Vertical', 'thepackpro'),
+                'label' => esc_html__('Vertical','the-pack-addon'),
                 'type' => Controls_Manager::SWITCHER,
-                'label_on' => esc_html__('Yes', 'thepackpro'),
-                'label_off' => esc_html__('No', 'thepackpro'),
+                'label_on' => esc_html__('Yes','the-pack-addon'),
+                'label_off' => esc_html__('No','the-pack-addon'),
                 'return_value' => 'slider',
                 'default' => 'slider',
                 'classes' =>'hidden-control'
@@ -232,6 +237,15 @@ class thepack_testim_1 extends Widget_Base
                 'selectors' => [
                     '{{WRAPPER}} .items-wrap' => 'background: {{VALUE}};',
                 ],
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Box_Shadow::get_type(),
+            [
+                'name' => 'hbxdw',
+                'label' => esc_html__('Box shadow', 'the-pack-addon'),
+                'selector' => '{{WRAPPER}} .items-wrap',
             ]
         );
 
@@ -472,6 +486,16 @@ class thepack_testim_1 extends Widget_Base
                 ],
             ]
         );
+        $this->add_responsive_control(
+            'qifs',
+            [
+                'label' => esc_html__('Size', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'selectors' => [
+                    '{{WRAPPER}} .items .tpquote' => 'font-size: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
 
         $this->add_responsive_control(
             'qiht',
@@ -493,17 +517,48 @@ class thepack_testim_1 extends Widget_Base
                     'px' => [
                         'min' => -400,
                         'max' => 400,
-                        'step' => 1,
                     ],
 
                 ],
-                'size_units' => ['%', 'px'],
                 'selectors' => [
                     '{{WRAPPER}} .items .tpquote' => 'top: {{SIZE}}{{UNIT}};',
                 ],
             ]
         );
+        $this->add_responsive_control(
+            'qibts',
+            [
+                'label' => esc_html__('Bottom spacing', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'range' => [
+                    'px' => [
+                        'min' => -400,
+                        'max' => 400,
+                    ],
 
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .items .tpquote' => 'bottom: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+        $this->add_responsive_control(
+            'qirss',
+            [
+                'label' => esc_html__('Right spacing', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'range' => [
+                    'px' => [
+                        'min' => -400,
+                        'max' => 400,
+                    ],
+
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .items .tpquote' => 'right: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
         $this->end_controls_section();
 
         $this->start_controls_section(
@@ -681,7 +736,7 @@ class thepack_testim_1 extends Widget_Base
  
         $this->end_controls_section();
 
-        do_action('the_pack_swiper_control', $this);
+        do_action('the_pack_swiper_control', $this,true);
 
     }
 

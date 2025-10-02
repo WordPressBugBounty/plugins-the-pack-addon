@@ -18,7 +18,7 @@ class Tp_Blog_Gen extends Widget_Base {
     }
 
     public function get_title() {
-        return __('Blob', 'educat');
+        return __('Blob','the-pack-addon');
     }
 
     public function get_icon() {
@@ -34,7 +34,7 @@ class Tp_Blog_Gen extends Widget_Base {
         $this->start_controls_section(
             'section_heading',
             [
-                'label' => __('Data', 'educat'),
+                'label' => __('Data','the-pack-addon'),
             ]
         );
  
@@ -123,9 +123,19 @@ class Tp_Blog_Gen extends Widget_Base {
                 'tab' => Controls_Manager::TAB_STYLE, 
             ]
         );
-
         $this->add_responsive_control(
-            'brg',   
+            'brg',
+            [
+                'label' => esc_html__('Border radius', 'the-pack-addon'),
+                'type' => Controls_Manager::DIMENSIONS,              
+                'size_units' => ['em', 'px','%'],
+                'selectors' => [
+                    '{{WRAPPER}} .tp-blob' => 'border-radius:{{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
+                ],
+            ]
+        );
+        $this->add_responsive_control(
+            'brgx',   
             [
                 'label' => esc_html__('Border radius', 'the-pack-addon'), 
                 'type' => Controls_Manager::SLIDER,  
@@ -150,13 +160,13 @@ class Tp_Blog_Gen extends Widget_Base {
                 'type' => Controls_Manager::DIMENSIONS,
                 'condition' => [
                     'obdr' => 'yes',
-                ],                
+                ],                 
                 'size_units' => ['em', 'px','%'],
                 'selectors' => [
                     '{{WRAPPER}}.elementor-widget-tp-blob' => '--radius-1: {{TOP}}{{UNIT}};--radius-2: {{RIGHT}}{{UNIT}};--radius-3: {{BOTTOM}}{{UNIT}};--radius-4: {{LEFT}}{{UNIT}};',
                 ],
             ]
-        );
+        ); 
 
         $this->add_responsive_control(
             'br2',

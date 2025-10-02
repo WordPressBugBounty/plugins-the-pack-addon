@@ -27,28 +27,14 @@ class Tp_Translate_Element
         add_action('elementor/frontend/widget/before_render', [ __CLASS__,'before_render_options'], 10, 2);
     }
 
-    public static function before_render_options($element) 
+    public static function before_render_options(Element_Base $element) 
     {
         $settings = $element->get_settings_for_display();
 
         if (isset($settings['anim']) && $settings['anim']) {
             $element->add_render_attribute('_wrapper', 'class',$settings['anim']);
+        }   
 
-        }    
-        
-        if ( $settings['tp_m_prlx'] ) {
-
-            $element->add_render_attribute('_wrapper', 'class','js-tilt');
-            if ( isset($settings['tp_m_tm']) ) {
-                $element->add_render_attribute('_wrapper', 'data-tilt-max',$settings['tp_m_tm']['size']);
-            }
-
-            if ( $settings['tp_m_glare'] ){
-                $element->add_render_attribute('_wrapper', 'data-tilt-glare',.5);
-            }
-            
-        }
-        
     } 
 
     public static function tp_element_translate($element, $args)
@@ -197,6 +183,17 @@ class Tp_Translate_Element
         );
 
         $element->add_responsive_control(
+            'tpfwids',
+            [
+                'label' => esc_html__('Flex Width', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'selectors' => [
+                    '{{WRAPPER}}' => 'flex:0 0 {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $element->add_responsive_control(
             'tphts',
             [
                 'label' => esc_html__('Height', 'the-pack-addon'),
@@ -209,6 +206,17 @@ class Tp_Translate_Element
                 'size_units' => ['px', '%'],
                 'selectors' => [
                     '{{WRAPPER}} .elementor-widget-container' => 'height:{{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $element->add_control(
+            'no_vrt_cn',
+            [
+                'label' => esc_html__('Vertical center content', 'the-pack-addon'),
+                'type' => Controls_Manager::SWITCHER,
+                'selectors' => [
+                    '{{WRAPPER}} .elementor-widget-container' => 'align-items: center;justify-content: center;display:flex;',
                 ],
             ]
         );
@@ -265,7 +273,7 @@ class Tp_Translate_Element
 
                 ],
                 'selectors' => [
-                    '{{WRAPPER}} .elementor-widget-container' => 'animation-duration: {{SIZE}}s;animation-iteration-count:infinite;',
+                    '{{WRAPPER}} .elementor-widget-container' => 'animation-duration: {{SIZE}}s;animation-iteration-count:infinite;animation-timing-function: linear;',
                 ],
 
             ]
@@ -279,6 +287,26 @@ class Tp_Translate_Element
                 'selectors' => [
                     '{{WRAPPER}} >.elementor-widget-container' => 'backdrop-filter:blur({{SIZE}}{{UNIT}});-webkit-backdrop-filter:blur({{SIZE}}{{UNIT}});',
                 ],
+            ]
+        );
+        $element->add_control(
+            'tpofh',
+            [
+                'label' => esc_html__('Overflow hidden', 'the-pack-addon'),
+                'type' => Controls_Manager::SWITCHER,
+                'selectors' => [
+                    '{{WRAPPER}} >.elementor-widget-container' => 'overflow:hidden;',
+                ],
+            ]
+        );
+
+        $element->add_control(
+            'tphovmove',
+            [
+                'label' => esc_html__('Hover parallax', 'the-pack-addon'),
+                'type' => Controls_Manager::SWITCHER,
+                'frontend_available' => true,
+                'prefix_class' => 'tphovmove',
             ]
         );
 
@@ -387,50 +415,6 @@ class Tp_Translate_Element
                 'condition' => [
                     'tp_e_prlx' => 'yes',
                 ],                
-            ]
-        );
-
-        $element->end_controls_section();
-
-        $element->start_controls_section(
-            'section_tpmousepara',
-            [
-                'label' => esc_html__('Mouse Parallax', 'the-pack-addon'),
-                'tab' => Controls_Manager::TAB_STYLE,
-            ]
-        );
-
-        $element->add_control(
-            'tp_m_prlx',
-            [
-                'label' => esc_html__('Enable mouse parallax', 'the-pack-addon'),
-                'type' => Controls_Manager::SWITCHER,
-            ]
-        );
-
-        $element->add_control(
-            'tp_m_tm',
-            [
-                'label' => esc_html__('Parallax speed', 'the-pack-addon'),
-                'type' => Controls_Manager::SLIDER,
-                'range' => [
-                    'px' => [
-                        'min' => 1,
-                        'max' => 20,
-                        'step' => 1,
-                    ]
-                ],
-                'condition' => [
-                    'tp_m_prlx' => 'yes',
-                ],                
-            ]
-        );
-
-        $element->add_control(
-            'tp_m_glare',
-            [
-                'label' => esc_html__('Enable mouse glare', 'the-pack-addon'),
-                'type' => Controls_Manager::SWITCHER,
             ]
         );
 

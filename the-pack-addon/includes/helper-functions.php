@@ -137,6 +137,7 @@ function rendor_custom_nav_menu($setting_menu)
                     <span class="menu-item-text">
                         <?php echo esc_html($menu['item_text']); ?>
                     </span>
+                    <?php //phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                     <?php echo $arrow;?>
                 </span>
                 </a>
@@ -370,17 +371,24 @@ function thepack_overlay_link($url)
     $target = isset($url['is_external']) ? 'target="_blank"' : '';
     $link = $url ? '<a ' . $target . ' class="tp-overlaylink" href="' . $url . '"></a>' : '';
 
-    return $link;
-}
+    return $link; 
+} 
 
 function thepack_ft_images($id = '', $thumb = '',$class='')
 {
     //return wp_get_attachment_image($id, $thumb);
     $img_src = wp_get_attachment_image_url( $id, $thumb ); 
     $alt_text = get_post_meta( $id, '_wp_attachment_image_alt', true );
-    $image_attributes = wp_get_attachment_image_src( $id );
+    $image_attributes = wp_get_attachment_image_src( $id,$thumb );
+    if($image_attributes){
+        $width = $image_attributes[1];
+        $height = $image_attributes[2];
+    } else {
+        $width = '';
+        $height = '';
+    }
     //phpcs:disable PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage
-    return '<img height="'.$image_attributes[2].'" width="'.$image_attributes[1].'" class="lazyload '.$class.'" data-src="'.$img_src.'" alt="'.$alt_text.'" />';
+    return '<img height="'.$height.'" width="'.$width.'" class="lazyload '.$class.'" data-src="'.$img_src.'" alt="'.$alt_text.'" />';
 }
  
 function thepack_human_size_byte($bytes, $base = '1024')
@@ -658,7 +666,7 @@ function the_pack_swiper_markup($settings){
         'itemtab' => $settings['itemtab']['size']? esc_attr($settings['itemtab']['size']) : 2,
         'auto' => ('yes' === $settings['auto']),
         'reverse' => ('yes' === $settings['reverse']),
-        'direction' => $settings['vertical'] ? 'vertical' : 'horizontal',
+        'direction' => isset($settings['vertical']) && $settings['vertical'] ? 'vertical' : 'horizontal',
     ];  
     
     $previkn = $settings['previkn'] ? '<div class="khbprnx khbnxt">'.the_pack_render_icon( $settings['previkn']).'</div>' : '';
@@ -671,26 +679,333 @@ function the_pack_swiper_markup($settings){
     return $out;
 
 }
+add_action( 'the_pack_flex', 'tp_flex_control',10,4);
 
-add_action( 'the_pack_swiper_control', 'swiper_control');
+function tp_flex_control($wb,$prefix,$selector,$support=[]){
 
-function swiper_control($wb){
+        $wb->add_responsive_control(
+            $prefix.'blk',
+            [
+                'label' => __('Flex direction','the-pack-addon'),
+                'type' => Controls_Manager::CHOOSE,
+                'options' => [
+                    'column' => [
+                        'title' => __('Column','the-pack-addon'),
+                        'icon' => ' eicon-document-file',
+                    ],
+                    'column-reverse' => [
+                        'title' => __('Column reverse','the-pack-addon'),
+                        'icon' => ' eicon-document-file',
+                    ],                    
+                    'row' => [
+                        'title' => __('Row','the-pack-addon'),
+                        'icon' => 'eicon-image-rollover',
+                    ],
+                    'row-reverse' => [
+                        'title' => __('Row reverse','the-pack-addon'),
+                        'icon' => ' eicon-document-file',
+                    ],
+                ],
+                'label_block' => true,
+                'selectors' => [
+                    '{{WRAPPER}} '.$selector => 'flex-direction: {{VALUE}};',
+                ],                
+            ]
+        );
 
-    $wb->start_controls_section(
+        $wb->add_responsive_control(
+            $prefix.'gp',
+            [
+                'label' => __( 'Gap','the-pack-addon' ),
+                'type' =>  Controls_Manager::SLIDER,
+                'size_units' => ['px','%'],
+                // 'condition' => [
+                //     $prefix.'blk' => 'column',
+                // ], 
+                'selectors' => [
+                    '{{WRAPPER}} '.$selector => 'gap: {{SIZE}}{{UNIT}};',
+                ],
+
+            ]
+        );
+
+        $wb->add_responsive_control(
+            $prefix.'ali',
+            [
+                'label' => __('Align items','the-pack-addon'),
+                'type' => Controls_Manager::CHOOSE,
+                'options' => [
+                    'center' => [
+                        'title' => __('Center','the-pack-addon'),
+                        'icon' => ' eicon-document-file',
+                    ],
+                    'flex-start' => [
+                        'title' => __('Start','the-pack-addon'),
+                        'icon' => ' eicon-document-file',
+                    ],                    
+                    'flex-end' => [
+                        'title' => __('End','the-pack-addon'),
+                        'icon' => 'eicon-image-rollover',
+                    ],
+                ],
+                'label_block' => true,
+                'selectors' => [
+                    '{{WRAPPER}} '.$selector => 'align-items: {{VALUE}};',
+                ],                
+            ]
+        );
+
+        $wb->add_responsive_control(
+            $prefix.'jst',
+            [
+                'label' => __('Justify content','the-pack-addon'),
+                'type' => Controls_Manager::CHOOSE,
+                'options' => [
+                    'center' => [
+                        'title' => __('Center','the-pack-addon'),
+                        'icon' => ' eicon-document-file',
+                    ],
+                    'flex-start' => [
+                        'title' => __('Start','the-pack-addon'),
+                        'icon' => ' eicon-document-file',
+                    ],                    
+                    'flex-end' => [
+                        'title' => __('End','the-pack-addon'),
+                        'icon' => 'eicon-image-rollover',
+                    ],
+                ],
+                'label_block' => true,
+                'selectors' => [
+                    '{{WRAPPER}} '.$selector => 'justify-content: {{VALUE}};',
+                ],                
+            ]
+        );
+}
+
+add_action( 'the_pack_typo', 'tp_typo_control',10,4);
+
+function tp_typo_control($wb,$prefix,$selector,$support=[]){
+
+    $wb->add_group_control(
+        Group_Control_Typography::get_type(),
+        [
+            'name' => $prefix.'fnt',
+            'selector' => '{{WRAPPER}} '.$selector,
+            'label' => esc_html__('Typography', 'the-pack-addon'),
+        ]
+    );
+    $wb->add_control(
+        $prefix.'tclr',
+        [
+            'label' => esc_html__('Color', 'the-pack-addon'),
+            'type' => Controls_Manager::COLOR,
+            'selectors' => [
+                '{{WRAPPER}} '.$selector => 'color: {{VALUE}};',
+            ],
+        ]
+    );
+    if (in_array("bg", $support)){
+        $wb->add_control(
+            $prefix.'bg',
+            [
+                'label' => esc_html__('Background', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} '.$selector => 'background: {{VALUE}};',
+                ],
+            ]
+        );
+    }
+
+    if (in_array("margin", $support)){
+        $wb->add_responsive_control(
+            $prefix.'mrgn',
+            [
+                'label' => esc_html__('Margin', 'the-pack-addon'),
+                'type' => Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', 'em'],
+                'selectors' => [
+                    '{{WRAPPER}} '.$selector => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+    }
+    if (in_array("padding", $support)){
+        $wb->add_responsive_control(
+            $prefix.'pd',
+            [
+                'label' => esc_html__('Padding', 'the-pack-addon'),
+                'type' => Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', 'em'],
+                'selectors' => [
+                    '{{WRAPPER}} '.$selector => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+    }
+
+    if (in_array("width", $support)){
+        $wb->add_responsive_control(
+            $prefix.'wid',
+            [
+                'label' => esc_html__('Width', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'selectors' => [
+                    '{{WRAPPER}} '.$selector => 'width:{{SIZE}}px;height:{{SIZE}}{{UNIT}};',
+                ],
+
+            ]
+        );
+    }
+    if (in_array("height", $support)){
+        $wb->add_responsive_control(
+            $prefix.'ht',
+            [
+                'label' => esc_html__('Height', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'selectors' => [
+                    '{{WRAPPER}} '.$selector => 'width:{{SIZE}}{{UNIT}};height:{{SIZE}}{{UNIT}};',
+                ],
+
+            ]
+        );
+    }
+    if (in_array("radius", $support)){
+        $wb->add_responsive_control(
+            $prefix.'brd',
+            [
+                'label' => esc_html__('Border radius', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'selectors' => [
+                    '{{WRAPPER}} '.$selector => 'border-radius:{{SIZE}}{{UNIT}};',
+                ],
+
+            ]
+        );
+    }
+    if (in_array("border", $support)){
+        $wb->add_control(
+            $prefix.'brk',
+            [
+                'label' => esc_html__('Border color', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} '.$selector => 'border:1px solid {{VALUE}};',
+                ],
+            ]
+        );
+    }
+    if (in_array("hover", $support)){
+
+        $wb->add_control(
+            $prefix.'hclr',
+            [
+                'label' => esc_html__('Hover Color', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} '.$selector.':hover' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+        $wb->add_control(
+            $prefix.'hbg',
+            [
+                'label' => esc_html__('Hover Background', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} '.$selector.':hover' => 'background: {{VALUE}};',
+                ],
+            ]
+        );
+        $wb->add_control(
+            $prefix.'hbdk',
+            [
+                'label' => esc_html__('Hover Border', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} '.$selector.':hover' => 'border-color: {{VALUE}};',
+                ],
+            ]
+        );
+    }
+}
+
+add_action( 'the_pack_gradient_typo', 'tp_typo_gradient',10,3);
+
+function tp_typo_gradient($wb,$prefix,$selector){
+
+    $wb->add_group_control(
+        Group_Control_Typography::get_type(),
+        [
+            'name' => $prefix.'fnt',
+            'selector' => '{{WRAPPER}} '.$selector,
+            'label' => esc_html__('Typography', 'the-pack-addon'),
+        ]
+    );
+    $wb->add_control(
+        $prefix.'tclr',
+        [
+            'label' => esc_html__('Color', 'the-pack-addon'),
+            'type' => Controls_Manager::COLOR,
+            'selectors' => [
+                '{{WRAPPER}} '.$selector => 'color: {{VALUE}};',
+            ],
+        ]
+    );
+    $wb->add_control(
+        $prefix.'tklp',
+        [
+            'label' => esc_html__('Text clip', 'the-pack-addon'),
+            'type' => Controls_Manager::SWITCHER,
+            'selectors' => [
+                '{{WRAPPER}} '.$selector => 'background-clip: text;',
+            ],
+        ]
+    );    
+    $wb->add_group_control(
+        Group_Control_Background::get_type(),
+        [
+            'name' => $prefix.'clr',
+            'selector' => '{{WRAPPER}} '.$selector,
+            'fields_options' => [
+                'background' => [
+                    'label' => esc_html__('Gradient text', 'the-pack-addon'),
+                ]
+            ]            
+        ]
+    );
+
+}
+
+add_action( 'the_pack_swiper_control', 'swiper_control',10,2);
+
+function swiper_control($wb,$condition){
+
+    if ($condition) {
+        $wb->start_controls_section(
         'section_carou',
         [
-            'label' => esc_html__('Carousel', 'thepackpro'),
+            'label' => esc_html__('Carousel', 'the-pack-addon'),
             'tab' => Controls_Manager::TAB_STYLE,
             'condition' => [
                 'disp' => 'slider',
             ],                
         ]
-    );
+        );
+    } else {
+        $wb->start_controls_section(
+        'section_carou',
+        [
+            'label' => esc_html__('Carousel', 'the-pack-addon'),
+            'tab' => Controls_Manager::TAB_STYLE,             
+        ]
+        );
+    }
 
     $wb->add_responsive_control(
         'swbpd',
         [
-            'label' => esc_html__('Wrapper padding', 'thepackpro'),
+            'label' => esc_html__('Wrapper padding', 'the-pack-addon'),
             'type' => Controls_Manager::DIMENSIONS,
             'size_units' => ['px', 'em'],
             'selectors' => [
@@ -703,7 +1018,7 @@ function swiper_control($wb){
     $wb->add_control(
         'fcwe',
         [
-            'label' => esc_html__('Full width carousel', 'thepackpro'),
+            'label' => esc_html__('Full width carousel', 'the-pack-addon'),
             'type' => Controls_Manager::SWITCHER,
             'selectors' => [
                 '{{WRAPPER}} .tpswiper' => 'overflow:inherit;',
@@ -714,10 +1029,10 @@ function swiper_control($wb){
     $wb->add_control(
         'arrow',
         [
-            'label' => esc_html__('Hide arrow', 'thepackpro'),
+            'label' => esc_html__('Hide arrow', 'the-pack-addon'),
             'type' => Controls_Manager::SWITCHER,
-            'label_on' => esc_html__('Yes', 'thepackpro'),
-            'label_off' => esc_html__('No', 'thepackpro'),
+            'label_on' => esc_html__('Yes', 'the-pack-addon'),
+            'label_off' => esc_html__('No', 'the-pack-addon'),
             'default' => 'yes',
             'selectors' => [
                 '{{WRAPPER}} .tp-arrow' => 'display:none;',
@@ -728,10 +1043,10 @@ function swiper_control($wb){
     $wb->add_control(
         'dot',
         [
-            'label' => esc_html__('Hide dot', 'thepackpro'),
+            'label' => esc_html__('Hide dot', 'the-pack-addon'),
             'type' => Controls_Manager::SWITCHER,
-            'label_on' => esc_html__('Yes', 'thepackpro'),
-            'label_off' => esc_html__('No', 'thepackpro'),
+            'label_on' => esc_html__('Yes', 'the-pack-addon'),
+            'label_off' => esc_html__('No', 'the-pack-addon'),
             'default' => 'yes',
             'selectors' => [
                 '{{WRAPPER}} .swiper-pagination' => 'display:none !important;',
@@ -742,10 +1057,10 @@ function swiper_control($wb){
     $wb->add_control(
         'vertical',
         [
-            'label' => esc_html__('Vertical', 'thepackpro'),
+            'label' => esc_html__('Vertical', 'the-pack-addon'),
             'type' => Controls_Manager::SWITCHER,
-            'label_on' => esc_html__('Yes', 'thepackpro'),
-            'label_off' => esc_html__('No', 'thepackpro'),
+            'label_on' => esc_html__('Yes', 'the-pack-addon'),
+            'label_off' => esc_html__('No', 'the-pack-addon'),
             'return_value' => 'yes',
             'default' => 'no',
         ]
@@ -754,10 +1069,10 @@ function swiper_control($wb){
     $wb->add_control(
         'reverse',
         [
-            'label' => esc_html__('Reverse direction', 'thepackpro'),
+            'label' => esc_html__('Reverse direction', 'the-pack-addon'),
             'type' => Controls_Manager::SWITCHER,
-            'label_on' => esc_html__('Yes', 'thepackpro'),
-            'label_off' => esc_html__('No', 'thepackpro'),
+            'label_on' => esc_html__('Yes', 'the-pack-addon'),
+            'label_off' => esc_html__('No', 'the-pack-addon'),
             'return_value' => 'yes',
             'default' => 'no',
         ]
@@ -766,7 +1081,7 @@ function swiper_control($wb){
     $wb->add_responsive_control(
         'htvrt',
         [
-            'label' => esc_html__('Vertical height', 'thepackpro'),
+            'label' => esc_html__('Vertical height', 'the-pack-addon'),
             'type' => Controls_Manager::SLIDER,
             'range' => [
                 'px' => [
@@ -785,10 +1100,10 @@ function swiper_control($wb){
     $wb->add_control(
         'auto',
         [
-            'label' => esc_html__('Autoplay', 'thepackpro'),
+            'label' => esc_html__('Autoplay', 'the-pack-addon'),
             'type' => Controls_Manager::SWITCHER,
-            'label_on' => esc_html__('Yes', 'thepackpro'),
-            'label_off' => esc_html__('No', 'thepackpro'),
+            'label_on' => esc_html__('Yes', 'the-pack-addon'),
+            'label_off' => esc_html__('No', 'the-pack-addon'),
             'return_value' => 'yes',
             'default' => 'no',
         ]
@@ -797,7 +1112,7 @@ function swiper_control($wb){
     $wb->add_control(
         'speed',
         [
-            'label' => esc_html__('Slide speed', 'thepackpro'),
+            'label' => esc_html__('Slide speed', 'the-pack-addon'),
             'type' => Controls_Manager::SLIDER,
             'condition' => [
                 'auto' => 'yes',
@@ -816,7 +1131,7 @@ function swiper_control($wb){
     $wb->add_control(
         'delay',
         [
-            'label' => esc_html__('Slide delay', 'thepackpro'),
+            'label' => esc_html__('Slide delay', 'the-pack-addon'),
             'type' => Controls_Manager::SLIDER,
             'condition' => [
                 'auto' => 'yes',
@@ -835,7 +1150,7 @@ function swiper_control($wb){
     $wb->add_control(
         'space',
         [
-            'label' => esc_html__('Spacing', 'thepackpro'),
+            'label' => esc_html__('Spacing', 'the-pack-addon'),
             'type' => Controls_Manager::SLIDER,
             'default' => [
                 'size' => 10,
@@ -854,7 +1169,7 @@ function swiper_control($wb){
     $wb->add_control(
         'item',
         [
-            'label' => esc_html__('Items', 'thepackpro'),
+            'label' => esc_html__('Items', 'the-pack-addon'),
             'type' => Controls_Manager::SLIDER,
             'range' => [
                 'px' => [
@@ -872,7 +1187,7 @@ function swiper_control($wb){
     $wb->add_control(
         'itemtab',
         [
-            'label' => esc_html__('Items tablet', 'thepackpro'),
+            'label' => esc_html__('Items tablet', 'the-pack-addon'),
             'type' => Controls_Manager::SLIDER,
             'range' => [
                 'px' => [
@@ -890,7 +1205,7 @@ function swiper_control($wb){
     $wb->add_control(
         'effect',
         [
-            'label' => esc_html__('Effect', 'thepackpro'),
+            'label' => esc_html__('Effect', 'the-pack-addon'),
             'type' => Controls_Manager::SELECT,
             'options' => [
                 'slide' => __( 'Slide', 'the-pack-addon'  ),
@@ -908,7 +1223,7 @@ function swiper_control($wb){
     $wb->start_controls_section(
         'section_arow',
         [
-            'label' => esc_html__('Arrow', 'thepackpro'),
+            'label' => esc_html__('Arrow', 'the-pack-addon'),
             'tab' => Controls_Manager::TAB_STYLE,
             'condition' => [
                 'arrow!' => 'yes',
@@ -918,7 +1233,7 @@ function swiper_control($wb){
     $wb->add_control(
         'previkn',
         [
-            'label' => esc_html__('Previous icon', 'thepackpro'),
+            'label' => esc_html__('Previous icon', 'the-pack-addon'),
             'type' => Controls_Manager::ICONS,
             'label_block' => true,
         ]
@@ -927,7 +1242,7 @@ function swiper_control($wb){
     $wb->add_control(
         'nextikn',
         [
-            'label' => esc_html__('Next icon', 'thepackpro'),
+            'label' => esc_html__('Next icon', 'the-pack-addon'),
             'type' => Controls_Manager::ICONS,
             'label_block' => true,
         ]
@@ -935,7 +1250,7 @@ function swiper_control($wb){
     $wb->add_responsive_control(
         'ar_wh',
         [
-            'label' => esc_html__('Width & height', 'thepackpro'),
+            'label' => esc_html__('Width & height', 'the-pack-addon'),
             'type' => Controls_Manager::SLIDER,
             'selectors' => [
                 '{{WRAPPER}} .khbprnx' => 'width: {{SIZE}}{{UNIT}};height: {{SIZE}}{{UNIT}};',
@@ -946,7 +1261,7 @@ function swiper_control($wb){
     $wb->add_control(
         'arbg',
         [
-            'label' => esc_html__('Background', 'thepackpro'),
+            'label' => esc_html__('Background', 'the-pack-addon'),
             'type' => Controls_Manager::COLOR,
             'selectors' => [
                 '{{WRAPPER}} .khbprnx' => 'background: {{VALUE}};',
@@ -957,7 +1272,7 @@ function swiper_control($wb){
     $wb->add_control(
         'arclr',
         [
-            'label' => esc_html__('Color', 'thepackpro'),
+            'label' => esc_html__('Color', 'the-pack-addon'),
             'type' => Controls_Manager::COLOR,
             'selectors' => [
                 '{{WRAPPER}} .khbprnx' => 'color: {{VALUE}};',
@@ -968,7 +1283,7 @@ function swiper_control($wb){
     $wb->add_control(
         'arhbg',
         [
-            'label' => esc_html__('Hover background', 'thepackpro'),
+            'label' => esc_html__('Hover background', 'the-pack-addon'),
             'type' => Controls_Manager::COLOR,
             'selectors' => [
                 '{{WRAPPER}} .khbprnx:hover' => 'background: {{VALUE}};',
@@ -979,7 +1294,7 @@ function swiper_control($wb){
     $wb->add_control(
         'arhclr',
         [
-            'label' => esc_html__('Hover color', 'thepackpro'),
+            'label' => esc_html__('Hover color', 'the-pack-addon'),
             'type' => Controls_Manager::COLOR,
             'selectors' => [
                 '{{WRAPPER}} .khbprnx:hover' => 'color: {{VALUE}};',
@@ -990,7 +1305,7 @@ function swiper_control($wb){
     $wb->add_control(
         'dbclr',
         [
-            'label' => esc_html__('Border color', 'thepackpro'),
+            'label' => esc_html__('Border color', 'the-pack-addon'),
             'type' => Controls_Manager::COLOR,
             'selectors' => [
                 '{{WRAPPER}} .khbprnx' => 'border:1px solid {{VALUE}};',
@@ -1001,7 +1316,7 @@ function swiper_control($wb){
     $wb->add_responsive_control(
         'arrad',
         [
-            'label' => esc_html__('Border radius', 'thepackpro'),
+            'label' => esc_html__('Border radius', 'the-pack-addon'),
             'type' => Controls_Manager::SLIDER,
             'selectors' => [
                 '{{WRAPPER}} .khbprnx' => 'border-radius: {{SIZE}}{{UNIT}};',
@@ -1012,7 +1327,7 @@ function swiper_control($wb){
     $wb->add_responsive_control(
         'arfx',
         [
-            'label' => esc_html__('Font size', 'thepackpro'),
+            'label' => esc_html__('Font size', 'the-pack-addon'),
             'type' => Controls_Manager::SLIDER,
             'selectors' => [
                 '{{WRAPPER}} .khbprnx' => 'font-size: {{SIZE}}{{UNIT}};',
@@ -1025,7 +1340,7 @@ function swiper_control($wb){
     $wb->start_controls_section(
         'section_caroucs',
         [
-            'label' => esc_html__('Dot', 'thepackpro'),
+            'label' => esc_html__('Dot', 'the-pack-addon'),
             'tab' => Controls_Manager::TAB_STYLE,
             'condition' => [
                 'dot!' => 'yes',
@@ -1036,19 +1351,19 @@ function swiper_control($wb){
     $wb->add_control(
         'dal',
         [
-            'label' => esc_html__('Alignment', 'thepackpro'),
+            'label' => esc_html__('Alignment', 'the-pack-addon'),
             'type' => Controls_Manager::CHOOSE,
             'options' => [
                 'left' => [
-                    'title' => esc_html__('Left', 'thepackpro'),
+                    'title' => esc_html__('Left', 'the-pack-addon'),
                     'icon' => 'eicon-h-align-left',
                 ],
                 'center' => [
-                    'title' => esc_html__('Center', 'thepackpro'),
+                    'title' => esc_html__('Center', 'the-pack-addon'),
                     'icon' => 'eicon-v-align-top',
                 ],
                 'right' => [
-                    'title' => esc_html__('Right', 'thepackpro'),
+                    'title' => esc_html__('Right', 'the-pack-addon'),
                     'icon' => 'eicon-h-align-right',
                 ]
             ],
@@ -1062,7 +1377,7 @@ function swiper_control($wb){
     $wb->add_responsive_control(
         'dot_sp',
         [
-            'label' => esc_html__('Spacing', 'thepackpro'),
+            'label' => esc_html__('Spacing', 'the-pack-addon'),
             'type' => Controls_Manager::SLIDER,
             'selectors' => [
                 '{{WRAPPER}} .swiper-pagination-bullets .swiper-pagination-bullet' => 'margin:0px {{SIZE}}{{UNIT}};',
@@ -1073,7 +1388,7 @@ function swiper_control($wb){
     $wb->add_responsive_control(
         'spwd',
         [
-            'label' => esc_html__('Width', 'thepackpro'),
+            'label' => esc_html__('Width', 'the-pack-addon'),
             'type' => Controls_Manager::SLIDER,
             'selectors' => [
                 '{{WRAPPER}} .swiper-pagination span' => 'width:{{SIZE}}{{UNIT}};',
@@ -1085,7 +1400,7 @@ function swiper_control($wb){
     $wb->add_responsive_control(
         'spbrd',
         [
-            'label' => esc_html__('Border radius', 'thepackpro'),
+            'label' => esc_html__('Border radius', 'the-pack-addon'),
             'type' => Controls_Manager::SLIDER,
             'selectors' => [
                 '{{WRAPPER}} .swiper-pagination span' => 'border-radius:{{SIZE}}{{UNIT}};',
@@ -1097,7 +1412,7 @@ function swiper_control($wb){
     $wb->add_responsive_control(
         'spawd',
         [
-            'label' => esc_html__('Active width', 'thepackpro'),
+            'label' => esc_html__('Active width', 'the-pack-addon'),
             'type' => Controls_Manager::SLIDER,
             'selectors' => [
                 '{{WRAPPER}} .swiper-pagination span.swiper-pagination-bullet-active' => 'width:{{SIZE}}{{UNIT}};',
@@ -1109,7 +1424,7 @@ function swiper_control($wb){
     $wb->add_responsive_control(
         'spht',
         [
-            'label' => esc_html__('Height', 'thepackpro'),
+            'label' => esc_html__('Height', 'the-pack-addon'),
             'type' => Controls_Manager::SLIDER,
             'selectors' => [
                 '{{WRAPPER}} .swiper-pagination span' => 'height:{{SIZE}}{{UNIT}};',
@@ -1121,7 +1436,7 @@ function swiper_control($wb){
     $wb->add_responsive_control(
         'dvp',
         [
-            'label' => esc_html__('Vertical position', 'thepackpro'),
+            'label' => esc_html__('Vertical position', 'the-pack-addon'),
             'type' => Controls_Manager::SLIDER,
             'range' => [
                 'px' => [
@@ -1142,7 +1457,7 @@ function swiper_control($wb){
     $wb->add_control(
         'dt-m',
         [
-            'label' => esc_html__('Main color', 'thepackpro'),
+            'label' => esc_html__('Main color', 'the-pack-addon'),
             'type' => Controls_Manager::COLOR,
             'selectors' => [
                 '{{WRAPPER}} .swiper-pagination span' => 'background: {{VALUE}};',
@@ -1153,7 +1468,7 @@ function swiper_control($wb){
     $wb->add_control(
         'dt-s',
         [
-            'label' => esc_html__('Active color', 'thepackpro'),
+            'label' => esc_html__('Active color', 'the-pack-addon'),
             'type' => Controls_Manager::COLOR,
             'selectors' => [
                 '{{WRAPPER}} .swiper-pagination span.swiper-pagination-bullet-active' => 'background: {{VALUE}};',

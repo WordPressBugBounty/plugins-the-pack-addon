@@ -36,6 +36,7 @@ class The_Pack_Icon_List_Extra_Control
                 'type' => Controls_Manager::SWITCHER,
                 'selectors' => [
                     '{{WRAPPER}} .elementor-icon-list-item' => 'flex-direction: row-reverse;',
+                    '{{WRAPPER}} .elementor-icon-list-item a' => 'justify-content: space-between;flex-direction: row-reverse;',
                 ],
             ]
         );
@@ -119,12 +120,35 @@ class The_Pack_Icon_List_Extra_Control
         );
 
         $element->add_responsive_control(
+            'ibblr',
+            [
+                'label' => esc_html__('Backdrop blur', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'selectors' => [
+                    '{{WRAPPER}} .elementor-icon-list-item' => 'backdrop-filter:blur({{SIZE}}{{UNIT}});-webkit-backdrop-filter:blur({{SIZE}}{{UNIT}});',
+                ],
+            ]
+        );
+
+        $element->add_responsive_control(
             'ibrad',
             [
                 'label' => esc_html__('Border radius', 'the-pack-addon'),
                 'type' => Controls_Manager::SLIDER,
                 'selectors' => [
                     '{{WRAPPER}} .elementor-icon-list-item' => 'border-radius: {{SIZE}}{{UNIT}};',
+                ]
+
+            ]
+        );
+
+        $element->add_responsive_control(
+            'ibcgt',
+            [
+                'label' => esc_html__('Row gap', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'selectors' => [
+                    '{{WRAPPER}} ul' => 'row-gap: {{SIZE}}{{UNIT}};',
                 ]
 
             ]

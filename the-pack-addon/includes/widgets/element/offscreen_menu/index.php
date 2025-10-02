@@ -51,45 +51,20 @@ class thepack_offscreen_menu extends Widget_Base
                 'label_block' => true,
             ]
         );
-
+        $this->add_control(
+            'tpoffclose',
+            [
+                'label' => esc_html__('Sidebar close icon', 'the-pack-addon'),
+                'type' => Controls_Manager::ICONS,
+                'label_block' => true,                                     
+            ]
+        );
         $this->add_control(
             'btn',
             [
                 'label' => esc_html__('Label', 'the-pack-addon'),
                 'type' => Controls_Manager::TEXT,
                 'label_block' => true,
-            ]
-        );
-
-        $this->add_control(
-            'source',
-            [
-                'label' => esc_html__('Data source', 'the-pack-addon'),
-                'type' => Controls_Manager::CHOOSE,
-                'options' => [
-                    'menu' => [
-                        'title' => esc_html__('One', 'the-pack-addon'),
-                        'icon' => 'eicon-tabs',
-                    ],
-                    'tmpl' => [
-                        'title' => esc_html__('Template', 'the-pack-addon'),
-                        'icon' => 'eicon-text-field',
-                    ],
-                ],
-                'default' => 'menu'
-            ]
-        );
-
-        $this->add_control(
-            'menu',
-            [
-                'label' => esc_html__('Menu', 'the-pack-addon'),
-                'type' => Controls_Manager::SELECT2,
-                'options' => thepack_drop_menu_select(),
-                'label_block' => true,
-                'condition' => [
-                    'source' => 'menu',
-                ],
             ]
         );
 
@@ -101,9 +76,6 @@ class thepack_offscreen_menu extends Widget_Base
                 'multiple' => false,
                 'label' => esc_html__('Template', 'the-pack-addon'),
                 'label_block' => true,
-                'condition' => [
-                    'source' => 'tmpl',
-                ],
             ]
         );
 
@@ -157,7 +129,7 @@ class thepack_offscreen_menu extends Widget_Base
                 ],
             ]
         );
-
+ 
         $this->add_responsive_control(
             'tpd',
             [
@@ -198,6 +170,47 @@ class thepack_offscreen_menu extends Widget_Base
                 'type' => Controls_Manager::SLIDER,
                 'selectors' => [
                     '{{WRAPPER}} .tp-tap' => 'border-radius: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->end_controls_section();
+
+        $this->start_controls_section(
+            'section_x',
+            [
+                'label' => esc_html__('Close', 'the-pack-addon'),
+                'tab' => Controls_Manager::TAB_STYLE,
+            ]
+        );
+        $this->add_control(
+            'klcol',
+            [
+                'label' => esc_html__('Color', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .close-menu' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+        $this->add_responsive_control(
+            'klsfs',
+            [
+                'label' => esc_html__('Font size', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'selectors' => [
+                    '{{WRAPPER}} .close-menu' => 'font-size: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );        
+        $this->add_responsive_control(
+            'xpos',
+            [
+                'label' => esc_html__('Position', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'selectors' => [
+                    '{{WRAPPER}} .left .close-menu' => 'top: {{SIZE}}{{UNIT}};left: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .right .close-menu' => 'top: {{SIZE}}{{UNIT}};right: {{SIZE}}{{UNIT}};',
                 ],
             ]
         );
@@ -261,106 +274,26 @@ class thepack_offscreen_menu extends Widget_Base
             ]
         );
 
-        $this->add_control(
-            'ofbge',
-            [
-                'label' => esc_html__('Background', 'the-pack-addon'),
-                'type' => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .xlmega-header .offsidebar' => 'background: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->end_controls_section();
-
-        $this->start_controls_section(
-            'section_mnu',
-            [
-                'label' => esc_html__('Menu', 'the-pack-addon'),
-                'tab' => Controls_Manager::TAB_STYLE,
-                'condition' => [
-                    'source' => 'menu',
-                ],                
-            ]
-        );
-
-        $this->add_control(
-            'ofcv',
-            [
-                'label' => esc_html__('Main menu', 'the-pack-addon'),
-                'type' => Controls_Manager::HEADING,
-                'separator' => 'after',
-            ]
-        );
-
-        $this->add_responsive_control(
-            'ofmtps',
-            [
-                'label' => esc_html__('Bottom spacing', 'the-pack-addon'),
-                'type' => Controls_Manager::SLIDER,
-                'selectors' => [
-                    '{{WRAPPER}} .momenu-list>li' => 'padding-bottom: {{SIZE}}{{UNIT}};',
-                ],
-            ]
-        );
-
         $this->add_group_control(
-            Group_Control_Typography::get_type(),
+            Group_Control_Background::get_type(),
             [
-                'name' => 'ofmtyp',
-                'selector' => '{{WRAPPER}} .momenu-list>li>a',
-                'label' => esc_html__('Typography', 'the-pack-addon'),
+                'name' => 'ofbge',
+                'selector' => '{{WRAPPER}} .offsidebar',
+                'fields_options' => [
+                    'background' => [
+                        'label' => esc_html__('Background', 'the-pack-addon'),
+                    ]
+                ]            
             ]
         );
 
         $this->add_control(
-            'ofmclr',
+            'txovr',
             [
-                'label' => esc_html__('Color', 'the-pack-addon'),
+                'label' => esc_html__('Overlay color', 'the-pack-addon'),
                 'type' => Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .momenu-list>li>a' => 'color: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'ofscv',
-            [
-                'label' => esc_html__('Sub menu', 'the-pack-addon'),
-                'type' => Controls_Manager::HEADING,
-                'separator' => 'after',
-            ]
-        );
-
-        $this->add_responsive_control(
-            'ofspd',
-            [
-                'label' => esc_html__('Wrapper padding', 'the-pack-addon'),
-                'type' => Controls_Manager::DIMENSIONS,
-                'selectors' => [
-                    '{{WRAPPER}} .momenu-list .sub-menu' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-                ],
-            ]
-        );
-
-        $this->add_group_control(
-            Group_Control_Typography::get_type(),
-            [
-                'name' => 'ofsmtyp',
-                'selector' => '{{WRAPPER}} .momenu-list .sub-menu a',
-                'label' => esc_html__('Typography', 'the-pack-addon'),
-            ]
-        );
-
-        $this->add_control(
-            'ofsmclr',
-            [
-                'label' => esc_html__('Color', 'the-pack-addon'),
-                'type' => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .momenu-list .sub-menu a' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .tpbefore::before' => 'background: {{VALUE}};',
                 ],
             ]
         );

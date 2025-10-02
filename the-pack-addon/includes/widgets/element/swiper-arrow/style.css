@@ -3,4 +3,6 @@ align-items: center;
 } 
 .tp-swiper-arrow span{
     cursor: pointer;
+    align-items: center;
+    justify-content: center;    
 } 

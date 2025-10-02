@@ -23,15 +23,7 @@ class thepack_team1 extends Widget_Base
     {
         return esc_html__('Team 1', 'the-pack-addon');
     }
-    // Enqueue styles
-	public function get_style_depends() {
-		return ['swiper','e-swiper','elementor-icons-tpbootstrap'];
-	}
 
-	// Enqueue scripts
-	public function get_script_depends() {
-		return ['swiper'];
-	}
     public function get_icon()
     {
         return 'dashicons dashicons-post-status';
@@ -51,9 +43,7 @@ class thepack_team1 extends Widget_Base
             ]
         );
 
-        $repeater1 = new \Elementor\Repeater();
-
-        $repeater1->add_control(
+        $this->add_control(
             'name',
             [
                 'label' => esc_html__('Name', 'the-pack-addon'),
@@ -63,7 +53,7 @@ class thepack_team1 extends Widget_Base
             ]
         );
 
-        $repeater1->add_control(
+        $this->add_control(
             'pos',
             [
                 'label' => esc_html__('Position', 'the-pack-addon'),
@@ -73,7 +63,7 @@ class thepack_team1 extends Widget_Base
             ]
         );
 
-        $repeater1->add_control(
+        $this->add_control(
             'url',
             [
                 'label' => esc_html__('Link', 'the-pack-addon'),
@@ -82,7 +72,7 @@ class thepack_team1 extends Widget_Base
             ]
         );
 
-        $repeater1->add_control(
+        $this->add_control(
             'avatar',
             [
                 'type' => Controls_Manager::MEDIA,
@@ -94,47 +84,21 @@ class thepack_team1 extends Widget_Base
             ]
         );
 
+        $repeater1 = new \Elementor\Repeater();
+
         $repeater1->add_control(
-            'fb',
+            'url',
             [
-                'label' => esc_html__('Facebook url', 'the-pack-addon'),
+                'label' => esc_html__('Social url', 'the-pack-addon'),
                 'type' => Controls_Manager::URL,
-                'default' => [
-                    'url' => 'https://profiles.wordpress.org/webangon/',
-                ],
             ]
         );
 
         $repeater1->add_control(
-            'tw',
+            'icon',
             [
-                'label' => esc_html__('Twitter url', 'the-pack-addon'),
-                'type' => Controls_Manager::URL,
-                'default' => [
-                    'url' => 'https://profiles.wordpress.org/webangon/',
-                ],
-            ]
-        );
-
-        $repeater1->add_control(
-            'lnk',
-            [
-                'label' => esc_html__('Linkedin url', 'the-pack-addon'),
-                'type' => Controls_Manager::URL,
-                'default' => [
-                    'url' => 'https://profiles.wordpress.org/webangon/',
-                ],
-            ]
-        );
-
-        $repeater1->add_control(
-            'ig',
-            [
-                'label' => esc_html__('Instagram url', 'the-pack-addon'),
-                'type' => Controls_Manager::URL,
-                'default' => [
-                    'url' => 'https://profiles.wordpress.org/webangon/',
-                ],
+                'label' => esc_html__('Social icon', 'the-pack-addon'),
+                'type' => Controls_Manager::ICONS,
             ]
         );
 
@@ -144,12 +108,15 @@ class thepack_team1 extends Widget_Base
                 'type' => Controls_Manager::REPEATER,
                 'fields' => $repeater1->get_controls(),
                 'prevent_empty' => false,
-                'default' => [
-                    [
-                        'name' => esc_html__('Mr Wick', 'the-pack-addon'),
-                    ]
-                ],
-                'title_field' => '{{{name}}}',
+                'title_field' => '{{{ elementor.helpers.renderIcon( this, icon, {}, "i", "panel" ) || \'<i class="{{ icon }}" aria-hidden="true"></i>\' }}}',
+            ]
+        );
+
+        $this->add_control(
+            'plus',
+            [
+                'label' => esc_html__('Link icon', 'the-pack-addon'),
+                'type' => Controls_Manager::ICONS,
             ]
         );
 
@@ -164,445 +131,286 @@ class thepack_team1 extends Widget_Base
         );
 
         $this->add_control(
-            'disp',
+            'tmpl',
             [
-                'label' => esc_html__('Display', 'the-pack-addon'),
+                'label' => esc_html__('Template', 'the-pack-addon'),
                 'type' => Controls_Manager::CHOOSE,
                 'options' => [
-                    'grid' => [
-                        'title' => esc_html__('Grid', 'the-pack-addon'),
+                    'one' => [
+                        'title' => esc_html__('One', 'the-pack-addon'),
                         'icon' => 'eicon-gallery-grid',
                     ],
-                    'slider' => [
-                        'title' => esc_html__('Slider', 'the-pack-addon'),
+                    'two' => [
+                        'title' => esc_html__('Two', 'the-pack-addon'),
                         'icon' => 'eicon-slider-album',
                     ]
                 ],
-                'default' => 'grid',
-            ]
-        );
-
-        $this->add_responsive_control(
-            'width',
-            [
-                'label' => esc_html__('Column width', 'the-pack-addon'),
-                'type' => Controls_Manager::NUMBER,
-                'default' => '33.33',
-                'selectors' => [
-                    '{{WRAPPER}} .team1' => 'width: {{VALUE}}%;',
-                ],
-                'condition' => [
-                    'disp' => 'grid',
-                ],
-            ]
-        );
-
-        $this->add_responsive_control(
-            'padding',
-            [
-                'label' => esc_html__('Item Padding', 'the-pack-addon'),
-                'type' => Controls_Manager::DIMENSIONS,
-                'size_units' => ['px'],
-                'selectors' => [
-                    '{{WRAPPER}} .team1' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-                    '{{WRAPPER}} .tbteam1' => 'margin-left: -{{LEFT}}{{UNIT}};margin-right:-{{RIGHT}}{{UNIT}};',
-                ],
-                'condition' => [
-                    'disp' => 'grid',
-                ],
-            ]
-        );
-
-        $this->add_group_control(
-            Group_Control_Box_Shadow::get_type(),
-            [
-                'label' => esc_html__('Box shadow', 'the-pack-addon'),
-                'name' => 'img_box_sha',
-                'selector' => '{{WRAPPER}} .team1 .inner',
-            ]
-        );
-
-        $this->add_responsive_control(
-            'thmwht',
-            [
-                'label' => esc_html__('Thumbnail wrapper height', 'the-pack-addon'),
-                'type' => Controls_Manager::SLIDER,
-                'range' => [
-                    'px' => [
-                        'min' => 0,
-                        'max' => 1000,
-                        'step' => 1,
-                    ],
-                ],
-                'size_units' => ['px'],
-                'selectors' => [
-                    '{{WRAPPER}} .team-container' => 'height: {{SIZE}}{{UNIT}};',
-                ],
+                'default' => 'one',
             ]
         );
 
         $this->end_controls_section();
 
         $this->start_controls_section(
-            'section_quote',
+            'section_img',
+            [
+                'label' => esc_html__('Thumbnail', 'the-pack-addon'),
+                'tab' => Controls_Manager::TAB_STYLE,
+            ]
+        );
+        $this->add_responsive_control(
+            'nxcd',
+            [
+                'label' => esc_html__('Border radius', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'selectors' => [
+                    '{{WRAPPER}} .thumb-wrap' => 'border-radius: {{SIZE}}{{UNIT}};',
+                ],
+
+            ]
+        );
+
+        $this->add_responsive_control(
+            'tht',
+            [
+                'label' => esc_html__('Height', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'range' => [
+                    'px' => [
+                        'max' => 800,
+                    ]
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .thumb-wrap img' => 'height: {{SIZE}}{{UNIT}};',
+                ],
+
+            ]
+        );
+
+        $this->end_controls_section();
+
+        $this->start_controls_section(
+            'section_cnt',
             [
                 'label' => esc_html__('Content', 'the-pack-addon'),
                 'tab' => Controls_Manager::TAB_STYLE,
             ]
         );
-
-        $this->add_group_control(
-            Group_Control_Background::get_type(),
-            [
-                'name' => 'overlay_color',
-                'label' => esc_html__('Background', 'the-pack-addon' ),
-                'types' => ['none', 'classic', 'gradient'],
-                'selector' => '{{WRAPPER}} .team-content',
-            ]
-        );
-
         $this->add_responsive_control(
-            'cpad',
+            's1pad',
             [
                 'label' => esc_html__('Padding', 'the-pack-addon'),
                 'type' => Controls_Manager::DIMENSIONS,
-                'size_units' => ['px'],
                 'selectors' => [
-                    '{{WRAPPER}} .team-content' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                    '{{WRAPPER}} .tpinfo' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
             ]
         );
-
-        $this->add_responsive_control(
-            'align',
-            [
-                'label' => esc_html__('Alignment', 'the-pack-addon'),
-                'type' => Controls_Manager::CHOOSE,
-                'options' => [
-                    'left' => [
-                        'title' => esc_html__('Left', 'the-pack-addon'),
-                        'icon' => 'eicon-h-align-left',
-                    ],
-                    'center' => [
-                        'title' => esc_html__('Center', 'the-pack-addon'),
-                        'icon' => 'eicon-v-align-top',
-                    ],
-                    'right' => [
-                        'title' => esc_html__('Right', 'the-pack-addon'),
-                        'icon' => 'eicon-h-align-right',
-                    ],
-                    'justify' => [
-                        'title' => esc_html__('Justified', 'the-pack-addon'),
-                        'icon' => 'fa fa-align-justify',
-                    ],
-                ],
-                'selectors' => [
-                    '{{WRAPPER}} .team-content' => 'text-align: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->start_controls_tabs('ctb');
+        $this->start_controls_tabs('gt');
 
         $this->start_controls_tab(
-            'ctb1',
+            't1',
             [
                 'label' => esc_html__('Name', 'the-pack-addon'),
             ]
         );
 
-        $this->add_control(
-            'q_clr',
-            [
-                'label' => esc_html__('Color', 'the-pack-addon'),
-                'type' => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .name' => 'color: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'q_pad',
-            [
-                'label' => esc_html__('Margin', 'the-pack-addon' ),
-                'type' => Controls_Manager::DIMENSIONS,
-                'size_units' => ['px', 'em', '%'],
-                'selectors' => [
-                    '{{WRAPPER}} .name' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-                ],
-            ]
-        );
-
-        $this->add_group_control(
-            Group_Control_Typography::get_type(),
-            [
-                'name' => 'q_typo',
-                'label' => esc_html__('Typography', 'the-pack-addon'),
-                'selector' => '{{WRAPPER}} .name',
-            ]
-        );
+        do_action('the_pack_typo', $this,'nm_','.name',['margin']);
 
         $this->end_controls_tab();
 
         $this->start_controls_tab(
-            'ctb2',
+            't2',
             [
                 'label' => esc_html__('Position', 'the-pack-addon'),
             ]
         );
 
+        do_action('the_pack_typo', $this,'ps_','.pos');
+
+        $this->end_controls_tab();
+
+        $this->start_controls_tab(
+            't3',
+            [
+                'label' => esc_html__('Button', 'the-pack-addon'),
+            ]
+        );
+
+        $this->add_responsive_control(
+            'bradt',
+            [
+                'label' => esc_html__('Border radius', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'selectors' => [
+                    '{{WRAPPER}} .more-btn' => 'border-radius: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+        $this->add_responsive_control(
+            'brahr',
+            [
+                'label' => esc_html__('Width and height', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'selectors' => [
+                    '{{WRAPPER}} .more-btn' => 'flex: 0 0 {{SIZE}}{{UNIT}};height: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
         $this->add_control(
-            'p_clr',
+            'f_bg',
+            [
+                'label' => esc_html__('Background', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .more-btn' => 'background: {{VALUE}};',
+                ],
+            ]
+        );
+        $this->add_control(
+            'f_bgx',
             [
                 'label' => esc_html__('Color', 'the-pack-addon'),
                 'type' => Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .pos' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .more-btn' => 'color: {{VALUE}};',
                 ],
             ]
         );
-
         $this->add_control(
-            'p_pad',
+            'f_bgh',
             [
-                'label' => esc_html__('Margin', 'the-pack-addon' ),
-                'type' => Controls_Manager::DIMENSIONS,
-                'size_units' => ['px', 'em', '%'],
+                'label' => esc_html__('Hover background', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .pos' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                    '{{WRAPPER}} .more-btn:hover' => 'background: {{VALUE}};',
                 ],
             ]
         );
-
-        $this->add_group_control(
-            Group_Control_Typography::get_type(),
+        $this->add_control(
+            'p_bgh',
             [
-                'name' => 'p_typo',
-                'label' => esc_html__('Typography', 'the-pack-addon'),
-                'selector' => '{{WRAPPER}} .pos',
+                'label' => esc_html__('Hover color', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .more-btn:hover' => 'color: {{VALUE}};',
+                ],
             ]
         );
-
         $this->end_controls_tab();
-
-        $this->end_controls_tabs();
 
         $this->end_controls_section();
 
         $this->start_controls_section(
-            'section_social',
+            'section_scf',
             [
                 'label' => esc_html__('Social', 'the-pack-addon'),
                 'tab' => Controls_Manager::TAB_STYLE,
             ]
         );
-
         $this->add_responsive_control(
-            'imwds',
+            'fdir',
             [
-                'label' => esc_html__('Max wrapper width', 'the-pack-addon'),
-                'type' => Controls_Manager::SLIDER,
-                'selectors' => [
-                    '{{WRAPPER}} .team-link' => 'width: {{SIZE}}%;',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'sbgc',
-            [
-                'label' => esc_html__('Background', 'the-pack-addon'),
-                'type' => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .team-link' => 'background: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            's_clr',
-            [
-                'label' => esc_html__('Color', 'the-pack-addon'),
-                'type' => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .team-link a' => 'color: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'isbg',
-            [
-                'label' => esc_html__('Background', 'the-pack-addon'),
-                'type' => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .team-link a' => 'background: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_responsive_control(
-            'iwht',
-            [
-                'label' => esc_html__('Width & height', 'the-pack-addon'),
-                'type' => Controls_Manager::SLIDER,
-                'range' => [
-                    'px' => [
-                        'min' => 0,
-                        'max' => 50,
-                        'step' => 1,
+                'label' => esc_html__('Flex direction', 'thepackpro'),
+                'type' => Controls_Manager::CHOOSE,
+                'options' => [
+                    'column' => [
+                        'title' => esc_html__('Column', 'thepackpro'),
+                        'icon' => 'eicon-image',
                     ],
+                    'row' => [
+                        'title' => esc_html__('Row', 'thepackpro'),
+                        'icon' => 'eicon-image',
+                    ],                    
                 ],
-                'size_units' => ['px'],
                 'selectors' => [
-                    '{{WRAPPER}} .team-link a' => 'width: {{SIZE}}{{UNIT}};height: {{SIZE}}{{UNIT}};',
-                ],
+                    '{{WRAPPER}} .social' => 'flex-direction: {{VALUE}};',
+                ],                
             ]
         );
-
         $this->add_responsive_control(
-            'iwlh',
+            'xgw',
             [
-                'label' => esc_html__('Line height', 'the-pack-addon'),
+                'label' => esc_html__('Icon gap', 'the-pack-addon'),
                 'type' => Controls_Manager::SLIDER,
-                'range' => [
-                    'px' => [
-                        'min' => 0,
-                        'max' => 50,
-                        'step' => 1,
-                    ],
-                ],
-                'size_units' => ['px'],
                 'selectors' => [
-                    '{{WRAPPER}} .team-link a' => 'line-height: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .social' => 'gap: {{SIZE}}{{UNIT}};',
                 ],
             ]
         );
 
         $this->add_responsive_control(
-            'sze',
-            [
-                'label' => esc_html__('Font size', 'the-pack-addon'),
-                'type' => Controls_Manager::SLIDER,
-                'range' => [
-                    'px' => [
-                        'min' => 0,
-                        'max' => 50,
-                        'step' => 1,
-                    ],
-                ],
-                'size_units' => ['px'],
-                'selectors' => [
-                    '{{WRAPPER}} .team-link a' => 'font-size: {{SIZE}}{{UNIT}};',
-                ],
-            ]
-        );
-
-        $this->add_responsive_control(
-            'rm',
-            [
-                'label' => esc_html__('Item spacing', 'the-pack-addon'),
-                'type' => Controls_Manager::SLIDER,
-                'range' => [
-                    'px' => [
-                        'min' => 0,
-                        'max' => 50,
-                        'step' => 1,
-                    ],
-                ],
-                'size_units' => ['px'],
-                'selectors' => [
-                    '{{WRAPPER}} .team-link a' => 'margin:0px {{SIZE}}{{UNIT}};',
-                ],
-            ]
-        );
-
-        $this->add_responsive_control(
-            'rmty',
+            'obradt',
             [
                 'label' => esc_html__('Border radius', 'the-pack-addon'),
                 'type' => Controls_Manager::SLIDER,
                 'selectors' => [
-                    '{{WRAPPER}} .team-link a' => 'border-radius:{{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .social a' => 'border-radius: {{SIZE}}{{UNIT}};',
                 ],
             ]
         );
-
         $this->add_responsive_control(
-            'vpos',
+            'nhy',
             [
-                'label' => esc_html__('Vertical position', 'the-pack-addon'),
+                'label' => esc_html__('Width and height', 'the-pack-addon'),
                 'type' => Controls_Manager::SLIDER,
-                'range' => [
-                    'px' => [
-                        'min' => 0,
-                        'max' => 100,
-                        'step' => 1,
-                    ],
-                ],
-                'size_units' => ['px'],
                 'selectors' => [
-                    '{{WRAPPER}} .team-link' => 'bottom: -{{SIZE}}%;',
+                    '{{WRAPPER}} .social a' => 'width: {{SIZE}}{{UNIT}};height: {{SIZE}}{{UNIT}};',
                 ],
             ]
         );
-
+        $this->add_control(
+            'xf_bg',
+            [
+                'label' => esc_html__('Background', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .social a' => 'background: {{VALUE}};',
+                ],
+            ]
+        );
+        $this->add_control(
+            'xf_bgx',
+            [
+                'label' => esc_html__('Color', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .social a' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+        $this->add_control(
+            'xof_bgh',
+            [
+                'label' => esc_html__('Hover background', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .social a:hover' => 'background: {{VALUE}};',
+                ],
+            ]
+        );
+        $this->add_control(
+            '8f_bgh',
+            [
+                'label' => esc_html__('Hover color', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .social a:hover' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
         $this->end_controls_section();
 
-        do_action('the_pack_swiper_control', $this);
     }
-
+ 
     protected function render()
     {
         $settings = $this->get_settings();
-        require dirname(__FILE__) . '/view.php';
-    }
-
-    private function content($content, $type)
-    {
-        $out1 = '';
-
-        foreach ($content as $item) {
-            switch ($type) {
-                case 'slider':
-                    $cls = 'swiper-slide';
-                    break;
-
-                case 'grid':
-                    $cls = '';
-                    break;
-
-                default:
-            }
-
-            $img = thepack_ft_images($item['avatar']['id'], 'full');
-            $name = $item['url']['url'] ? '<a ' . thepack_get_that_link($item['url']) . '><h3 class="name">' . $item['name'] . '</h3></a>' : '<h3 class="name">' . $item['name'] . '</h3>';
-            $pos = $item['pos'] ? '<p class="pos">' . $item['pos'] . '</p>' : '';
-
-            $fb = $item['fb']['url'] ? '<a ' . thepack_get_that_link($item['fb']) . '><i class="tpbi bi-facebook"></i></a>' : '';
-            $tw = $item['tw']['url'] ? '<a ' . thepack_get_that_link($item['tw']) . '><i class="tpbi bi-twitter-x"></i></a>' : '';
-            $lnk = $item['lnk']['url'] ? '<a ' . thepack_get_that_link($item['lnk']) . '><i class="tpbi bi-linkedin"></i></a>' : '';
-            $ig = $item['ig']['url'] ? '<a ' . thepack_get_that_link($item['ig']) . '><i class="tpbi bi-instagram"></i></a>' : '';
-
-            $out1 .= '
-                <div class="team1 ' . $cls . '">
-                    <div class="inner">
-                    <div class="team-container">
-                        ' . $img . '
-                        <div class="team-link">
-                        ' . $fb . $tw . $lnk . $ig . '
-                        </div>
-                    </div>
-                    <div class="team-content">
-                        ' . $name . $pos . '
-                    </div>
-                </div></div>
-            ';
+        if (!preg_match("/[^[:alnum:]_\/-]/",$settings['tmpl'])) {
+            include plugin_dir_path(__FILE__) . $settings['tmpl'] . '.php';
         }
-
-        return thepack_build_html($out1);
     }
+
 }
 
 $widgets_manager->register(new \ThePackAddon\Widgets\thepack_team1());

@@ -133,6 +133,20 @@ class The_Pack_Overlay_Underlay
         );
 
         $element->add_control(
+            'bihocx',
+            [
+                'label' => esc_html__('Circle Hover color', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,
+                'condition' => [
+                    'bihoc' => ['yes'],
+                ],                
+                'selectors' => [
+                    '{{WRAPPER}}' => '--hovercolor: {{VALUE}};',
+                ],
+            ]
+        ); 
+
+        $element->add_control(
             'bisltx',
             [
                 'label' => esc_html__('Slide text hover', 'the-pack-addon'),
@@ -284,7 +298,7 @@ class The_Pack_Overlay_Underlay
             [
                 'label' => esc_html__('Height', 'the-pack-addon'),
                 'type' => Controls_Manager::SLIDER,
-                'size_units' => ['px', '%'],
+                'size_units' => ['px', '%','vh'],
                 'range' => [
                     'px' => [
                         'min' => 0,
@@ -308,9 +322,9 @@ class The_Pack_Overlay_Underlay
         $element->add_responsive_control(
             'tp_el_ov_y',
             [
-                'label' => esc_html__('Offset Top', 'the-pack-addon'),
+                'label' => esc_html__('Top position', 'the-pack-addon'),
                 'type' => Controls_Manager::SLIDER,
-                'size_units' => ['px', '%'],
+                'size_units' => ['px', '%','vh'],
                 'range' => [
                     'px' => [
                         'min' => -500,
@@ -332,11 +346,37 @@ class The_Pack_Overlay_Underlay
         );
 
         $element->add_responsive_control(
+            'tp_el_ov_y2',
+            [
+                'label' => esc_html__('Bottom position', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'size_units' => ['px', '%','vh'],
+                'range' => [
+                    'px' => [
+                        'min' => -500,
+                        'max' => 500,
+                    ],
+                    '%' => [
+                        'min' => -500,
+                        'max' => 500,
+                    ],
+                ],
+                'default' => [
+                    'unit' => '%',
+                    'size' => 2,
+                ],
+                'selectors' => [
+                    '{{WRAPPER}}.tp-has-beaf > .elementor-widget-container:before' => 'bottom: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $element->add_responsive_control(
             'tp_el_ov_x',
             [
-                'label' => esc_html__('Offset Left', 'the-pack-addon'),
+                'label' => esc_html__('Left position', 'the-pack-addon'),
                 'type' => Controls_Manager::SLIDER,
-                'size_units' => ['px', '%'],
+                'size_units' => ['px', '%','vh'],
                 'range' => [
                     'px' => [
                         'min' => -500,
@@ -353,6 +393,31 @@ class The_Pack_Overlay_Underlay
                 ],
                 'selectors' => [
                     '{{WRAPPER}}.tp-has-beaf > .elementor-widget-container:before' => 'left: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+        $element->add_responsive_control(
+            'tp_el_ov_x2',
+            [
+                'label' => esc_html__('Right position', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'size_units' => ['px', '%','vh'],
+                'range' => [
+                    'px' => [
+                        'min' => -500,
+                        'max' => 500,
+                    ],
+                    '%' => [
+                        'min' => -500,
+                        'max' => 500,
+                    ],
+                ],
+                'default' => [
+                    'unit' => '%',
+                    'size' => 2,
+                ],
+                'selectors' => [
+                    '{{WRAPPER}}.tp-has-beaf > .elementor-widget-container:before' => 'right: {{SIZE}}{{UNIT}};',
                 ],
             ]
         );
@@ -409,6 +474,7 @@ class The_Pack_Overlay_Underlay
                 'default' => -1,
                 'selectors' => [
                     '{{WRAPPER}}.tp-has-beaf > .elementor-widget-container:before' => 'z-index: {{VALUE}};',
+                    '{{WRAPPER}}.tp-has-beaf > .elementor-widget-container>*' => 'position: relative;',
                 ],
                 'label_block' => false,
                 'condition' => [
@@ -444,7 +510,7 @@ class The_Pack_Overlay_Underlay
 
                 ],
                 'selectors' => [
-                    '{{WRAPPER}}.tp-has-beaf > .elementor-widget-container:before' => 'animation-duration: {{SIZE}}s;animation-iteration-count:infinite;',
+                    '{{WRAPPER}}.tp-has-beaf > .elementor-widget-container:before' => 'animation-duration: {{SIZE}}s;animation-iteration-count:infinite;animation-timing-function: linear;',
                 ],
 
             ]
@@ -605,7 +671,31 @@ class The_Pack_Overlay_Underlay
                 ],
             ]
         );
-
+        $element->add_responsive_control(
+            'tp_el_und_y',
+            [
+                'label' => esc_html__('Offset Left', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'size_units' => ['px', '%','vh'],
+                'range' => [
+                    'px' => [
+                        'min' => -500,
+                        'max' => 500,
+                    ],
+                    '%' => [
+                        'min' => -500,
+                        'max' => 500,
+                    ],
+                ],
+                'default' => [
+                    'unit' => '%',
+                    'size' => 2,
+                ],
+                'selectors' => [
+                    '{{WRAPPER}}.tp-has-beaf > .elementor-widget-container:after' => 'left: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
         $element->add_responsive_control(
             'tp_el_un_rot',
             [
@@ -661,6 +751,7 @@ class The_Pack_Overlay_Underlay
                 'default' => -1,
                 'selectors' => [
                     '{{WRAPPER}}.tp-has-beaf > .elementor-widget-container:after' => 'z-index: {{VALUE}};',
+                    '{{WRAPPER}}.tp-has-beaf > .elementor-widget-container>*' => 'position: relative;',
                 ],
                 'label_block' => false,
                 'condition' => [
@@ -696,7 +787,7 @@ class The_Pack_Overlay_Underlay
 
                 ],
                 'selectors' => [
-                    '{{WRAPPER}}.tp-has-beaf > .elementor-widget-container:after' => 'animation-duration: {{SIZE}}s;animation-iteration-count:infinite;',
+                    '{{WRAPPER}}.tp-has-beaf > .elementor-widget-container:after' => 'animation-duration: {{SIZE}}s;animation-iteration-count:infinite;animation-timing-function: linear;',
                 ],
 
             ]

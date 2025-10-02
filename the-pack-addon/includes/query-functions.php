@@ -451,19 +451,19 @@ function thepack_pro_single_title($arg)
 {
     if (is_category()) {
         /* translators: Category archive title. 1: Category name */
-        $title = $arg['cat'].'<span class="archive-highlight">'.single_cat_title('', false).'</span>';
+        $title = $arg['cat'].'<span class="archive-highlight"> : '.single_cat_title('', false).'</span>';
     } elseif (is_tag()) {
         /* translators: Tag archive title. 1: Tag name */
-        $title = $arg['tag'].'<span class="archive-highlight">'.single_cat_title('', false).'</span>';
+        $title = $arg['tag'].'<span class="archive-highlight"> : '.single_cat_title('', false).'</span>';
     } elseif (is_author()) {
-        $title = sprintf($arg['author'] . '%s', '<span class="archive-highlight">' . get_the_author() . '</span>');
+        $title = sprintf($arg['author'] . '%s', '<span class="archive-highlight"> : ' . get_the_author() . '</span>');
     //$title = get_the_author( 'Author: ', true );
     } elseif (is_year()) {
         /* translators: Yearly archive title. 1: Year */
-        $title = sprintf($arg['yarchive'], '<span class="archive-highlight">' . get_the_date('F Y', 'yearly archives date format') . '</span>');
+        $title = sprintf($arg['yarchive'], '<span class="archive-highlight"> : ' . get_the_date('F Y', 'yearly archives date format') . '</span>');
     } elseif (is_month()) {
         /* translators: Monthly archive title. 1: Month name and year */
-        $title = sprintf($arg['marchive'], '<span class="archive-highlight">' . get_the_date('F Y', 'monthly archives date format') . '</span>');
+        $title = sprintf($arg['marchive'], '<span class="archive-highlight"> : ' . get_the_date('F Y', 'monthly archives date format') . '</span>');
     } elseif (is_404()) {
         /* translators: Daily archive title. 1: Date */
         $title = $arg['notfound'];
@@ -475,7 +475,7 @@ function thepack_pro_single_title($arg)
         /* translators: Taxonomy term archive title. 1: Taxonomy singular name, 2: Current taxonomy term */
         $title = single_term_title('', false);
     } elseif (is_search()) {
-        $title = sprintf($arg['search'] . '%s', '<span class="archive-highlight">' . get_search_query() . '</span>');
+        $title = sprintf($arg['search'] . '%s', '<span class="archive-highlight"> : ' . get_search_query() . '</span>');
     } elseif (is_home() && is_front_page()) {
         $title = esc_html__('Home', 'the-pack-addon');
     } elseif (is_singular()) {
@@ -501,7 +501,7 @@ function thepack_drop_cat($tax='')
     $categories = [];
 
     foreach ($categories_obj as $pn_cat) {
-        $categories[$pn_cat->cat_ID] = $pn_cat->name . '-' . $pn_cat->taxonomy;
+        $categories[$pn_cat->slug] = $pn_cat->name . '-' . $pn_cat->taxonomy;
     }
 
     return $categories;

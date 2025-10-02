@@ -1,83 +1,36 @@
-.team1 {
-    float: left;
-}
-
-.team1 .name, .team1 .pos {
-    margin: 0px;
-}
-
-.team1 .team-content {
-    background: beige;
-    padding: 20px;
-}
-
-.team-container, .team-link {
-    position: relative;
-}
-
-.team1 img {
-    width: 100%;
-    display: block;
-}
-
-.team1carou .swiper-pagination-bullet {
-    opacity: 1;
-}
-
-.team1 .team-link {
+.tp-team-one .fullink{
+    z-index: 1;
+}    
+.tp-team-one .tpinfo{
+    justify-content: space-between;
+    align-items: center;    
+}    
+.tp-team-one .social {
     position: absolute;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
-    width: 80%;
-    padding: 0;
-    text-align: center;
-    background: #2f0b81;
-    bottom: -35%;
-    transition: all .3s, bottom .3s;
-    text-align: center;
-    display: block;
+    top: 40px;
+    left: 20px;
     opacity: 0;
+    z-index: 2;
 }
-
-.team1 .team-container {
-    overflow: hidden;
-}
-
-.team1:hover .team-link {
+.tp-team-one:hover .social {
+    left: 40px;
     opacity: 1;
-    bottom: 10px;
+}
+.tp-team-one .more-btn {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-20px);
+}
+.tp-team-one:hover .more-btn {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
 }
 
-.team1 .team-link a {
-    display: inline-block;
-    border: none;
-    text-align: center;
-    font-size: 18px;
-    color: #fff;
-    padding: 5px 8px;
-    font-weight: 500;
-    transition: all .3s ease-in-out;
-    -webkit-transition: all .3s ease-in-out;
-    margin: 0px 2px;
-    width: 30px;
-    height: 30px;
+.tp-team-one .thumb-wrap img {
+    width: 100%;
+    object-fit: cover;
 }
-
-.team1:hover .featured-img {
-    transform: scale(1.1);
-}
-
-.team1 .featured-img {
-    transition: transform .5s ease;
-}
-
-.team1:hover .inner {
-    -webkit-transform: translate(0, -10px);
-    transform: translate(0, -10px);
-}
-
-.team1 .inner {
-    -webkit-transition: .5s all ease;
-    transition: .5s all ease;
+.tp-team-one:hover .thumb-wrap img {
+    transform: scale(1.1, 1.1);
 }

@@ -119,16 +119,6 @@ class thepack_timeline_1 extends Widget_Base
         );
 
         $this->add_control(
-            'animation',
-            [
-                'label' => esc_html__('Animation', 'the-pack-addon'),
-                'type' => Controls_Manager::SELECT,
-                'options' => thepack_animations(),
-                'label_block' => true
-            ]
-        );
-
-        $this->add_control(
             'hrotate',
             [
                 'label' => esc_html__('Hover rotate', 'the-pack-addon'),
@@ -497,7 +487,7 @@ class thepack_timeline_1 extends Widget_Base
         require dirname(__FILE__) . '/view.php';
     }
 
-    private function content($content, $anim)
+    private function content($content)
     {
         $out = '';
         foreach ($content as $item) {
@@ -505,9 +495,8 @@ class thepack_timeline_1 extends Widget_Base
             $year = $item['year'] ? '<span class="year">' . $item['year'] . '</span>' : '';
             $desig = $item['desig'] ? '<span class="desig">' . $item['desig'] . '</span>' : '';
             $desc = $item['desc'] ? '<p class="description">' . $item['desc'] . '</p>' : '';
-
             $out .= '
-                <div class="content ' . $anim . '">
+                <div class="content">
                     <div class="wrap">
                         ' . $title . $year . $desig . $desc . '
                     </div>

@@ -39,6 +39,7 @@ class zxp
         require_once THE_PACK_PLUGIN_DIR . 'includes/extension/inc/tp-parallax.php';
         require_once THE_PACK_PLUGIN_DIR . 'includes/extension/inc/shape-divider.php';
         require_once THE_PACK_PLUGIN_DIR . 'includes/extension/inc/thepack-extension.php';
+        require_once THE_PACK_PLUGIN_DIR . 'includes/extension/inc/cursor-scroll.php';
         require_once THE_PACK_PLUGIN_DIR . 'includes/extension/inc/sticky.php';
         require_once THE_PACK_PLUGIN_DIR . 'includes/extension/inc/video.php';
         require_once THE_PACK_PLUGIN_DIR . 'includes/extension/inc/editor.php';

@@ -1,3 +1,8 @@
 .tp-off-sidebar .tp-tap{
     cursor: pointer;
 }
+.tp-off-sidebar .close-menu{
+    cursor: pointer;
+    position: absolute;
+    z-index: 1;
+}

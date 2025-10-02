@@ -14,7 +14,12 @@
     align-items: center;
     justify-content: center;    
 }
-
+.tp-pos-rel{
+    position: relative;
+}
+.tp-no-overflow{
+    overflow: hidden;;
+}
 /*Button extra*/
 .elementor-button-wrapper .elementor-button-icon {
     display: flex;
@@ -46,8 +51,6 @@
 .elementor-widget-wrap:before {
     position: absolute;
 }
-
-.tp-flex-equal .tp-col {}
 
 .tp-flex-center {
     display: flex;
@@ -133,6 +136,7 @@ a {
     -o-transition: all 0.2s;
     -ms-transition: all 0.2s;
     transition: all 0.2s;
+    vertical-align: middle;
 }
 
 a:hover,
@@ -223,7 +227,15 @@ img {
 .elementor-column {
     min-height: 0px !important;
 }
-
+.tpbefore::before {
+    content:"";
+    display: block;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
 .xl-btshdw-yes .elementor-image::after {
     content: "";
     position: absolute;
@@ -1219,6 +1231,7 @@ ul.price-list.list-button li:last-child {
 }
 .tpswiper{
     display: none;
+    overflow:hidden;
 }
 .tpswiper.swiper-container-initialized{
     display: block;
@@ -1741,25 +1754,27 @@ ul.momenu-list{
     list-style-type: none;
 }
 
-.xlmega-header .momenu-list>li {
+.momenu-list>li {
     position: relative;
 }
 
-.xlmega-header .momenu-list>li>a {
-    display: block;
+.momenu-list>li>a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;    
 }
 
-.xlmega-header .momenu-list li.menu-item-has-children>a span {
+.momenu-list li.menu-item-has-children>a span {
     transition: .1s;
     right: 0;
     position: absolute;
 }
 
-.xlmega-header .offsidebar .sub-menu {
+.momenu-list .sub-menu {
     padding: 3px 0px 3px 20px;
 }
 
-.xlmega-header .momenu-list .sub-menu {
+.momenu-list .sub-menu {
     display: none;
 }
 
@@ -1984,7 +1999,6 @@ ul.momenu-list{
     content: "";
     position: absolute;
     top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
     z-index: -1;
@@ -2087,7 +2101,7 @@ ul.momenu-list{
 }
 
 .tp-btn-chover-yes a:hover::before {
-  box-shadow: inset 0 0 0 10em green;
+  box-shadow: inset 0 0 0 10em var(--hovercolor);  
 }
 .tp-btn-chover-yes a span{
   position:relative;
@@ -2231,3 +2245,30 @@ transition: all 0.4s ease-in-out 0s;
 /*.e-container.elementor-motion-effects-element-type-background > .elementor-element{*/
 /*  z-index: 1;*/
 /*}*/
+
+/*CSS Ribbon*/
+.ribbon_one{
+    --r: 0.8em;
+    border-block: .5em solid #0000;
+    padding-inline: 13px calc(var(--r) + 12px);
+    clip-path: polygon(100% 0, 0 0, 0 100%, 100% 100%, 100% calc(100% - .25em), calc(100% - var(--r)) 50%, 100% 0.25em);
+    background: radial-gradient(.2em 50% at left, #00000000, #0000) border-box, var(--maintheme) padding-box;    
+}
+.ribbon_two{
+  --r: .8em; /* control the cutout */
+  border-inline: .5em solid #0000;
+  padding: .5em .2em calc(var(--r) + .2em);
+  clip-path: polygon(0 0,100% 0,100% 100%,calc(100% - .5em) 100%,50% calc(100% - var(--r)),.5em 100%,0 100%);
+  background:
+   radial-gradient(50% .2em at top, #00000000, #0000) border-box, var(--maintheme) padding-box;   
+}
+.ribbon_three{
+  --d: .8em; /* the depth */
+  position: absolute;
+  top: 20px;
+  inset-inline: calc(-1*var(--d));
+  border-bottom: var(--d) solid #0008;
+  line-height: 1.8;
+  clip-path: polygon(0 0,100% 0,100% calc(100% - var(--d)),calc(100% - var(--d)) 100%,calc(100% - var(--d)) calc(100% - var(--d)),var(--d) calc(100% - var(--d)),var(--d) 100%,0 calc(100% - var(--d)));
+  background-color: var(--maintheme); /* the main color */
+}

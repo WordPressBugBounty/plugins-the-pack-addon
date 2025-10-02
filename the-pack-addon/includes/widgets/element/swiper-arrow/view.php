@@ -8,6 +8,6 @@
     }
 ?>
 <div data-slider="<?php echo esc_attr($settings['cls']);?>" class="tp-swiper-arrow tp-d-flex">
-    <span class="prev tp-d-flex tbtr"><?php echo $prev;?></span>
-    <span class="next tp-d-flex tbtr"><?php echo $next;?></span>
+    <span class="prev tp-d-flex tbtr"><?php echo wp_kses_post($prev);?></span>
+    <span class="next tp-d-flex tbtr"><?php echo wp_kses_post($next);?></span>
 </div>

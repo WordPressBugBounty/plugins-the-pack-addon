@@ -57,7 +57,7 @@ class The_Pack_Woo_Category extends Widget_Base
             'taxterm',
             [
                 'label' => esc_html__('Taxonomy terms', 'the-pack-addon'),
-                'type' => Controls_Manager::SELECT2,
+                'type' => Controls_Manager::SELECT2, 
                 'options' => thepack_drop_cat(),
                 'multiple' => true,
                 'label_block' => true,

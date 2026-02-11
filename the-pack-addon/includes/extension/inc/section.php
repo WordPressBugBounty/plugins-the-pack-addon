@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
 
 class jl_section_overlay
 {
-    public static function init()
+    public static function init()   
     {
         add_action('elementor/element/section/section_background_overlay/before_section_end', [
             __CLASS__,

@@ -23,7 +23,7 @@ if ($settings['query_type'] == 'category') {
         'tax_query' => [
             [
                 'taxonomy' => 'category',
-                'field' => 'term_id',
+                'field' => 'slug',
                 'terms' => $cat,
             ],
         ],

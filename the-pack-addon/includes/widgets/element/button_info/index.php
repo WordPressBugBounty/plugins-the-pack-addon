@@ -230,7 +230,7 @@ class thepack_button_app extends Widget_Base
         ); 
         $this->end_controls_section();        
 
-    }
+    } 
 
     protected function render()
     {

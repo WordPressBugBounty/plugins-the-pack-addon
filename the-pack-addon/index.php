@@ -114,6 +114,13 @@ if (!class_exists('thepack_elementor_addon_widget')) {
             add_action( 'elementor/controls/register', array( $this, 'register_new_controls' ) );
             add_action('init', [$this, 'init']);
             add_action( 'plugin_action_links_'. plugin_basename( __FILE__ ), array( $this, 'my_plugin_action_links' ), 10 );
+
+            add_action( 'elementor/elements/elements_registered', [ $this, 'elements_registered' ] );
+        }
+
+        public function elements_registered($el_manager){
+            require_once THE_PACK_PLUGIN_DIR . 'includes/extension/inc/raw-container.php';
+            $el_manager->register_element_type( new \Elementor\Includes\Elements\The_Pack_Container() );
         }
 
         public function register_new_controls( $controls_manager ) {

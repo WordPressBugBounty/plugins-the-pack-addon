@@ -13,7 +13,7 @@ foreach ($settings['items'] as $item) {
     $out1 .= '
    <div class="flexs items swiper-slide">
       ' . $quote_icon . '
-      <div class="items-wrap">
+      <div class="items-wrap"> 
       ' . $heading . $rating . '
       ' . $desc . '
       <div class="inner">

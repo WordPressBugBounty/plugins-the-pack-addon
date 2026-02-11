@@ -168,19 +168,11 @@ class thepack_folio_hover extends Widget_Base
             'wrppdft',
             [
                 'label' => esc_html__('Padding', 'the-pack-addon'),
-                'type' => Controls_Manager::SLIDER,
-                'range' => [
-                    'px' => [
-                        'min' => 0,
-                        'max' => 1500,
-                        'step' => 1,
-                    ]
-                ],
+                'type' => Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', '%', 'vh'],
                 'selectors' => [
-                    '{{WRAPPER}} .bari_assex_slider' => 'padding: {{SIZE}}{{UNIT}} 0px;',
+                    '{{WRAPPER}} .bari_assex_slider' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
-
             ]
         );
 
@@ -198,7 +190,7 @@ class thepack_folio_hover extends Widget_Base
                 ],
                 'size_units' => ['px', '%', 'vh'],
                 'selectors' => [
-                    '{{WRAPPER}} .bari_assex_slider' => 'height: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .bari_assex_slider' => 'min-height: {{SIZE}}{{UNIT}};',
                 ],
 
             ]
@@ -256,7 +248,6 @@ class thepack_folio_hover extends Widget_Base
                 'label' => esc_html__('Primary color', 'the-pack-addon'),
                 'type' => Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .post-content' => 'border-color: {{VALUE}};',
                     '{{WRAPPER}} .title,{{WRAPPER}} .cat' => 'color: {{VALUE}};',
                 ],
             ]
@@ -268,11 +259,31 @@ class thepack_folio_hover extends Widget_Base
                 'label' => esc_html__('Second color', 'the-pack-addon'),
                 'type' => Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .post-content:hover,{{WRAPPER}} .post-item.active .post-content' => 'border-color: {{VALUE}};background: {{VALUE}};',
+                    '{{WRAPPER}} .post-content:hover,{{WRAPPER}} .post-item.active .post-content' => 'background: {{VALUE}};',
                 ],
             ]
         );
 
+        $this->add_control(
+            'bdclr',
+            [
+                'label' => esc_html__('Border color', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .post-content' => 'border:1px solid {{VALUE}};',
+                ],
+            ]
+        );
+        $this->add_responsive_control(
+            'gbrade',   
+            [
+                'label' => esc_html__('Border radius', 'the-pack-addon'), 
+                'type' => Controls_Manager::SLIDER,                    
+                'selectors' => [
+                    '{{WRAPPER}} .post-content' => 'border-radius: {{SIZE}}{{UNIT}};overflow: hidden;',
+                ],
+            ]
+        );
         $this->add_responsive_control(
             'itmmxh',
             [
@@ -299,13 +310,21 @@ class thepack_folio_hover extends Widget_Base
                 'label' => esc_html__('Padding', 'the-pack-addon' ),
                 'type' => Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', 'em'],
-                /*'allowed_dimensions'=>['left','right'],*/
                 'selectors' => [
                     '{{WRAPPER}} .post-content' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
             ]
         );
-
+        $this->add_responsive_control(
+            'tpbdgf',
+            [
+                'label' => esc_html__('Backdrop blur', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'selectors' => [
+                    '{{WRAPPER}} .post-content:hover,{{WRAPPER}} .post-item.active .post-content' => 'backdrop-filter:blur({{SIZE}}{{UNIT}});-webkit-backdrop-filter:blur({{SIZE}}{{UNIT}});',
+                ],
+            ]
+        );
         $this->end_controls_section();
 
         $this->start_controls_section(

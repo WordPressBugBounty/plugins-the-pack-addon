@@ -29,6 +29,24 @@ class TP_Container_Extra
             __CLASS__,
             'before_render_options'
         ], 10, 2);
+
+        add_action('thepack_element_container/before-render', [
+            __CLASS__,
+            'pxl_before_render_options'
+        ], 10, 2);
+
+    }
+    public static function pxl_before_render_options($html, $settings)
+    {
+            if (!empty($settings['tp_dot_container_pos']) && is_array($settings['tp_dot_container_pos'])) {
+                $items = $settings['tp_dot_container_pos'];
+    
+                foreach ($items as $item) {
+                    $html .= '<span class="tp-dot tp-dot__' . esc_attr($item) . '"></span>';
+                }
+            }
+    
+            return $html;
     }
 
     public static function before_render_options($element)
@@ -354,7 +372,33 @@ class TP_Container_Extra
             ]
         );
         $element->end_controls_section();
-        
+
+        $element->start_controls_section(
+            'pxl_container_dot',
+            [
+                'label' => __('Dot Container', 'the-pack-addon'),
+                'tab' => \Elementor\Controls_Manager::TAB_LAYOUT,
+            ]
+        );
+
+        $element->add_control(
+            'tp_dot_container_pos',
+            [
+                'label' => esc_html__('Dot Container Position', 'the-pack-addon'),
+                'type' => \Elementor\Controls_Manager::SELECT2,
+                'multiple' => true,
+                'options' => [
+                    'top'    => esc_html__('Top Left', 'the-pack-addon'),
+                    'left'   => esc_html__('Top Right', 'the-pack-addon'),
+                    'right'  => esc_html__('Bottom Right', 'the-pack-addon'),
+                    'bottom' => esc_html__('Bottom Left', 'the-pack-addon'),
+                ],
+                'default' => [],
+            ]
+        );
+
+        $element->end_controls_section();
+
     }
 }
 

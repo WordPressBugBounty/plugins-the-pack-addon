@@ -1,0 +1,7 @@
+.tp-post-content .wp-block-list{
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;    
+    list-style-type: none;
+}

@@ -39,6 +39,7 @@ class he_Pack_The_Pack_Gallery_Extra_ControlHeading_Extra_Control
 
         $column_settings = [
             'icon' => $settings['icon']['value'],
+            'masonry' => $settings['msn'],
         ];
 
         $element->add_render_attribute('_wrapper', [
@@ -57,7 +58,24 @@ class he_Pack_The_Pack_Gallery_Extra_ControlHeading_Extra_Control
                 'tab' => Controls_Manager::TAB_STYLE,
             ]
         );
+        $element->add_control(
+            'msn',
+            [
+                'label' => esc_html__('Enable masonry layout', 'the-pack-addon'),
+                'type' => Controls_Manager::SWITCHER,
+            ]
+        );
 
+        $element->add_responsive_control(
+            'ndc',
+            [
+                'label' => esc_html__('Wrapper Border radius', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'selectors' => [
+                    '{{WRAPPER}} .gallery-icon' => 'border-radius: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
         $element->add_control(
             'icon',
             [
@@ -84,7 +102,7 @@ class he_Pack_The_Pack_Gallery_Extra_ControlHeading_Extra_Control
                 'label' => esc_html__('No overflow', 'the-pack-addon'),
                 'type' => Controls_Manager::SWITCHER,
                 'selectors' => [
-                    '{{WRAPPER}} .gallery-icon' => 'overflow:hidden;',
+                    '{{WRAPPER}} .gallery-icon' => 'overflow:hidden;position: relative;',
                 ],
             ]
         );

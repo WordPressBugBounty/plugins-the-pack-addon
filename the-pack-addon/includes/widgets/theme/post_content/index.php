@@ -33,11 +33,10 @@ class The_Pack_Pro_Post_Content extends Widget_Base
 
     protected function register_controls()
     {
-        $this->start_controls_section(
+        $this->start_controls_section( 
             'section_cont',
             [
                 'label' => esc_html__('Content', 'the-pack-addon'),
-                'tab' => Controls_Manager::TAB_STYLE,
             ]
         );
 
@@ -259,6 +258,134 @@ class The_Pack_Pro_Post_Content extends Widget_Base
         $this->end_controls_tabs();
 
         $this->end_controls_section();
+
+        $this->start_controls_section(
+            'section_list',
+            [
+                'label' =>   esc_html__('Lists', 'news-element'),
+                'tab' => Controls_Manager::TAB_STYLE,
+            ]
+        );
+
+        $this->add_control(
+            'uliklg',
+            [
+                'label' => esc_html__('Color', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .wp-block-list li' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Typography::get_type(),
+            [
+                'name' => 'uli_typo',
+                'selector' => '{{WRAPPER}} .wp-block-list li',
+                'label' => esc_html__('Typography', 'the-pack-addon'),
+            ]
+        );
+        $this->add_responsive_control(
+            'uli-pad',
+            [
+                'label' => esc_html__('Padding', 'the-pack-addon'),
+                'type' => Controls_Manager::DIMENSIONS,
+                'selectors' => [
+                    '{{WRAPPER}} .wp-block-list' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+        $this->add_responsive_control(
+            'uligp',   
+            [
+                'label' => esc_html__('Gap', 'the-pack-addon'), 
+                'type' => Controls_Manager::SLIDER,                    
+                'selectors' => [
+                    '{{WRAPPER}} .wp-block-list' => 'gap: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->end_controls_section();
+
+        $this->start_controls_section(
+            'section_img',
+            [
+                'label' =>   esc_html__('Image', 'news-element'),
+                'tab' => Controls_Manager::TAB_STYLE,
+            ]
+        );
+
+        $this->start_controls_tabs('maling');
+
+        $this->start_controls_tab(
+            'img1',
+            [
+                'label' => esc_html__( 'Left', 'news-element' ),
+            ]
+        );
+
+        $this->add_responsive_control(
+            'img1-mr',
+            [
+                'label' =>   esc_html__('Margin', 'news-element'),
+                'type' => Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', 'em'],
+                'selectors' => [
+                    '{{WRAPPER}} .wp-block-image .alignleft' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ]
+            ]
+        );
+
+        $this->end_controls_tab();
+
+        $this->start_controls_tab(
+            'img2',
+            [
+                'label' => esc_html__( 'Center', 'news-element' ),
+            ]
+        );
+
+        $this->add_responsive_control(
+            'img2-mr',
+            [
+                'label' =>   esc_html__('Margin', 'news-element'),
+                'type' => Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', 'em'],
+                'selectors' => [
+                    '{{WRAPPER}} .wp-block-image .aligncenter' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ]
+            ]
+        );
+
+        $this->end_controls_tab();
+
+        $this->start_controls_tab(
+            'img3',
+            [
+                'label' => esc_html__( 'Right', 'news-element' ),
+            ]
+        );
+
+        $this->add_responsive_control(
+            'img3-mr',
+            [
+                'label' =>   esc_html__('Margin', 'news-element'),
+                'type' => Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', 'em'],
+                'selectors' => [
+                    '{{WRAPPER}} .wp-block-image .alignright' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ]
+            ]
+        );
+
+        $this->end_controls_tab();
+
+        $this->end_controls_tabs();
+
+        $this->end_controls_section(); 
+
     }
 
     protected function render()

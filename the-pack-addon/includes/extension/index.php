@@ -18,7 +18,6 @@ class zxp
     private function thepack_hooks()
     {
         add_action('elementor/preview/enqueue_scripts', [$this, 'ooohboi_register_scripts_front']);
-        add_action('wp_enqueue_scripts', [$this, 'thepack_frontend_styles']);
     }
 
     private function thepack_includes()
@@ -51,11 +50,6 @@ class zxp
     public function ooohboi_register_scripts_front()
     {
         wp_enqueue_script('thepack-section', plugins_url('js/thepack-section.js', __FILE__), [], THE_PACK_PLUGIN_VERSION, true);
-    }
-
-    public function thepack_frontend_styles()
-    { 
-        wp_enqueue_style('thepack-section', plugins_url('css/style.css', __FILE__), [], THE_PACK_PLUGIN_VERSION, true);
     }
 }
 

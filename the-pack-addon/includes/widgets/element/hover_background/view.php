@@ -15,7 +15,8 @@ foreach ($settings['lists'] as $a) {
     } else {
         $fcls = '';
     }
-    $img = $a['bg'] ? 'style="background-image:url(' . $a['bg']['url'] . ')"' : '';
+
+    $img = thepack_bg_images($a['bg']['id'], 'full');
     $title = $a['title'] ? '<h2 class="title">' . $a['title'] . '</h2>' : '';
     $cat = $a['cat'] ? '<span class="cat">' . $a['cat'] . '</span>' : '';
     $url = (empty($a['url']['url'])) ? ' ' : esc_url($a['url']['url']);
@@ -23,7 +24,7 @@ foreach ($settings['lists'] as $a) {
 
     $out .= '
 	    <div class="post-item ' . $fcls . '">
-	        <div class="slider-bg"><div class="inner"><div ' . $img . ' class="wrap"></div></div></div>
+	        <div class="slider-bg"><div class="inner"><div ' . $img . ' class="wrap lazyload"></div></div></div>
 	        <a ' . $target . ' href="' . $url . '">
 		        <div class="post-content">
 		            <div class="slider-container">

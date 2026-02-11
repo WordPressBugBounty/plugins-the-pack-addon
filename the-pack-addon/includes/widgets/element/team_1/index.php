@@ -1,11 +1,7 @@
 <?php
 namespace ThePackAddon\Widgets;
-
 use Elementor\Widget_Base;
 use Elementor\Controls_Manager;
-use Elementor\Group_Control_Typography;
-use Elementor\Group_Control_Background;
-use Elementor\Group_Control_Box_Shadow;
 use Elementor\utils;
 
 if (!defined('ABSPATH')) {
@@ -359,6 +355,17 @@ class thepack_team1 extends Widget_Base
                 ],
             ]
         );
+        $this->add_responsive_control(
+            'obrfdc',
+            [
+                'label' => esc_html__('Icon size', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'selectors' => [
+                    '{{WRAPPER}} .social a' => 'font-size: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+
         $this->add_control(
             'xf_bg',
             [

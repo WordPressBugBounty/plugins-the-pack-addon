@@ -133,8 +133,6 @@ class thepack_list_item extends Widget_Base
                 'range' => [
                     'px' => [
                         'max' => 500,
-                        'min' => 1,
-                        'step' => 1,
                     ]
                 ],
                 'condition' => [
@@ -154,6 +152,18 @@ class thepack_list_item extends Widget_Base
                 'type' => Controls_Manager::SLIDER,
                 'selectors' => [
                     '{{WRAPPER}} li:not(:last-child)' => 'margin-bottom: {{SIZE}}{{UNIT}};padding-bottom: {{SIZE}}{{UNIT}};',
+                ],
+
+            ]
+        );
+
+        $this->add_responsive_control(
+            'fgpd',
+            [
+                'label' => esc_html__('Gap', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'selectors' => [
+                    '{{WRAPPER}} li' => 'gap: {{SIZE}}{{UNIT}};',
                 ],
 
             ]

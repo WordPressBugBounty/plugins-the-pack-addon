@@ -1,6 +1,6 @@
 <?php
 
-if(!class_exists('The_Pack_Kit')){
+if(!class_exists('The_Pack_Kit') || !defined( 'ELEMENTOR_PRO_VERSION' ) ){
     class The_Pack_Kit{
         /**
          * A reference to an instance of this class.

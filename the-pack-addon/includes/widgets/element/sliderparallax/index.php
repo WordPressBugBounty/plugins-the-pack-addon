@@ -377,7 +377,26 @@ class thepack_fsrnslk extends Widget_Base
                 ],
             ]
         );
-
+        $this->add_responsive_control(
+            'emwd',
+            [
+                'label' => esc_html__('Emoji width', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'selectors' => [
+                    '{{WRAPPER}} .title img' => 'width: {{SIZE}}{{UNIT}} !important;',
+                ],
+            ]
+        );
+        $this->add_responsive_control(
+            'emvs',
+            [
+                'label' => esc_html__('Emoji vertical position', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'selectors' => [
+                    '{{WRAPPER}} .title img' => 'top: {{SIZE}}{{UNIT}};position: relative;',
+                ],
+            ]
+        );        
         $this->end_controls_tab();
 
         $this->start_controls_tab(

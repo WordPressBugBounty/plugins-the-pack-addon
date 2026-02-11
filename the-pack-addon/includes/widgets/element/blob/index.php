@@ -52,12 +52,13 @@ class Tp_Blog_Gen extends Widget_Base {
             'wd',   
             [
                 'label' => esc_html__('Width', 'the-pack-addon'), 
-                'type' => Controls_Manager::SLIDER,                    
+                'type' => Controls_Manager::SLIDER,  
+                'size_units' => ['px', '%'],                  
                 'range' => [
                     'px' => [
                         'max' => 1000,    
                     ]
-                ],
+                ], 
                 'selectors' => [
                     '{{WRAPPER}} .tp-blob' => 'width: {{SIZE}}{{UNIT}};',
                 ],
@@ -68,7 +69,8 @@ class Tp_Blog_Gen extends Widget_Base {
             'ht',   
             [
                 'label' => esc_html__('Height', 'the-pack-addon'), 
-                'type' => Controls_Manager::SLIDER,                    
+                'type' => Controls_Manager::SLIDER,  
+                'size_units' => ['px', '%'],                  
                 'range' => [
                     'px' => [
                         'max' => 1000,    

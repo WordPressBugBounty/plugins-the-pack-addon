@@ -1,17 +1,17 @@
-
-  .tp-tab-1 .tab-area {
+.tp-tab-1 .tab-area {
     margin: 0;
     padding: 0;
 }
 
 .tp-tab-1 .tab-area li {
     cursor: pointer;
+    position: relative;
 }
 
 .tp-tab-1 .tab-content {
     display: none;
 }
- 
+
 .tp-tab-1 .tab-content.active {
     display: block;
 }
@@ -28,3 +28,8 @@
     margin: 0;
 }
 
+.tp-tab-1.preabs .pre {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}

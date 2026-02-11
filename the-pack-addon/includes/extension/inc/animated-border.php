@@ -68,7 +68,30 @@ class TP_Animated_Border
         );
 
         $element->end_controls_section();
-        
+
+        $element->start_controls_section(
+            'container_invf',
+            [
+                'label' => esc_html__('Mask radius', 'the-pack-addon'),
+                'tab' => Controls_Manager::TAB_STYLE,
+            ]
+        );
+        $element->add_control(
+            'tpconid',
+            [
+                'label' => esc_html__('Select style', 'the-pack-addon'),
+                'type' => Controls_Manager::SELECT,
+                'options' => [
+                    '' => __( 'None', 'the-pack-addon'  ),
+                    'tp_inverted_1' => __( 'One', 'the-pack-addon'  ),
+                    'tp_inverted_2' => __( 'Two', 'the-pack-addon'  ),
+                    'tp_inverted_3' => __( 'Three', 'the-pack-addon'  ),
+                ], 
+                'prefix_class' => ''               
+            ]
+        );
+        $element->end_controls_section();
+
     }
 }
 

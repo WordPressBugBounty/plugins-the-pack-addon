@@ -284,6 +284,35 @@ class The_Pack_Iconbox_Extra_Control
                 ],
             ]
         );
+        $element->add_control(
+            'ibgrbh',
+            [
+                'label' => esc_html__('Enable blur background', 'the-pack-addon'),
+                'type' => Controls_Manager::SWITCHER,
+                'prefix_class' => 'tp_icon_blur_',
+            ]
+        );
+        $element->add_responsive_control(
+            'ibbrdq',
+            [
+                'label' => esc_html__('Blur border radius', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'range' => [
+                    'px' => [
+                        'max' => 500,
+                    ]
+                ],
+                'condition' => [
+                    'ibgrbh' => 'yes',
+                ],                
+                'selectors' => [ 
+                    '{{WRAPPER}} .elementor-icon::after' => 'border-radius: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        do_action('the_pack_svg_path_color', $element,'ikbudx_','svg path');
+
         $element->end_controls_section();
     }
 }

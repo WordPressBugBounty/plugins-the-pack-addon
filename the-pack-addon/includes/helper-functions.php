@@ -678,6 +678,24 @@ function the_pack_swiper_markup($settings){
     ];
     return $out;
 
+} 
+
+add_action( 'the_pack_svg_path_color', 'tp_svg_path_color',10,3);
+
+function tp_svg_path_color($wb,$prefix,$selector){
+
+    $wb->add_control(
+        $prefix.'tpsvg',
+        [
+            'label' => esc_html__('SVG path color', 'the-pack-addon'),
+            'type' => Controls_Manager::COLOR,
+            'description'=>'Applicable for svg upload',
+            'selectors' => [
+                '{{WRAPPER}} '.$selector => 'fill: {{VALUE}} !important;',
+            ],
+        ]
+    );
+
 }
 add_action( 'the_pack_flex', 'tp_flex_control',10,4);
 
@@ -851,7 +869,7 @@ function tp_typo_control($wb,$prefix,$selector,$support=[]){
                 'label' => esc_html__('Width', 'the-pack-addon'),
                 'type' => Controls_Manager::SLIDER,
                 'selectors' => [
-                    '{{WRAPPER}} '.$selector => 'width:{{SIZE}}px;height:{{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} '.$selector => 'width:{{SIZE}}{{UNIT}};',
                 ],
 
             ]
@@ -864,7 +882,7 @@ function tp_typo_control($wb,$prefix,$selector,$support=[]){
                 'label' => esc_html__('Height', 'the-pack-addon'),
                 'type' => Controls_Manager::SLIDER,
                 'selectors' => [
-                    '{{WRAPPER}} '.$selector => 'width:{{SIZE}}{{UNIT}};height:{{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} '.$selector => 'height:{{SIZE}}{{UNIT}};',
                 ],
 
             ]
@@ -975,6 +993,144 @@ function tp_typo_gradient($wb,$prefix,$selector){
         ]
     );
 
+}
+
+add_action( 'the_pack_number_pagination', 'number_pagination');
+
+function number_pagination($wb){
+
+    $wb->add_responsive_control(
+        'pgtsp',
+        [
+            'label' => esc_html__('Top spacing', 'the-pack-addon'),
+            'type' => Controls_Manager::SLIDER,
+            'selectors' => [
+                '{{WRAPPER}} .tp-post-pagination' => 'margin-top: {{SIZE}}{{UNIT}};',
+            ],
+        ]
+    );
+
+    $wb->add_responsive_control(
+        'pgisp',
+        [
+            'label' => esc_html__('Spacing', 'the-pack-addon'),
+            'type' => Controls_Manager::SLIDER,
+            'selectors' => [
+                '{{WRAPPER}} .page-numbers' => 'gap:{{SIZE}}{{UNIT}};',
+            ],
+        ]
+    );
+
+    $wb->add_responsive_control(
+        'pgaln',
+        [
+            'label' => esc_html__('Alignment', 'the-pack-addon'),
+            'type' => Controls_Manager::CHOOSE,
+            'options' => [
+                'flex-start' => [
+                    'title' => esc_html__('Left', 'the-pack-addon'),
+                    'icon' => 'eicon-h-align-left',
+                ],
+                'center' => [
+                    'title' => esc_html__('Center', 'the-pack-addon'),
+                    'icon' => 'eicon-v-align-top',
+                ],
+                'flex-end' => [
+                    'title' => esc_html__('Right', 'the-pack-addon'),
+                    'icon' => 'eicon-h-align-right',
+                ]
+            ],
+            'selectors' => [
+                '{{WRAPPER}} .page-numbers' => 'justify-content: {{VALUE}};',
+            ],
+        ]
+    );
+
+    $wb->add_responsive_control(
+        'pgwh',
+        [
+            'label' => esc_html__('Width & height', 'the-pack-addon'),
+            'type' => Controls_Manager::SLIDER,
+            'selectors' => [
+                '{{WRAPPER}} .page-numbers li a,{{WRAPPER}} .page-numbers li span' => 'height: {{SIZE}}{{UNIT}};width: {{SIZE}}{{UNIT}};',
+            ],
+        ]
+    );
+
+    $wb->add_responsive_control(
+        'pgbrad',
+        [
+            'label' => esc_html__('Border radius', 'the-pack-addon'),
+            'type' => Controls_Manager::SLIDER,
+            'selectors' => [
+                '{{WRAPPER}} .page-numbers li a,{{WRAPPER}} .page-numbers li span' => 'border-radius: {{SIZE}}{{UNIT}};',
+            ],
+        ]
+    );
+
+    $wb->add_control(
+        'pgbdkr',
+        [
+            'label' => esc_html__('Border color', 'the-pack-addon'),
+            'type' => Controls_Manager::COLOR,
+            'selectors' => [
+                '{{WRAPPER}} .page-numbers li a,{{WRAPPER}} .page-numbers li span' => 'border-color: {{VALUE}};',
+            ],
+        ]
+    );
+
+    $wb->add_group_control(
+        Group_Control_Typography::get_type(),
+        [
+            'name' => 'pgtyp',
+            'selector' => '{{WRAPPER}} .page-numbers li',
+            'label' => esc_html__('Typography', 'the-pack-addon'),
+        ]
+    );
+
+    $wb->add_control(
+        'pgbg',
+        [
+            'label' => esc_html__('Background', 'the-pack-addon'),
+            'type' => Controls_Manager::COLOR,
+            'selectors' => [
+                '{{WRAPPER}} .page-numbers li a,{{WRAPPER}} .page-numbers li span' => 'background: {{VALUE}};',
+            ],
+        ]
+    );
+
+    $wb->add_control(
+        'pgklr',
+        [
+            'label' => esc_html__('Color', 'the-pack-addon'),
+            'type' => Controls_Manager::COLOR,
+            'selectors' => [
+                '{{WRAPPER}} .page-numbers li a,{{WRAPPER}} .page-numbers li span' => 'color: {{VALUE}};',
+            ],
+        ]
+    );
+
+    $wb->add_control(
+        'pgbgh',
+        [
+            'label' => esc_html__('Hover background', 'the-pack-addon'),
+            'type' => Controls_Manager::COLOR,
+            'selectors' => [
+                '{{WRAPPER}} .page-numbers li a:hover,{{WRAPPER}} .page-numbers li span.current' => 'background: {{VALUE}};',
+            ],
+        ]
+    );
+
+    $wb->add_control(
+        'pgklrh',
+        [
+            'label' => esc_html__('Hover color', 'the-pack-addon'),
+            'type' => Controls_Manager::COLOR,
+            'selectors' => [
+                '{{WRAPPER}} .page-numbers li a:hover,{{WRAPPER}} .page-numbers li span.current' => 'color: {{VALUE}};border-color: {{VALUE}};',
+            ],
+        ]
+    );
 }
 
 add_action( 'the_pack_swiper_control', 'swiper_control',10,2);
@@ -1303,7 +1459,7 @@ function swiper_control($wb,$condition){
     );
 
     $wb->add_control(
-        'dbclr',
+        'dbtclr',
         [
             'label' => esc_html__('Border color', 'the-pack-addon'),
             'type' => Controls_Manager::COLOR,

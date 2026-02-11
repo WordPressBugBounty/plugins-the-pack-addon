@@ -527,7 +527,7 @@ class Group_Control_Motion_Fx extends Group_Control_Base {
                     'condition' => [
                         'motion_fx_' . $effects_group => 'yes',
                         $effect_name . '_effect' => 'yes',
-                    ],
+                    ], 
                     'render_type' => 'none',
                     'frontend_available' => true,
                 ] );

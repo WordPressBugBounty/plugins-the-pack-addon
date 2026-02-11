@@ -21,7 +21,7 @@ class The_Pack_Icon_Extra_Control
 
     public static function tp_callback_function($element, $args)
     {
-        $element->start_controls_section(
+        $element->start_controls_section(  
             'tpbtnsx',
             [
                 'label' => esc_html__('Extra style', 'the-pack-addon'),
@@ -48,6 +48,8 @@ class The_Pack_Icon_Extra_Control
                 ],
             ]
         );
+
+        do_action('the_pack_svg_path_color', $element,'ikb','svg path');
 
         $element->end_controls_section();
     }

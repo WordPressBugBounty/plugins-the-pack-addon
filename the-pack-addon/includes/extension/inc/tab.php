@@ -17,6 +17,56 @@ class The_Pack_Tab_Extra_Control
             __CLASS__,
             'tp_callback_function'
         ], 10, 2);
+
+        add_action('elementor/element/nested-tabs/section_title_style/before_section_end', [
+            __CLASS__,
+            'extra_control'
+        ], 10, 2);
+
+    }
+
+    public static function extra_control($element, $args){
+
+        $element->add_responsive_control(
+            'tpttbg',
+            [
+                'label' => esc_html__('Wrapper background', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .e-n-tabs-heading' => 'background: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $element->add_responsive_control(
+            'tptmws',
+            [
+                'label' => esc_html__('Wrapper max width', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'range' => [
+                    'px' => [
+                        'max' => 1500,
+                    ],
+                ],                
+                'selectors' => [
+                    '{{WRAPPER}} .e-n-tabs-heading' => 'width:{{SIZE}}{{UNIT}};margin: auto;',
+                ],
+
+            ]
+        );
+
+        $element->add_responsive_control(
+            'tpttbrd',
+            [
+                'label' => esc_html__('Wrapper border radius', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'selectors' => [
+                    '{{WRAPPER}} .e-n-tabs-heading' => 'border-radius:{{SIZE}}{{UNIT}};',
+                ],
+
+            ]
+        );
+
     }
 
     public static function tp_callback_function($element, $args)
@@ -104,16 +154,7 @@ class The_Pack_Tab_Extra_Control
                 ],
             ]
         );
-        $element->add_responsive_control(
-            'tpttbg',
-            [
-                'label' => esc_html__('Title wrapper background', 'the-pack-addon'),
-                'type' => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .e-n-tabs-heading' => 'background: {{VALUE}};',
-                ],
-            ]
-        );
+
         $element->add_responsive_control(
             'tpttpd',
             [

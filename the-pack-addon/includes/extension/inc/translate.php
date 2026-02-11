@@ -308,50 +308,23 @@ class Tp_Translate_Element
                 'frontend_available' => true,
                 'prefix_class' => 'tphovmove',
             ]
-        );
-
-        $element->end_controls_section();
-
-        $element->start_controls_section(
-            'section_tp_anim_brd',
+        );  
+        $element->add_responsive_control(
+            'tpopx',
             [
-                'label' => esc_html__('Animated border', 'the-pack-addon'),
-                'tab' => Controls_Manager::TAB_STYLE,
-            ]
-        ); 
-
-        $element->add_control(
-            'tp_en_anbd',
-            [
-                'label' => esc_html__('Enable animated border', 'the-pack-addon'),
-                'type' => Controls_Manager::SWITCHER,
-                'prefix_class' => 'tp_anim_border_',
-            ]
-        );
-
-        $element->add_control(
-            'tp_en_anbd_cl',
-            [
-                'label' => esc_html__('Gradient color', 'the-pack-addon'),
-                'type' => Controls_Manager::TEXTAREA,
-                'selectors' => [
-                    '{{WRAPPER}}.tp_anim_border_yes>.elementor-widget-container:after' => 'background-image: linear-gradient(60deg,{{VALUE}});',
-                ],
-            ]
-        );
-
-        $element->add_control(
-            'tp_en_anbd_cldr',
-            [
-                'label' => esc_html__('Border radius' , 'the-pack-addon'),
+                'label' => esc_html__('Opacity', 'the-pack-addon'),
                 'type' => Controls_Manager::SLIDER,
-                'selectors' => [
-                    '{{WRAPPER}} .main-head i' => 'border-radius:{{SIZE}}{{UNIT}};',
+                'range' => [
+                    'px' =>[ 
+                        'max' => 1,
+                        'step' => .1,
+                    ],
                 ],
-
+                'selectors' => [
+                    '{{WRAPPER}}' => 'opacity:{{SIZE}};',
+                ],
             ]
         );
-
         $element->end_controls_section();
 
         $element->start_controls_section(

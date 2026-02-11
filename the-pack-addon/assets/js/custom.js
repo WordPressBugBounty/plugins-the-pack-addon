@@ -633,11 +633,13 @@
 
             slider_elem.find('.tp-tap').on('click', function () {
                 slider_elem.removeClass('menu-is-closed').addClass('menu-is-opened');
+                $('body').addClass('overlay-on');
             });
 
             $('.close-menu, .click-capture').on('click', function () {
                 slider_elem.removeClass('menu-is-opened search-is-opened').addClass('menu-is-closed search-is-closed');
                 slider_elem.find('.momenu-list ul').slideUp(300);
+                $('body').removeClass('overlay-on');
             });
 
         });
@@ -1251,6 +1253,14 @@
                 $(this).find('.gallery-icon a').append(icon);
 
             }
+            if ( settings['masonry'] ) {
+                var container = $(this).find('.gallery');
+                container.imagesLoaded(function () {
+                    container.masonry({
+                        isAnimated: true
+                    });
+                });
+            }            
         });
     };
 

@@ -48,12 +48,34 @@ class Tp_Translate_Element
         ); 
 
         $element->add_control(
+            'tp_f_fw',
+            [
+                'label' => esc_html__('Flex full width', 'the-pack-addon'),
+                'type' => Controls_Manager::SWITCHER,
+                'selectors' => [
+                    '{{WRAPPER}}' => 'flex:1 1 0%;',
+                ],
+            ]
+        );
+
+        $element->add_control(
             'abs_pos',
             [
                 'label' => esc_html__('Absolute position', 'the-pack-addon'),
                 'type' => Controls_Manager::SWITCHER,
                 'selectors' => [
                     '{{WRAPPER}}' => 'position:absolute;',
+                ],
+            ]
+        );
+
+        $element->add_control(
+            'ini_pos',
+            [
+                'label' => esc_html__('Initial position', 'the-pack-addon'),
+                'type' => Controls_Manager::SWITCHER,
+                'selectors' => [
+                    '{{WRAPPER}}' => 'position:initial;',
                 ],
             ]
         );

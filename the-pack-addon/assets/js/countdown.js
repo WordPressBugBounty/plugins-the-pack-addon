@@ -108,10 +108,10 @@ and GPL-3.0 (http://opensource.org/licenses/GPL-3.0) licenses.
         };
         $.countdown.defaultOptions = {
             date: "June 7, 2087 15:03:25",
-            refresh: 1000,
+            refresh: 1000, // set false to stop counting
             onEnd: $.noop,
             render: function (date) {
-                return $(this.el).html("<span class='days'><span class='inner'><span class='innerwrp'>" + date.days + "<span>days</span></span></span></span><span class='hour'><span class='inner'><span class='innerwrp'>" + (this.leadingZeros(date.hours)) + "<span>hours</span></span></span></span><span class='min'><span class='inner'><span class='innerwrp'>" + (this.leadingZeros(date.min)) + "<span>min</span></span></span></span><span class='sec'><span class='inner'><span class='innerwrp'>" + (this.leadingZeros(date.sec)) + "<span>sec</span></span></span></span>");
+                return $(this.el).html("<span class='days'><span class='innerwrp tp-d-flex'>" + date.days + "<span>days</span></span></span><span class='hour'><span class='innerwrp tp-d-flex'>" + (this.leadingZeros(date.hours)) + "<span>hours</span></span></span><span class='min'><span class='innerwrp tp-d-flex'>" + (this.leadingZeros(date.min)) + "<span>min</span></span></span><span class='sec'><span class='innerwrp tp-d-flex'>" + (this.leadingZeros(date.sec)) + "<span>sec</span></span></span>");
             }
         };
         $.fn.countdown = function (options) {

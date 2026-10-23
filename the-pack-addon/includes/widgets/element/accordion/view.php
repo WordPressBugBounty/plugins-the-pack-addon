@@ -27,7 +27,7 @@ switch ($settings['tmpl']) {
 foreach ($settings['tabs'] as $a) {
     $title = $a['title'] ? '<div class="accortitle">' . wp_kses_post($a['title']) . $indicator . '</div>' : '';
     $content = '<p class="accorbody">' . wp_kses_post($a['content']) . '</p>';
-    $tabti .= '<li>' . $title . $content . '</li>';
+    $tabti .= '<li><div class="inner">' . $title . $content . '</div></li>';
 }
 ?>
 

@@ -31,10 +31,10 @@
        echo '<div data-xld =\'' . wp_kses_post(wp_json_encode($slider_options)) . '\' class="' . esc_attr($parent_cls) . '">';
        echo '<div class="' . esc_attr($main_cls) . '">';
        if ( wc_get_loop_prop( 'total' ) ) {
-           while ( $wp_query->have_posts() ) {
+           while ( $wp_query->have_posts() ) { 
                $wp_query->the_post();
                /** 
-                * Hook: woocommerce_shop_loop. 
+                * Hook: woocommerce_shop_loop.  
                 */
                do_action( 'woocommerce_shop_loop' );
                include THE_PACK_PLUGIN_DIR . 'includes/woocommerce/custom-loop.php';

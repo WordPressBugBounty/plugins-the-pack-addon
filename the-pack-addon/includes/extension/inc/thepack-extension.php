@@ -474,6 +474,48 @@ use Elementor\Group_Control_Box_Shadow;
             );
 
             $this->end_controls_section();
+
+            if ( class_exists( 'WooCommerce' ) ) {
+                $this->start_controls_section(
+                    'tp_woocom_sec',
+                    [
+                        'label' => esc_html__('WooCommerce Options', 'the-pack-addon'),
+                        'tab' => $this->get_id(),
+                    ]
+                ); 
+
+                $this->add_control(
+                    'tpwooquick',
+                    [
+                        'label' => esc_html__('Quick view template', 'the-pack-addon'),
+                        'type' => Controls_Manager::SELECT2,
+                        'label_block' => true,
+                        'options' => thepack_drop_posts('elementor_library'),
+                        'multiple' => false,
+                    ]
+                );
+
+                $this->add_control(
+                    'tpwooshopost',
+                    [
+                        'label' => esc_html__('Shop posts','the-pack-addon'),
+                        'type' => Controls_Manager::SLIDER,               
+                    ]
+                );
+
+                $this->add_control(
+                    'tpwoowish',
+                    [
+                        'label' => esc_html__('Wish List Page', 'the-pack-addon'),
+                        'type' => Controls_Manager::SELECT2,
+                        'label_block' => true,
+                        'options' => thepack_drop_posts('page'),
+                        'multiple' => false,
+                    ]
+                );
+
+                $this->end_controls_section();
+            }
         }
     }
 

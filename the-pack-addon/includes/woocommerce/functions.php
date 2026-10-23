@@ -1,4 +1,5 @@
 <?php
+
 use Elementor\Plugin;
 function tp_woo_comments_template($settings){
     require dirname(__FILE__) . '/comments.php';  
@@ -9,20 +10,25 @@ class The_Pack_Woo_Helper {
 	public function __construct(){
 
 		add_action('woocommerce_loop_add_to_cart_link', [__CLASS__, 'before_after_btn_wrap']);
-		add_filter('wc_get_template_part', [__CLASS__, 'override_woocommerce_template_part'], 10, 3);
+		add_filter('wc_get_template_part', [__CLASS__, 'override_woocommerce_template_part'],9, 3);
 		add_filter( 'woocommerce_checkout_order_review', [__CLASS__,'checkout_heading'] );
 
 		add_action('wp_ajax_tp_add_cart_single_product',[__CLASS__,'add_cart_single_product_ajax']);
 		add_action('wp_ajax_nopriv_tp_add_cart_single_product',[__CLASS__,'add_cart_single_product_ajax']);
-		add_filter( 'woocommerce_product_query_tax_query', [__CLASS__,'filter_tax_query'], 10, 2 );
 
-		add_action( 'woocommerce_product_query', [__CLASS__,'tp_product_query'], 10, 2 );
 		add_filter( 'loop_shop_per_page', [__CLASS__,'product_per_page'], 10);
 
 		add_action('wp_ajax_the_pack_quickview',[__CLASS__,'the_pack_quickview']);
 		add_action('wp_ajax_nopriv_the_pack_quickview',[__CLASS__,'the_pack_quickview']);
 		add_filter('woocommerce_add_to_cart_fragments',[__CLASS__,'cart_count_fragments']);
 
+		add_action('wp_enqueue_scripts',[__CLASS__,'quickview_assets']);
+
+	}
+
+	static function quickview_assets() {
+		
+		wp_enqueue_script( 'wc-add-to-cart-variation' );
 	}
 
 	static function cart_count_fragments( $fragments ) {
@@ -82,8 +88,17 @@ class The_Pack_Woo_Helper {
             $id      = ( int ) sanitize_text_field(wp_unslash($_POST['id']));
             $post    = get_post( $id );
             $product = wc_get_product( $id );
-			$popcontent = '2082';
-			echo do_shortcode('[THEPACK_INSERT_TPL id="' . $popcontent . '"]');
+			$template_id = the_pack_get_global_settings('tpwooquick');
+			
+			?>
+
+	 	    <script>
+		 	    var wc_add_to_cart_variation_params = {"ajax_url":"\/wp-admin\/admin-ajax.php"};     
+	            jQuery.getScript("<?php echo $woocommerce->plugin_url(); ?>/assets/js/frontend/add-to-cart-variation.min.js"); 
+	 	    </script>
+
+			<?php
+			echo do_shortcode('[THEPACK_INSERT_TPL id="' . $template_id . '"]');
 			//$out= self::add_to_compare( $id );		
 			//var_dump($out); 
 		}
@@ -97,53 +112,6 @@ class The_Pack_Woo_Helper {
 			return $getopt;
 		}
 
-	}
-
-	static function tp_on_sale(){
-		$on_sale  = isset( $_GET['on_sale'] ) ? sanitize_text_field(wp_unslash($_GET['on_sale'])) : '';//phpcs:disable WordPress.Security.NonceVerification.Recommended
-	
-		if($on_sale == 'onsale'){
-			return $on_sale;
-		}
-	}
-	
-	static function tp_stock_status(){
-		$stock_status  = isset( $_GET['stock_status'] ) ? sanitize_text_field(wp_unslash($_GET['stock_status'])) : '';//phpcs:disable WordPress.Security.NonceVerification.Recommended
-	
-		if($stock_status == 'instock'){
-			return $stock_status;
-		}
-	}
-	
-	static function tp_product_query( $q ){//phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_meta_key
-		if(self::tp_stock_status() == 'instock'){
-			$q->set( 'meta_query', array (
-				array(
-					'meta_key' 	=> '_stock_status',
-					'value' 	=> 'instock',
-				)
-			));
-		}
-		
-		if(self::tp_on_sale() == 'onsale'){
-			$q->set ( 'post__in', wc_get_product_ids_on_sale() );
-		}
-	
-	}
-
-	static function filter_tax_query( $tax_query, $instance ) {
-	
-		if(isset($_GET['filter_cat'])){//phpcs:disable WordPress.Security.NonceVerification.Recommended
-			if(!empty($_GET['filter_cat'])){//phpcs:disable WordPress.Security.NonceVerification.Recommended
-				$tax_query[] = array(
-					'taxonomy' => 'product_cat',
-					'field' 	=> 'id',
-					'terms' 	=> explode(',',sanitize_text_field(wp_unslash($_GET['filter_cat']))),//phpcs:disable WordPress.Security.NonceVerification.Recommended
-				);
-			}
-		}
-		
-		return $tax_query; 
 	}
 
 	static function add_cart_single_product_ajax(){
@@ -181,6 +149,18 @@ class The_Pack_Woo_Helper {
 		$after = '</div>';  
 	
 		return $before . $add_to_cart_html . $after;
+	}
+
+	static function quick_hover_actions(){
+
+		global $product;
+		$id = $product->get_id();
+		echo '
+			<div class="tp-quick-actions">
+				<a data-id="'.$id.'" class="tp-quick-view tp-loader-btn" href="#"><i class="main bi-eye"></i><i class="working bi-arrow-repeat"></i></a>
+				'.do_shortcode('[dev-ash-wishlist]').'
+			</div>
+		';
 	}
 
 	static function on_sale($product,$option){
@@ -223,13 +203,27 @@ class The_Pack_Woo_Helper {
 		//phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo '<div class="tp-product-cat">'.wc_get_product_category_list( $id ).'</div>';
 	}
-
+	static function product_sale_end($id){
+		$today = strtotime( "today" );
+		$end_date = (int)get_post_meta( $id, '_sale_price_dates_to', true );
+		if($end_date>$today){
+			$date =  date("j M y", $end_date);
+			$data = [
+				'date' => esc_attr($date),
+				'day' => 'd',
+				'hour' => 'h',
+				'min' => 'm',
+				'sec' => 's'
+			];
+			echo '<div class="countdown tbtr" data-xld =\'' . wp_json_encode($data) . '\'></div>';
+		}
+	}
 	static function product_thumbnail($size=''){   
 		//phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo '<a href="'.esc_attr(get_permalink()).'">'.woocommerce_get_product_thumbnail($size).'</a>';
 	}
 	static function product_title(){
-		the_title( sprintf( '<h2 class="tp-title"><a href="%s" rel="bookmark">', esc_attr( esc_url( get_permalink() ) ) ),'</a></h2>');
+		the_title( sprintf( '<h2 class="tp-title tp-clamp"><a href="%s" rel="bookmark">', esc_attr( esc_url( get_permalink() ) ) ),'</a></h2>');
 	}
  
 	static function product_rating($product,$hide=''){
@@ -250,7 +244,7 @@ class The_Pack_Woo_Helper {
 			echo '<div class="tp-avarage-rating tp-dinflex"><span class="tscore"><span style="width: '.$width.'"></span></span><span class="count">('.esc_attr($rating_count).')</span></div>';
 		}
 
-	}
+	} 
 
 	static function tp_get_cat_url($termid){
 		global $wp;
@@ -327,124 +321,187 @@ class The_Pack_Woo_Helper {
 		return $wpdb->get_row( $sql );
 	}   
 	
-	static function show_per_page_opt(){?>
-		<?php $perpage = isset($_GET['perpage']) ? sanitize_text_field(wp_unslash($_GET['perpage'])) : '';//phpcs:disable WordPress.Security.NonceVerification.Recommended ?> 
-		<?php $defaultperpage = wc_get_default_products_per_row() * wc_get_default_product_rows_per_page(); ?>
-		<?php $options = array($defaultperpage,$defaultperpage*2,$defaultperpage*3,$defaultperpage*4); ?>
-		<div class="per-page-products">
-			<span><?php esc_html_e('Show:','the-pack-addon'); ?></span>
-			<?php for( $i=0; $i<count($options); $i++ ) {
-				//phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo '<a rel="nofollow noopener" href="'.esc_url( add_query_arg( 'perpage', esc_attr($options[$i]) ) ).'">'.$options[$i].'</a><span>/</span>';
-			} ?>		 
-		</div>
-	<?php }
 
 	static function bf_shop_filter($opt){
-
-        echo '<div class="tp-before-shop">';
-        woocommerce_result_count();
-        self::show_per_page_opt();
-        woocommerce_catalog_ordering();
+		$selector = $opt['sidebar_selector'] ? 'data-target="'.$opt['sidebar_selector'].'"' : '';
+        echo '<div class="tp-before-shop tp-d-flex tp-al-center tp-pos-rel">';
+			echo '<div class="tp-before-shop-inner tp-dinflex">';
+				echo '<span '.$selector.' class="side-filter-btn"><i aria-hidden="true" class="tpbi bi-arrow-down-up"></i> Filter</span>';
+				woocommerce_result_count();
+			echo '</div>';
+			woocommerce_catalog_ordering();
         echo '</div>';
-        self::tp_remove_shop_filter($opt);
-	}
-
-	static function tp_remove_shop_filter($opt){
-	
-		$output = ''; 
-		$icon = the_pack_render_icon( $opt['cfltr'] );
-	
-		$_chosen_attributes = WC_Query::get_layered_nav_chosen_attributes();
-		$min_price = isset( $_GET['min_price'] ) ? wc_clean( sanitize_text_field(wp_unslash($_GET['min_price']) )) : 0;//phpcs:disable WordPress.Security.NonceVerification.Recommended 
-		$max_price = isset( $_GET['max_price'] ) ? wc_clean( sanitize_text_field(wp_unslash($_GET['max_price']) )) : 0;//phpcs:disable WordPress.Security.NonceVerification.Recommended 
-	
-		if(! empty( $_chosen_attributes ) || isset($_GET['filter_cat']) || 0 < $min_price || 0 < $max_price || self::tp_stock_status() == 'instock' || self::tp_on_sale() == 'onsale'){//phpcs:disable WordPress.Security.NonceVerification.Recommended
-	
-			global $wp;
-		
-			if ( '' === get_option( 'permalink_structure' ) ) {
-				$baselink = remove_query_arg( array( 'page', 'paged' ), add_query_arg( $wp->query_string, '', home_url( $wp->request ) ) );
-			} else {
-				$baselink = preg_replace( '%\/page/[0-9]+%', '',  add_query_arg( null, null )  );
-			}
-	
-			$output .= '<ul class="remove-filter raw-style">';
-			//phpcs:disable WordPress.Security.NonceVerification.Recommended
-			$output .= '<li><a href="'.esc_url(remove_query_arg(array_keys($_GET))).'" class="remove-filter-element clear-all">'.$icon.$opt['clrtxt'].'</a></li>';//phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
-	
-			if ( ! empty( $_chosen_attributes ) ) {
-				foreach ( $_chosen_attributes as $taxonomy => $data ) {
-					foreach ( $data['terms'] as $term_slug ) {
-						$term = get_term_by( 'slug', $term_slug, $taxonomy );
-						
-						$filter_name    = 'filter_' . wc_attribute_taxonomy_slug( $taxonomy );
-						$explode_old = explode(',',sanitize_text_field(wp_unslash($_GET[$filter_name])));
-						$explode_termid = explode(',',$term->slug);
-						$klbdata = array_diff( $explode_old, $explode_termid);
-						$klbdataimplode = implode(',',$klbdata);
-						
-						if(empty($klbdataimplode)){
-							$link = remove_query_arg($filter_name);
-						} else {
-							$link = add_query_arg($filter_name,implode(',',$klbdata),$baselink );
-						}
-	 
-						$output .= '<li><a href="'.esc_url($link).'" class="remove-filter-element attributes">'.$icon.esc_html($term->name).'</a></li>';//phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
-	
-					}
-				}
-			}
-	
-			if(self::tp_stock_status() == 'instock'){
-			$output .= '<li><a href="'.esc_url(remove_query_arg('stock_status')).'" class="remove-filter-element stock_status">'.$icon.$opt['clristk'].'</a></li>';
-			}
-			
-			if(self::tp_on_sale() == 'onsale'){
-			$output .= '<li><a href="'.esc_url(remove_query_arg('on_sale')).'" class="remove-filter-element on_sale">'.$icon.$opt['clrosl'].'</a></li>';
-			}
-	
-			if($min_price){
-			$output .= '<li><a href="'.esc_url(remove_query_arg('min_price')).'" class="remove-filter-element min_price">'.$icon.$opt['clrmn'].' '.wc_price( $min_price ). '</a></li>';
-			}
-			
-			if($max_price){
-			$output .= '<li><a href="'.esc_url(remove_query_arg('max_price')).'" class="remove-filter-element max_price">'.$icon.$opt['clrmx'].' '.wc_price( $max_price ). '</a></li>';
-			}
-			
-			if(isset($_GET['filter_cat'])){
-				$terms = get_terms( array(
-					'taxonomy' => 'product_cat',
-					'hide_empty' => false,
-					'parent'    => 0,
-					'include' 	=> explode(',',sanitize_text_field(wp_unslash($_GET['filter_cat']))),
-				) );
-				
-				foreach ( $terms as $term ) {
-					$term_children = get_term_children( $term->term_id, 'product_cat' );
-					$output .= '<li><a href="'.esc_url( self::tp_get_cat_url($term->term_id) ).'" class="remove-filter-element product_cat" id="'.esc_attr($term->term_id).'">'.$icon.$term->name.'</a></li>';
-					if($term_children){
-						foreach($term_children as $child){
-							$childterm = get_term_by( 'id', $child, 'product_cat' );
-							if(in_array($childterm->term_id, explode(',',sanitize_text_field($_GET['filter_cat'])))){ 
-								$output .= '<li><a href="'.esc_url( self::tp_get_cat_url($childterm->term_id) ).'" class="remove-filter-element product_cat" id="'.esc_attr($childterm->term_id).'">'.$icon.$childterm->name.'</a></li>';
-							}
-						}
-					}
-				}
-			
-			}
-			
-			$output .= '</ul>';
-		}
-		
-		echo thepack_build_html($output);
-		if (Plugin::instance()->editor->is_edit_mode()) {
-			echo '<ul class="remove-filter raw-style"><li><a href="#" class="remove-filter-element clear-all">'.$icon.'Clear filters</a></li><li><a href="#" class="remove-filter-element product_cat" id="28">'.$icon.'Belt</a></li>
-			</ul>';
-		}
 	}
 
 }
+if ( class_exists( 'WooCommerce' ) ) {
+	new The_Pack_Woo_Helper();
+}
 
-new The_Pack_Woo_Helper();
+
+function build_filter_nav($settings,$prefix){
+
+	if($settings['hide_head']){
+		return;
+	}
+	$data_source = $settings[$prefix.'_'.'query_type'];
+	$first = 0;
+	$out = '';
+	$heading = thepack_build_html($settings['ttl'],'h3','filter-title');
+	if($data_source=='category'){
+		
+		foreach ($settings[$prefix.'_'.'terms'] as $cat_id) {
+			$first++; 
+			$active_cls = $first == 1 ? 'current' : '';
+			$termg = get_term_by('slug', $cat_id['meta'], $settings[$prefix.'_'.'taxonomy']);
+			$term = get_term($termg->term_id);
+			$title = $cat_id['label'] ? $cat_id['label'] : $term->name;
+			$out .= '<li data-tax="'.$settings[$prefix.'_'.'taxonomy'].'" data-term-id="'.$term->slug.'" class="woo-filter-item '.$active_cls.'">'.$title.'</li>';
+		}
+
+	} elseif($data_source=='custom'){
+
+		foreach ($settings[$prefix.'_'.'customs'] as $cat_id) {
+			$first++;
+			$active_cls = $first == 1 ? 'current' : '';
+			$out .= '<li data-term-id="'.$cat_id['meta'].'" class="woo-filter-item '.$active_cls.'">'.$cat_id['label'].'</li>';
+		}
+
+	} else {
+
+	} 
+
+	return '<div class="woo-filter-head tp-d-flex tp-al-center tp-wrap-wrap">'.$heading.'<ul data-source="'.$data_source.'" class="tp-woo-filter tp-d-flex tp-wrap-wrap raw-style">'.$out.'</ul></div>';
+}
+
+function build_woo_query($settings,$prefix){
+ 
+	$wp_query_args = [
+		'post_type'      => 'product',
+		'post_status'    => 'publish',
+		'posts_per_page' => $settings[$prefix.'_'.'num']['size'],
+	];
+
+	$data_source = $settings[$prefix.'_'.'query_type'];
+
+	if($data_source=='category'){
+
+		$cat = thepack_buildermeta_to_string($settings[$prefix.'_'.'terms']);
+		$first_cat = explode(',' ,$cat);  
+		if($first_cat){
+			$wp_query_args['tax_query'] = [
+				[
+					'taxonomy' => $settings[$prefix.'_'.'taxonomy'],
+					'field' => 'slug',
+					'terms' => $first_cat[0],					
+				],
+			];
+		} 
+
+	} elseif($data_source=='related'){
+
+		$product_id = get_the_ID();
+		$related_ids = wc_get_related_products( $product_id);
+		$wp_query_args['post__in'] = $related_ids;
+
+
+	}elseif($data_source=='category_term'){
+
+		$cat = thepack_buildermeta_to_string($settings[$prefix.'_'.'terms']);
+		$first_cat = explode(',' ,$cat);  
+
+		$wp_query_args['tax_query'] = [
+			[
+				'taxonomy' => $settings[$prefix.'_'.'taxonomy'],
+				'field' => 'slug',
+				'terms' => $first_cat,					
+			],
+		];
+
+	} elseif($data_source=='custom'){
+
+		if (empty($settings[$prefix.'_'.'customs'])) {
+			return;
+		}
+		$type = $settings[$prefix.'_'.'customs'][0]['meta'];
+
+		if($type=='sale'){
+
+			$wp_query_args['meta_query'] = [
+				'relation' => 'OR',
+				[
+					'key'     => '_sale_price',
+					'value'   => 0,
+					'compare' => '>',
+					'type'    => 'numeric'			
+				],
+				[
+					'key'     => '_min_variation_sale_price',
+					'value'   => 0,
+					'compare' => '>',
+					'type'    => 'numeric'			
+				],
+			];	
+
+		} else if($type=='featured'){
+
+			$wp_query_args['tax_query'] = [
+				[
+					'taxonomy' => 'product_visibility',
+					'field' => 'name',
+					'terms' => 'featured',	
+					'operator' => 'IN',				
+				],
+			];
+
+		} else if($type=='topsell'){
+
+			$wp_query_args['meta_key'] = 'total_sales';
+			$wp_query_args['orderby'] = 'meta_value_num';
+			$wp_query_args['order'] = 'DESC';
+
+		} else if ($type=='endingsale'){
+
+			$today = strtotime( "today" );
+			$wp_query_args['meta_query'] = [
+				'relation' => 'AND',
+				[
+					'key'     => '_sale_price_dates_to',
+					'value'   => $today,
+					'compare' => '>', // Check for dates in the past
+					'type'    => 'numeric'			
+				],
+			]; 
+			
+		} else if($type=='new'){
+
+			$wp_query_args['orderby'] = 'date';
+			$wp_query_args['order'] = 'DESC';
+
+		}
+
+	} else {
+
+		$id = $settings[$prefix.'_'.'id_query'];
+		$wp_query_args['post__in'] = $id;
+		$wp_query_args['orderby'] = 'post__in';		
+	}
+
+	return $wp_query_args;
+}
+
+add_filter( 'loop_shop_per_page', 'the_pack_woo_shop_posts', 20 );
+function the_pack_woo_shop_posts( $cols ) {
+
+  $posts = the_pack_get_global_settings('tpwooshopost');	
+  $data = isset( $posts['size'] ) ? $posts['size'] : '';
+  return $data;
+}
+
+//add_filter( 'woocommerce_pagination_args', 'custom_woocommerce_pagination_arrows' );
+
+function custom_woocommerce_pagination_arrows( $args ) {
+    $args['prev_text'] = '<i aria-hidden="true" class="tpbi bi-chevron-left"></i>'; // Example: Left Double Angle Quote
+    $args['next_text'] = '<i aria-hidden="true" class="tpbi bi-chevron-right"></i>'; // Example: Right Double Angle Quote
+    return $args;
+}

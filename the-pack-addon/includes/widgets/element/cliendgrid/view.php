@@ -12,7 +12,7 @@ switch ($settings['disp']) {
  
     default:
 }
-
+ 
 if ($settings['disp'] == 'slider') {
     echo '<div class="swiper-container tpswiper clientslide" data-xld =\'' . wp_kses_post(wp_json_encode($swiper_opt['settings'])) . '\'>
                 <div class="swiper-wrapper tb-clientwrap1">';?>

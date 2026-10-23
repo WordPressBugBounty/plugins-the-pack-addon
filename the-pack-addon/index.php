@@ -10,6 +10,9 @@ License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Version: 2.1.6
 Text Domain: the-pack-addon
 Domain Path: /languages/
+Elementor tested up to: 4.1
+Elementor Pro tested up to: 4.1
+Requires Plugins:  elementor
 */
  
 if (!defined('ABSPATH')) {
@@ -114,8 +117,8 @@ if (!class_exists('thepack_elementor_addon_widget')) {
             add_action( 'elementor/controls/register', array( $this, 'register_new_controls' ) );
             add_action('init', [$this, 'init']);
             add_action( 'plugin_action_links_'. plugin_basename( __FILE__ ), array( $this, 'my_plugin_action_links' ), 10 );
-
             add_action( 'elementor/elements/elements_registered', [ $this, 'elements_registered' ] );
+
         }
 
         public function elements_registered($el_manager){
@@ -126,6 +129,7 @@ if (!class_exists('thepack_elementor_addon_widget')) {
         public function register_new_controls( $controls_manager ) {
 
             require_once THE_PACK_PLUGIN_DIR . 'includes/extension/control/motion.php';
+            require_once THE_PACK_PLUGIN_DIR . 'includes/extension/control/woo-query.php';
         }
 
         public function my_plugin_action_links( $links ) {
@@ -189,7 +193,7 @@ if (!class_exists('thepack_elementor_addon_widget')) {
          
         public function inject_pop_wrap() 
         {
-            echo '<div style="display:none;" class="tp-pop-response"><div class="loader"></div><span class="close"><i class="ti-close"></i></span><div class="inner"><div class="popwrap"></div></div></div>';
+            echo '<div style="display:none;" class="tp-pop-response"><div class="loader"></div><div class="inner"><span class="close"><i class="bi-x"></i></span><div class="popwrap"></div></div></div>';
         } 
 
         public function installed_active_elementor()
@@ -266,7 +270,7 @@ if (!class_exists('thepack_elementor_addon_widget')) {
                 }
             }
 
-            wp_enqueue_script('thepack-js', THE_PACK_PLUGIN_URL . 'assets/js/custom.js', [], THE_PACK_PLUGIN_VERSION, true);
+            wp_enqueue_script('thepack-js', THE_PACK_PLUGIN_URL . 'assets/js/custom.js', ['jquery'], THE_PACK_PLUGIN_VERSION, true);
             wp_localize_script('thepack-js', 'tp_loadmore_params', [
                 'ajaxurl' => admin_url('admin-ajax.php'),
                 'current_page' => get_query_var('paged') ? get_query_var('paged') : 1,
@@ -344,7 +348,10 @@ if (!class_exists('thepack_elementor_addon_widget')) {
         {
             $this->glob_widget(THE_PACK_PLUGIN_DIR . '/includes/widgets/theme/', $widgets_manager);
             $this->glob_widget(THE_PACK_PLUGIN_DIR . '/includes/widgets/element/', $widgets_manager);
-            $this->glob_widget(THE_PACK_PLUGIN_DIR . '/includes/widgets/woocommerce/', $widgets_manager);
+            if ( class_exists( 'WooCommerce' ) ) {
+                $this->glob_widget(THE_PACK_PLUGIN_DIR . '/includes/widgets/woocommerce/', $widgets_manager);
+            }
+            
         }
     }
 }

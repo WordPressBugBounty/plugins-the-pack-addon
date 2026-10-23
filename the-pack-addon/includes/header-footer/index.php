@@ -178,7 +178,7 @@ if(!class_exists('The_Pack_Kit') || !defined( 'ELEMENTOR_PRO_VERSION' ) ){
          *
          * @return void
          */
-        public function load_files() {
+        public function load_files() {   
 
             require_once $this->plugin_path( 'includes/class-helper.php' );
             require_once $this->plugin_path( 'includes/class-integration.php' );
@@ -256,7 +256,7 @@ if(!class_exists('The_Pack_Kit') || !defined( 'ELEMENTOR_PRO_VERSION' ) ){
                 true
             );
         }
-
+ 
         public static function get_instance() {
             // If the single instance hasn't been set, set it now.
             if ( null == self::$instance ) {
@@ -269,6 +269,7 @@ if(!class_exists('The_Pack_Kit') || !defined( 'ELEMENTOR_PRO_VERSION' ) ){
 
         	$mappings = [
         		'Thepack_Kit_Ajax_Manager' => 'includes/modules/ajax/manager.php',
+                'Elementor\ThePacK_Kit_Base' => 'includes/base/class-widget-base.php'
 	        ];
 
         	if( array_key_exists( $class, $mappings ) ){

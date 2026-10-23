@@ -136,26 +136,26 @@
             });
       });
 
-      $(".clean-db").on("click", function(e) {
-        e.preventDefault();
-        $('#wpcontent').addClass('running');
-        var data = {
-          action: 'thepack_clean_site',
-          nonce: wpApiSettings.nonce,
-        };     
+      // $(".clean-db").on("click", function(e) {
+      //   e.preventDefault();
+      //   $('#wpcontent').addClass('running');
+      //   var data = {
+      //     action: 'thepack_clean_site',
+      //     nonce: wpApiSettings.nonce,
+      //   };     
    
-        $.ajax({
-          type: "POST",
-          url: ajaxurl,
-          data: data,
-          success: function(result) {
-            console.log(result);
-            alert('Site is cleaned !');
-          }
+      //   $.ajax({
+      //     type: "POST",
+      //     url: ajaxurl,
+      //     data: data,
+      //     success: function(result) {
+      //       console.log(result);
+      //       alert('Site is cleaned !');
+      //     }
           
-        });
+      //   });
 
-      });
+      // });
 
   });
 

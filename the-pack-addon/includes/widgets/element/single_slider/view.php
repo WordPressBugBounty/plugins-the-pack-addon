@@ -6,7 +6,7 @@ $slider_options = [
     'vertical' => ('yes' === $settings['vert']),
     'fade' => esc_attr($settings['fade']),
 ];
-
+ 
 $previkn = $settings['picon']['value'] ? '<div class="prev-img"><i class="' . $settings['picon']['value'] . '"></i></div>' : '';
 $nextikn = $settings['nicon']['value'] ? '<div class="next-img"><i class="' . $settings['nicon']['value'] . '"></i></div>' : '';
 $arrow = $settings['arrow'] ? '<div class="tp-slider-single-nav">' . $previkn . $nextikn . '</div>' : '';

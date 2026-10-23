@@ -14,7 +14,7 @@ if (!defined('ABSPATH')) {
 class thepack_date_count extends Widget_Base
 {
     public function get_name()
-    {
+    { 
         return 'gng-timer';
     }
 

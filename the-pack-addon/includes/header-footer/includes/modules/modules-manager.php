@@ -17,6 +17,7 @@ final class Modules_Manager {
             'woocommerce',
             'dynamic-tags',
             'popup',
+			'nested-elements'
 		];
 
 		foreach ( $modules as $module_name ) {

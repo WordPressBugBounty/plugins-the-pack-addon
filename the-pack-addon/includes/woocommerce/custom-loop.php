@@ -23,58 +23,25 @@ global $product;
 if ( empty( $product ) || ! $product->is_visible() ) {
 	return;
 }
-$id = $product->get_id();	
-$option = [
-	'type'=> 'percen',
-	'label'=> 'sale',
-]; 
+if ( wp_doing_ajax() ) {
+	//var_dump($settings);
+}
+$id = $product->get_id();	 
 
-?>
-<div <?php wc_product_class($inclass, $product ); ?>>
+$img_size = $settings['img_size'];
+
+?> 
+<div <?php wc_product_class(); ?>>
 	<?php
-	echo '<div class="inner">';
-	/**
-	 * Hook: woocommerce_before_shop_loop_item.
-	 *
-	 * @hooked woocommerce_template_loop_product_link_open - 10
-	 */
-	do_action( 'woocommerce_before_shop_loop_item' );
-
-	/**
-	 * Hook: woocommerce_before_shop_loop_item_title.
-	 *
-	 * @hooked woocommerce_show_product_loop_sale_flash - 10
-	 * @hooked woocommerce_template_loop_product_thumbnail - 10
-	 */ 
-	echo '<div class="tp-product-thumbnail">';
-		do_action( 'woocommerce_before_shop_loop_item_title' );
-		call_user_func('The_Pack_Woo_Helper::product_thumbnail', $settings['img_size']);
-		call_user_func('The_Pack_Woo_Helper::on_sale', $product,$option);
-		echo '<a data-id="'.$id.'" class="tp-quick-view" href="#"><i class="tivo ti-search" aria-hidden="true"></i></a>';//phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped 
+	echo '<div class="tp-woo-style-one com-hover">';
+	include THE_PACK_PLUGIN_DIR . 'includes/woocommerce/parts/product-thumb-hover-slide.php';
+	
+	echo '<div class="product-bottom">';
+	call_user_func('The_Pack_Woo_Helper::product_title');	
+	call_user_func('The_Pack_Woo_Helper::product_cat',$product->get_id());	
+	call_user_func('The_Pack_Woo_Helper::product_rating',$product,$settings);
+	echo '<div class="price-wrap">'.$product->get_price_html().'</div>';
 	echo '</div>';
-	/**
-	 * Hook: woocommerce_shop_loop_item_title.    
-	 *
-	 * @hooked woocommerce_template_loop_product_title - 10
-	 */
-	do_action( 'woocommerce_shop_loop_item_title' );
-	call_user_func('The_Pack_Woo_Helper::product_title');
-	call_user_func('The_Pack_Woo_Helper::product_rating',$product,$settings['hide']);
-	/**
-	 * Hook: woocommerce_after_shop_loop_item_title.
-	 *
-	 * @hooked woocommerce_template_loop_rating - 5
-	 * @hooked woocommerce_template_loop_price - 10
-	 */
-	do_action( 'woocommerce_after_shop_loop_item_title' );
-
-	/**
-	 * Hook: woocommerce_after_shop_loop_item.
-	 *
-	 * @hooked woocommerce_template_loop_product_link_close - 5
-	 * @hooked woocommerce_template_loop_add_to_cart - 10
-	 */
-	do_action( 'woocommerce_after_shop_loop_item' );
 	echo '</div>';
-	?>
-</div>
+	?> 
+</div> 

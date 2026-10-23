@@ -43,7 +43,6 @@ class The_Pack_Woo_Title_description extends Widget_Base
             'section_gnrl',
             [
                 'label' => esc_html__('General', 'the-pack-addon'),
-                'tab' => Controls_Manager::TAB_STYLE,
             ]
         );
 
@@ -94,6 +93,20 @@ class The_Pack_Woo_Title_description extends Widget_Base
         );
 
         $this->end_controls_section();
+
+        $this->start_controls_section(
+            'section_conten',
+            [
+                'label' => esc_html__('Style', 'the-pack-addon'),
+                'tab' => Controls_Manager::TAB_STYLE,
+            ]
+        );
+
+        do_action('the_pack_typo', $this,'tdl_','.product_title_desc',['margin']);
+
+        $this->end_controls_section();
+
+
     }
 
 

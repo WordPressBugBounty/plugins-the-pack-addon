@@ -308,7 +308,7 @@ class Module extends \Elementor\Core\Base\Module {
 	 * @access public
 	 */
 	public function admin_menu() {
-		add_submenu_page( 'edit.php?post_type=elementor_library', '', __( 'Theme Builder', 'the-pack-addon'  ), 'publish_posts', $this->get_admin_templates_url( true ) );
+		add_submenu_page( 'elementor-home', '', __( 'Theme Builder', 'the-pack-addon'  ), 'publish_posts', $this->get_admin_templates_url( true ) );
 	}
 
 	public function print_new_theme_builder_promotion( $views ) {

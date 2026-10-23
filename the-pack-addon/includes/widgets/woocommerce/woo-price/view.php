@@ -1,5 +1,4 @@
 <?php
-global $product;
 if ( empty( $product ) ) {
 	return;
 }
@@ -10,14 +9,33 @@ if( $product->is_on_sale()){
 }
 
 woocommerce_template_single_price();
-
+ 
 ?>
 
 <style>
-	.woocommerce div.product p.price ins{
+	.price ins{
 		text-decoration: none;
 	}
-	.woocommerce div.product p.price del{
+	.price del{
 		opacity:1;
 	}
+.price del bdi::after {
+  content: ''; 
+  position: absolute;
+  top: 50%; 
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: currentColor; 
+  transform: translateY(-50%); 
+}
+.price del bdi{
+    position: relative;
+}
+.price del{
+	text-decoration: none;
+}
+.elementor-widget-tp_wooprice .price,.woocommerce div.product form.variations_form.cart{
+	margin-bottom: 0px !important;
+}
 </style>

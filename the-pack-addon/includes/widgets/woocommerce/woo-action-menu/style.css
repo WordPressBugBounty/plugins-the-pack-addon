@@ -1,0 +1,10 @@
+	.tp-woo-action-links .content-icon{
+		flex-direction: column;
+	}
+	.tp-woo-action-links .action-wrap{
+		align-items: center;
+	}
+	.tp-woo-action-links .action-wrap .avatar-icon{
+		align-items: center;
+		justify-content: center;
+	}

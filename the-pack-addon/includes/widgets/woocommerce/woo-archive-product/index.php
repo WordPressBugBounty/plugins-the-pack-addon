@@ -19,13 +19,21 @@ class The_Pack_Woo_Archive_Product extends Widget_Base
     {
         return 'tp_wooarch';
     }
+    // Enqueue styles
+	public function get_style_depends() {
+		return ['swiper','e-swiper'];
+	}
 
+	// Enqueue scripts
+	public function get_script_depends() {
+		return ['swiper'];
+	}
     public function get_title()
     {
         return esc_html__('Product archive', 'the-pack-addon');
     }
 
-    public function get_icon()
+    public function get_icon() 
     {
         return 'dashicons dashicons-admin-network';
     }
@@ -616,7 +624,7 @@ class The_Pack_Woo_Archive_Product extends Widget_Base
         $this->add_control(
             'slclr',
             [
-                'label' => esc_html__('Background', 'the-pack-addon'),
+                'label' => esc_html__('Color', 'the-pack-addon'),
                 'type' => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .tp-onsale' => 'color: {{VALUE}};',
@@ -986,7 +994,7 @@ class The_Pack_Woo_Archive_Product extends Widget_Base
     }
 
     public function loop_start(){
-        echo '<div class="tp-product-catalog masonwrp masonon">';
+        echo '<div class="tp-product-catalog clearfix">'; 
     } 
 
     public function loop_end(){

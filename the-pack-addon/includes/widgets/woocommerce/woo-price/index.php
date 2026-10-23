@@ -4,10 +4,7 @@ namespace ThePackAddon\Widgets;
 use Elementor\Widget_Base;
 use Elementor\Controls_Manager;
 use Elementor\Group_Control_Typography;
-use Elementor\Group_Control_Border;
-use Elementor\Group_Control_Background;
-use Elementor\Group_Control_Box_Shadow;
-use Elementor\utils;
+use Elementor\Plugin;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -43,6 +40,26 @@ class The_Pack_Woo_Price extends Widget_Base
             'section_gnrl',
             [
                 'label' => esc_html__('General', 'the-pack-addon'),
+            ]
+        );
+
+        $this->add_control(
+            'preview',
+            [
+                'label' => esc_html__('Preview product', 'the-pack-addon'),
+                'type' => Controls_Manager::SELECT2,
+                'label_block' => true,
+                'options' => thepack_drop_posts('product'),
+                'multiple' => false,
+            ]
+        );
+
+        $this->end_controls_section();
+
+        $this->start_controls_section(
+            'section_conten',
+            [
+                'label' => esc_html__('Style', 'the-pack-addon'),
                 'tab' => Controls_Manager::TAB_STYLE,
             ]
         );
@@ -56,25 +73,7 @@ class The_Pack_Woo_Price extends Widget_Base
             ]
         );
 
-        $this->add_control(
-            'sclr',
-            [
-                'label' => esc_html__('Color', 'the-pack-addon'),
-                'type' => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} del bdi' => 'color: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_group_control(
-            Group_Control_Typography::get_type(),
-            [
-                'name' => 'styp',
-                'label' => esc_html__('Typography', 'the-pack-addon'),
-                'selector' => '{{WRAPPER}} del bdi',
-            ]
-        );
+        do_action('the_pack_typo', $this,'sl_','del bdi',['']);
 
         $this->end_controls_tab();
 
@@ -84,26 +83,8 @@ class The_Pack_Woo_Price extends Widget_Base
                 'label' => esc_html__('Regular', 'the-pack-addon'),
             ]
         );
-
-        $this->add_control(
-            'rclr',
-            [
-                'label' => esc_html__('Color', 'the-pack-addon'),
-                'type' => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} bdi' => 'color: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_group_control(
-            Group_Control_Typography::get_type(),
-            [
-                'name' => 'rtyp',
-                'label' => esc_html__('Typography', 'the-pack-addon'),
-                'selector' => '{{WRAPPER}} bdi',
-            ]
-        );
+   
+        do_action('the_pack_typo', $this,'rg_','bdi',['']);
 
         $this->end_controls_tab();
 
@@ -111,12 +92,17 @@ class The_Pack_Woo_Price extends Widget_Base
 
         $this->end_controls_section();
     }
-
+   
 
     protected function render()
     {
         $settings = $this->get_settings();
-        $controllers = $this->get_settings_for_display();
+        global $product;
+        $preview  = isset( $_GET['preview'] ) ? sanitize_text_field(wp_unslash($_GET['preview'])) : '';//phpcs:disable WordPress.Security.NonceVerification.Recommended 
+        if (Plugin::instance()->editor->is_edit_mode() | $preview == 'true' ) {
+            $product = wc_get_product($settings['preview']);
+        }
+
         require dirname(__FILE__) . '/view.php';
     }
 }

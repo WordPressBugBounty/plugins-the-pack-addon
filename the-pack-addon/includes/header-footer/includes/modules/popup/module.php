@@ -100,7 +100,7 @@ class Module extends \Elementor\Core\Base\Module {
 	 */
 	public function register_admin_menu() {
         add_submenu_page( 
-            'edit.php?post_type=elementor_library',
+            'elementor-home',
             '',
             esc_html__( 'Popups', 'the-pack-addon'  ),
             'publish_posts',

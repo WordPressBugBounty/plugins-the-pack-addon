@@ -5,7 +5,7 @@
             $out = $a['cnt'];
         } elseif ( $a['type']=='template' ){
             $out = $this->render_template($a['tmpl']);
-        } else {
+        } else { 
             $out = wp_get_attachment_image($a['img']['id'], 'full');
         }
         $nav.='<div class="swiper-slide"><span>'.$a['ttl'].'</span></div>';

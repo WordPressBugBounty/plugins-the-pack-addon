@@ -15,21 +15,22 @@ $tcomments = get_comments($args);
 $out = '';
 foreach ( $tcomments as $tcomment ) {
 
-	$comment = '<p>'.get_comment_text($tcomment->comment_ID).'</p>';
+	$comment = '<p class="tp-comment-content">'.get_comment_text($tcomment->comment_ID).'</p>';
 	$avatar = '<div class="avatar-wrap">'.get_avatar( $tcomment->comment_author_email, 100 ).'</div>';
 	$author = '<span class="author">'.get_comment_author($tcomment).'</span class="author">';
 	$time = '<time>'.get_comment_date( wc_date_format(),  $tcomment ).'</time>';
-	$width = get_comment_meta( $tcomment->comment_ID, 'rating', true )*20 .'%';
+	$comment_rating = get_comment_meta( $tcomment->comment_ID, 'rating', true );
+	$width = $comment_rating ? $comment_rating*20 .'%' : '0%';
 	$rating = '
 		<div itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating" class="tpwoo-star-rating" title="'.get_comment_meta( $tcomment->comment_ID, 'rating', true ).'">
 			<span class="tscore"><span style="width: '.$width.'"></span></span>
 		</div>	
 	';
 	$out .= '
-		<li>
+		<li class="tp-d-flex">
 			'.thepack_build_html($avatar).'
 			<div class="comment-text">
-				'.$rating.'<div class="author-meta">'.$author.$time.'</div>'.$comment.'//phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped 
+				'.$rating.'<div class="author-meta">'.$author.' - '.$time.'</div>'.$comment.'
 			</div>
 		</li>
 	';
@@ -55,6 +56,14 @@ foreach ( $tcomments as $tcomment ) {
 		<ul class='raw-style'>
 			<?php echo thepack_build_html($out);//phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped?>
 		</ul>
+
+		<?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : // Are there comments to navigate through? ?>
+			<nav id="comment-nav-above" class="navigation comment-navigation" role="navigation">
+				<div class="nav-previous"><?php previous_comments_link( __( '&larr; Older Comments', 'the-pack-addon' ) ); ?></div>
+				<div class="nav-next"><?php next_comments_link( __( 'Newer Comments &rarr;', 'the-pack-addon' ) ); ?></div>
+			</nav><!-- #comment-nav-above -->
+		<?php endif; ?>
+
 	</div>
 
 	<?php if ( get_option( 'woocommerce_review_rating_verification_required' ) === 'no' || wc_customer_bought_product( '', get_current_user_id(), $product->get_id() ) ) : ?>
@@ -62,9 +71,9 @@ foreach ( $tcomments as $tcomment ) {
 			<div id="review_form">
 				<?php
 				$commenter    = wp_get_current_commenter();
-				$comment_form = array(
+				$comment_form = array( 
 					/* translators: %s is product title */
-					'title_reply'         => $tcomments ? esc_html__( 'Add a review', 'the-pack-addon' ) : sprintf( esc_html__( 'Be the first to review &ldquo;%s&rdquo;', 'the-pack-addon' ), get_the_title() ),
+					'title_reply'         => $tcomments ? '' : sprintf( esc_html__( 'Be the first to review &ldquo;%s&rdquo;', 'the-pack-addon' ), get_the_title() ),
 					/* translators: %s is product title */
 					'title_reply_to'      => esc_html__( 'Leave a Reply to %s', 'the-pack-addon' ),
 					'title_reply_before'  => '<span id="reply-title" class="comment-reply-title">',
@@ -97,7 +106,7 @@ foreach ( $tcomments as $tcomment ) {
 				foreach ( $fields as $key => $field ) {
 					$field_html  = '<p class="comment-form-' . esc_attr( $key ) . '">';
 
-					$field_html .= '<input placeholder="'.$field['label'].( $field['required'] ? ' *' : '' ).'" id="' . esc_attr( $key ) . '" name="' . esc_attr( $key ) . '" type="' . esc_attr( $field['type'] ) . '" value="' . esc_attr( $field['value'] ) . '" size="30" ' . ( $field['required'] ? 'required' : '' ) . ' /></p>';
+					$field_html .= '<input class="form-control" placeholder="'.$field['label'].( $field['required'] ? ' *' : '' ).'" id="' . esc_attr( $key ) . '" name="' . esc_attr( $key ) . '" type="' . esc_attr( $field['type'] ) . '" value="' . esc_attr( $field['value'] ) . '" size="30" ' . ( $field['required'] ? 'required' : '' ) . ' /></p>';
 
 					$comment_form['fields'][ $key ] = $field_html;
 				}
@@ -119,7 +128,7 @@ foreach ( $tcomments as $tcomment ) {
 					</select></div>';
 				}
 
-				$comment_form['comment_field'] .= '<p class="comment-form-comment"><textarea placeholder="Your review *" id="comment" name="comment" cols="45" rows="8" required></textarea></p>';
+				$comment_form['comment_field'] .= '<p class="comment-form-comment"><textarea placeholder="Your review *" id="comment" class="form-control" name="comment" cols="45" rows="8" required></textarea></p>';
 
 				comment_form( apply_filters( 'woocommerce_product_review_comment_form_args', $comment_form ) );
 				?>

@@ -14,7 +14,7 @@ if (!defined('ABSPATH')) {
 class thepack_accordion_1 extends Widget_Base
 {
     public function get_name()
-    {
+    { 
         return 'ae-accor1';
     }
 
@@ -155,7 +155,7 @@ class thepack_accordion_1 extends Widget_Base
                 ],
 
             ]
-        );
+        ); 
 
         $this->add_group_control(
             Group_Control_Border::get_type(),
@@ -165,6 +165,7 @@ class thepack_accordion_1 extends Widget_Base
                 'selector' => '{{WRAPPER}} .accordion li',
             ]
         );
+        
         $this->add_responsive_control(
             'gbrade',   
             [
@@ -172,6 +173,63 @@ class thepack_accordion_1 extends Widget_Base
                 'type' => Controls_Manager::SLIDER,                    
                 'selectors' => [
                     '{{WRAPPER}} .accordion li' => 'border-radius: {{SIZE}}{{UNIT}};overflow: hidden;',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'gxbgt',
+            [
+                'label' => esc_html__('Background', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .accordion li' => 'background: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'gxpdr',
+            [
+                'label' => esc_html__('Padding', 'the-pack-addon'),
+                'type' => Controls_Manager::DIMENSIONS,
+                'size_units' => ['em', 'px'],
+                'selectors' => [
+                    '{{WRAPPER}} .accordion li' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'gxing',
+            [
+                'label' => esc_html__('Inner background', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .accordion .inner' => 'background: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'gxipd',
+            [
+                'label' => esc_html__('Inner padding', 'the-pack-addon'),
+                'type' => Controls_Manager::DIMENSIONS,
+                'size_units' => ['em', 'px'],
+                'selectors' => [
+                    '{{WRAPPER}} .accordion .inner' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'gbirad',   
+            [
+                'label' => esc_html__('Inner Border radius', 'the-pack-addon'), 
+                'type' => Controls_Manager::SLIDER,                    
+                'selectors' => [
+                    '{{WRAPPER}} .accordion .inner' => 'border-radius: {{SIZE}}{{UNIT}};overflow: hidden;',
                 ],
             ]
         );
@@ -547,7 +605,7 @@ class thepack_accordion_1 extends Widget_Base
                     '{{WRAPPER}} .active .tbxicon' => 'border:1px solid {{VALUE}};',
                 ],
             ]
-        );
+        ); 
 
         $this->end_controls_tab();
 

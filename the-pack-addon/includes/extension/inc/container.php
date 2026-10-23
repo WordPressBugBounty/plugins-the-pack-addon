@@ -399,6 +399,40 @@ class TP_Container_Extra
 
         $element->end_controls_section();
 
+        $element->start_controls_section(
+            'container_offside',
+            [
+                'label' => esc_html__('Offsidebar Container', 'the-pack-addon'),
+                'tab' => Controls_Manager::TAB_STYLE,
+            ]
+        );
+
+        $element->add_responsive_control( 
+            'conofsen',
+            [
+                'label' => esc_html__('Enable offsidebar', 'the-pack-addon'),
+                'type' => Controls_Manager::SWITCHER,
+                'prefix_class' => 'containersidebar-',
+                'selectors' => [
+                    '{{WRAPPER}}' => 'position:fixed;top: 0;bottom: 0;',
+                ],
+            ]
+        );
+
+        $element->add_responsive_control(
+            'conofsenl',
+            [
+                'label' => esc_html__('Left offsidebar', 'the-pack-addon'),
+                'type' => Controls_Manager::SWITCHER,
+                'selectors' => [
+                    '{{WRAPPER}}' => 'transform: translateX(-100%);left: 0;',
+                ],
+            ]
+        );
+
+
+        $element->end_controls_section();
+
     }
 }
 

@@ -19,7 +19,7 @@ add_action( 'elementor/editor/v2/scripts/enqueue', function () {
 			'elementor-v2-store',
 			'elementor-v2-ui',
 			'react',
-			'wp-i18n',
+			'wp-i18n', 
 		],
 		thepack_kit()->get_version(),
 		true

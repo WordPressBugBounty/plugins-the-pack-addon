@@ -16,33 +16,38 @@ if (!defined('ABSPATH')) {
 class The_Pack_Woo_Thumbnail extends Widget_Base
 {
 
-    public function __construct( $data = [], $args = null ) {
-		parent::__construct( $data, $args );
-        add_filter('woocommerce_single_product_carousel_options', function() use ( $data ){
-            if ( ! $data ) {
-                return;
-            }            
-            if ( $data["settings"]['controlnav'] == 'true'){
-                $options['controlNav'] = true;
-            } elseif ( $data["settings"]['controlnav'] == 'false' ){
-                $options['controlNav'] = false;
-            } else{
-                $options['controlNav'] = 'thumbnails';
-            }
-            $options['animation'] = "slide" ;
-            $options['directionNav'] = array_key_exists('direction', $data["settings"]);
-            return $options;
-        });       
+    // public function __construct( $data = [], $args = null ) {
+	// 	parent::__construct( $data, $args );
+    //     add_filter('woocommerce_single_product_carousel_options', function() use ( $data ){
+    //         if ( ! $data ) {
+    //             return;
+    //         }            
+    //         if ( $data["settings"]['controlnav'] == 'true'){
+    //             $options['controlNav'] = true;
+    //         } elseif ( $data["settings"]['controlnav'] == 'false' ){
+    //             $options['controlNav'] = false;
+    //         } else{
+    //             $options['controlNav'] = 'thumbnails';
+    //         }
+    //         $options['animation'] = "slide" ;
+    //         $options['directionNav'] = array_key_exists('direction', $data["settings"]);
+    //         return $options;
+    //     });       
+	// }
+
+    // Enqueue styles
+	public function get_style_depends() {
+		return ['swiper','e-swiper'];
 	}
 
-    public function get_script_depends() {
-        return [ 'wc-single-product','flexslider' ];		
+	// Enqueue scripts
+	public function get_script_depends() {
+		return ['swiper'];
 	}
-
     public function get_name()
     {
         return 'tp_woothumb';
-    }
+    }   
 
     public function get_title()
     {
@@ -67,14 +72,14 @@ class The_Pack_Woo_Thumbnail extends Widget_Base
                 'label' => esc_html__('Settings', 'the-pack-addon'),
             ]
         );
- 
+
         $this->add_control(
             'preview',
             [
                 'label' => esc_html__('Preview product', 'the-pack-addon'),
                 'type' => Controls_Manager::SELECT2,
                 'label_block' => true,
-                'options' => thepack_drop_posts('product',10),
+                'options' => thepack_drop_posts('product'),
                 'multiple' => false,
             ]
         );
@@ -87,93 +92,6 @@ class The_Pack_Woo_Thumbnail extends Widget_Base
                 'label_block' => true,
                 'options' => thepack_image_size_choose(),
                 'multiple' => false,
-            ]
-        );
-
-        $this->add_control(
-            'zoom',
-            [
-                'label' => esc_html__('Disable image zoom', 'the-pack-addon'),
-                'type' => Controls_Manager::SWITCHER,
-            ]
-        );
-
-        $this->add_control(
-            'lightbox',
-            [
-                'label' => esc_html__('Disable lightbox', 'the-pack-addon'),
-                'type' => Controls_Manager::SWITCHER,
-            ]
-        );
-
-        $this->add_control(
-            'controlnav',
-            [
-                'label' => esc_html__('Control Nav', 'the-pack-addon'),
-                'type' => Controls_Manager::CHOOSE,
-                'options' => [
-                    'false' => [
-                        'title' => esc_html__('False', 'the-pack-addon'),
-                        'icon' => 'eicon-editor-close',
-                    ],
-
-                    'true' => [
-                        'title' => esc_html__('Dot', 'the-pack-addon'),
-                        'icon' => 'eicon-circle-o',
-                    ],
-
-                    'thumbnails' => [
-                        'title' => esc_html__('Thumbnail', 'the-pack-addon'),
-                        'icon' => 'eicon-image-bold',
-                    ],
-
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'direction',
-            [
-                'label' => esc_html__('Direction Nav', 'the-pack-addon'),
-                'type' => Controls_Manager::SWITCHER,
-            ]
-        );
-
-        $this->add_control(
-            'zoomicn',
-            [
-                'type' => Controls_Manager::ICONS,
-                'label' => esc_html__('Zoom icon', 'the-pack-addon'),
-            ]
-        );
-
-        $this->add_control(
-            'picon',
-            [
-                'type' => Controls_Manager::ICONS,
-                'label' => esc_html__('Prev arrow', 'the-pack-addon'),
-                'condition' => [
-                    'direction' => 'yes',
-                ],
-                'default' => [
-                    'value' => 'fas fa-chevron-left',
-                    'library' => 'solid',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'nicon',
-            [
-                'type' => Controls_Manager::ICONS,
-                'label' => esc_html__('Next arrow', 'the-pack-addon'),
-                'condition' => [
-                    'direction' => 'yes',
-                ],
-                'default' => [
-                    'value' => 'fas fa-chevron-right',
-                    'library' => 'solid',
-                ],
             ]
         );
 
@@ -225,26 +143,99 @@ class The_Pack_Woo_Thumbnail extends Widget_Base
             ]
         );
 
-        $this->add_control(
-            'gbg',
+         $this->add_control(
+            'disp',
             [
-                'label' => esc_html__('Background', 'the-pack-addon'),
-                'type' => Controls_Manager::COLOR,
+                'label' => esc_html__('Display type', 'the-pack-addon'),
+                'type' => Controls_Manager::CHOOSE,
+                'options' => [
+                    'grid' => [
+                        'title' => esc_html__('Grid', 'the-pack-addon'),
+                        'icon' => 'eicon-editor-close',
+                    ],
+                    'slide' => [
+                        'title' => esc_html__('Slide', 'the-pack-addon'),
+                        'icon' => 'eicon-circle-o',
+                    ],
+                ],
+            ]
+        );
+
+         $this->add_control(
+            'navi',
+            [
+                'label' => esc_html__('Navigation', 'the-pack-addon'),
+                'type' => Controls_Manager::CHOOSE,
+                'condition' => [
+                    'disp' => 'slide',
+                ],                 
+                'options' => [
+                    'none' => [
+                        'title' => esc_html__('None', 'the-pack-addon'),
+                        'icon' => 'eicon-editor-close',
+                    ],
+                    'dot' => [
+                        'title' => esc_html__('Dot', 'the-pack-addon'),
+                        'icon' => 'eicon-circle-o',
+                    ],
+                    'bottom_thumb' => [
+                        'title' => esc_html__('Bottom thumbnail', 'the-pack-addon'),
+                        'icon' => 'eicon-circle-o',
+                    ], 
+                    'left_thumb' => [
+                        'title' => esc_html__('Left thumbnail', 'the-pack-addon'),
+                        'icon' => 'eicon-circle-o',
+                    ],                                         
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'nav',   
+            [
+                'label' => esc_html__('Enable navigation arrow', 'the-pack-addon'), 
+                'type' => Controls_Manager::SWITCHER,                    
+            ]
+        );
+
+        $this->add_responsive_control(
+            'wdidth',
+            [
+                'label' => esc_html__('Column width', 'the-pack-addon'),
+                'type' => Controls_Manager::NUMBER,
+                'default' => '33.33',
                 'selectors' => [
-                    '{{WRAPPER}} .flex-viewport' => 'background: {{VALUE}};',
+                    '{{WRAPPER}} .swiper-slide' => 'width: {{VALUE}}%;flex:0 0 {{VALUE}}%;', 
+                ],
+                'condition' => [
+                    'disp' => ['grid'], 
                 ],
             ]
         );
 
         $this->add_responsive_control(
-            'gbrad',
+            'gap',
             [
-                'label' => esc_html__('Border radius', 'the-pack-addon'),
+                'label' => esc_html__('Gap','the-pack-addon'),
                 'type' => Controls_Manager::SLIDER,
                 'selectors' => [
-                    '{{WRAPPER}} .flex-viewport' => 'border-radius: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .tp-gutter' => 'margin: -{{SIZE}}{{UNIT}} 0 0 -{{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .tp-gutter>.swiper-slide' => 'padding: {{SIZE}}{{UNIT}} 0 0 {{SIZE}}{{UNIT}};',
                 ],
+                'condition' => [
+                    'disp' => ['grid'], 
+                ],                
+            ]
+        );
 
+        $this->add_control(
+            'hideplus',   
+            [
+                'label' => esc_html__('Hide fullscreen icon', 'the-pack-addon'), 
+                'type' => Controls_Manager::SWITCHER, 
+                'selectors' => [
+                    '{{WRAPPER}} .swiper-slide a::before' => 'display: none;',
+                ],                                   
             ]
         );
 
@@ -258,154 +249,6 @@ class The_Pack_Woo_Thumbnail extends Widget_Base
             ]
         );
 
-        $this->add_control(
-            'slpad',
-            [
-                'label' => esc_html__('Padding', 'the-pack-addon'),
-                'type' => Controls_Manager::DIMENSIONS,            
-                'selectors' => [
-                    '{{WRAPPER}} .tp-onsale' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'slbg',
-            [
-                'label' => esc_html__('Background', 'the-pack-addon'),
-                'type' => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .tp-onsale' => 'background: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'slclr',
-            [
-                'label' => esc_html__('Background', 'the-pack-addon'),
-                'type' => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .tp-onsale' => 'color: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_group_control(
-            Group_Control_Typography::get_type(),
-            [
-                'name' => 'sl_typo',
-                'selector' => '{{WRAPPER}} .tp-onsale',
-                'label' => esc_html__('Typography', 'the-pack-addon'),
-            ]
-        );
-
-        $this->add_responsive_control(
-            'slbr',
-            [
-                'label' => esc_html__('Border radius', 'the-pack-addon'),
-                'type' => Controls_Manager::SLIDER,
-                'selectors' => [
-                    '{{WRAPPER}} .tp-onsale' => 'border-radius: {{SIZE}}{{UNIT}};',
-                ],
-
-            ]
-        );
-
-        $this->add_responsive_control(
-            'slpos',
-            [
-                'label' => esc_html__('Top & right position', 'the-pack-addon'),
-                'type' => Controls_Manager::SLIDER,
-                'selectors' => [
-                    '{{WRAPPER}} .tp-onsale' => 'top: {{SIZE}}{{UNIT}};left: {{SIZE}}{{UNIT}};',
-                ],
-
-            ]
-        );
-
-        $this->end_controls_section();
-
-        $this->start_controls_section(
-            'section_zoom',
-            [
-                'label' => esc_html__('Zoom', 'the-pack-addon'),
-                'tab' => Controls_Manager::TAB_STYLE,
-                'condition' => [
-                    'zoom!' => 'yes',
-                ],                
-            ]
-        );
-
-        $this->add_control(
-            'zbg',
-            [
-                'label' => esc_html__('Background', 'the-pack-addon'),
-                'type' => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .images .woocommerce-product-gallery__trigger' => 'background: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'zclr',
-            [
-                'label' => esc_html__('Color', 'the-pack-addon'),
-                'type' => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .woocommerce-product-gallery__trigger' => 'color: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_responsive_control(
-            'zfs',
-            [
-                'label' => esc_html__('Font size', 'the-pack-addon'),
-                'type' => Controls_Manager::SLIDER,
-                'selectors' => [
-                    '{{WRAPPER}} .images .woocommerce-product-gallery__trigger' => 'font-size: {{SIZE}}{{UNIT}};',
-                ],
-
-            ]
-        );
-
-        $this->add_responsive_control(
-            'zwh',
-            [
-                'label' => esc_html__('Width & height', 'the-pack-addon'),
-                'type' => Controls_Manager::SLIDER,
-                'selectors' => [
-                    '{{WRAPPER}} .images .woocommerce-product-gallery__trigger' => 'width: {{SIZE}}{{UNIT}};height: {{SIZE}}{{UNIT}};',
-                ],
-
-            ]
-        );
-
-        $this->add_responsive_control(
-            'zbr',
-            [
-                'label' => esc_html__('Border radius', 'the-pack-addon'),
-                'type' => Controls_Manager::SLIDER,
-                'selectors' => [
-                    '{{WRAPPER}} .images .woocommerce-product-gallery__trigger' => 'border-radius: {{SIZE}}{{UNIT}};',
-                ],
-
-            ]
-        );
-
-        $this->add_responsive_control(
-            'zpos',
-            [
-                'label' => esc_html__('Top & right position', 'the-pack-addon'),
-                'type' => Controls_Manager::SLIDER,
-                'selectors' => [
-                    '{{WRAPPER}} .images .woocommerce-product-gallery__trigger' => 'top: {{SIZE}}{{UNIT}};right: {{SIZE}}{{UNIT}};',
-                ],
-
-            ]
-        );
 
         $this->end_controls_section();
 
@@ -415,67 +258,70 @@ class The_Pack_Woo_Thumbnail extends Widget_Base
                 'label' => esc_html__('Arrow', 'the-pack-addon'),
                 'tab' => Controls_Manager::TAB_STYLE,
                 'condition' => [
-                    'direction' => 'yes',
+                    'nav' => 'yes',
                 ],                
             ]
         );
 
         $this->add_control(
-            'abg',
+            'arrow',
+            [
+                'label' => esc_html__('Arrow icon', 'the-pack-addon'),
+                'type' => Controls_Manager::ICONS,
+                'label_block' => true,
+            ] 
+        );
+
+        $this->add_responsive_control(
+            'arsz',   
+            [
+                'label' => esc_html__('Font size', 'the-pack-addon'), 
+                'type' => Controls_Manager::SLIDER,                    
+                'selectors' => [
+                    '{{WRAPPER}} .thumb-arrow' => 'font-size: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+        $this->add_responsive_control(
+            'arwh',   
+            [
+                'label' => esc_html__('Width & height', 'the-pack-addon'), 
+                'type' => Controls_Manager::SLIDER,                    
+                'selectors' => [
+                    '{{WRAPPER}} .thumb-arrow' => 'width: {{SIZE}}{{UNIT}};height: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+        $this->add_responsive_control(
+            'arbr',   
+            [
+                'label' => esc_html__('Border radius', 'the-pack-addon'), 
+                'type' => Controls_Manager::SLIDER,                    
+                'selectors' => [
+                    '{{WRAPPER}} .thumb-arrow' => 'border-radius: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+        $this->add_control(
+            'arbg',
             [
                 'label' => esc_html__('Background', 'the-pack-addon'),
                 'type' => Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .flex-direction-nav a' => 'background: {{VALUE}};',
+                    '{{WRAPPER}} .thumb-arrow' => 'background: {{VALUE}};',
                 ],
             ]
         );
-
         $this->add_control(
-            'aclr',
+            'arclr',
             [
                 'label' => esc_html__('Color', 'the-pack-addon'),
                 'type' => Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .flex-direction-nav a' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .thumb-arrow' => 'color: {{VALUE}};',
                 ],
             ]
         );
-
-        $this->add_responsive_control(
-            'awh',
-            [
-                'label' => esc_html__('Width & height', 'the-pack-addon'),
-                'type' => Controls_Manager::SLIDER,
-                'selectors' => [
-                    '{{WRAPPER}} .flex-direction-nav a' => 'width: {{SIZE}}{{UNIT}};height: {{SIZE}}{{UNIT}};',
-                ],
-
-            ]
-        );
-
-        $this->add_responsive_control(
-            'afs',
-            [
-                'label' => esc_html__('Font size', 'the-pack-addon'),
-                'type' => Controls_Manager::SLIDER,
-                'selectors' => [
-                    '{{WRAPPER}} .flex-direction-nav a' => 'font-size: {{SIZE}}{{UNIT}};',
-                ],
-            ]
-        );
-
-        $this->add_responsive_control(
-            'abr',
-            [
-                'label' => esc_html__('Border radius', 'the-pack-addon'),
-                'type' => Controls_Manager::SLIDER,
-                'selectors' => [
-                    '{{WRAPPER}} .flex-direction-nav a' => 'border-radius: {{SIZE}}{{UNIT}};',
-                ],
-            ]
-        );
-
         $this->end_controls_section();
 
         $this->start_controls_section(
@@ -484,85 +330,31 @@ class The_Pack_Woo_Thumbnail extends Widget_Base
                 'label' => esc_html__('Thumbnail', 'the-pack-addon'),
                 'tab' => Controls_Manager::TAB_STYLE,
                 'condition' => [
-                    'controlnav' => 'thumbnails',
+                    'navi' => ['bottom_thumb','left_thumb'],
                 ],                
             ]
         );
-
+ 
         $this->add_responsive_control(
-            'tvp',
+            'ti',   
             [
-                'label' => esc_html__('Vertical position', 'the-pack-addon'),
-                'type' => Controls_Manager::SLIDER,
-                'range' => [
-                    'px' => [
-                        'min' => -500,
-                        'max' => 500,
-                        'step' => 1,
-                    ],
-                ],                
-                'selectors' => [
-                    '{{WRAPPER}} .flex-control-thumbs' => 'bottom: {{SIZE}}{{UNIT}};',
-                ],
-
+                'label' => esc_html__('Item per slide', 'the-pack-addon'), 
+                'type' => Controls_Manager::SLIDER,  
+                'default' => [
+                    'size' => 4,
+                ],                                  
             ]
         );
-
         $this->add_responsive_control(
-            'thpad',
+            'tgap',   
             [
-                'label' => esc_html__('Wrapper left-right padding', 'the-pack-addon'),
-                'type' => Controls_Manager::SLIDER,
-                'selectors' => [
-                    '{{WRAPPER}} .images .flex-control-thumbs' => 'padding:0px {{SIZE}}%;',
-                ],
+                'label' => esc_html__('Item gap', 'the-pack-addon'), 
+                'type' => Controls_Manager::SLIDER,  
+                'default' => [
+                    'size' => 20,
+                ],                                  
             ]
         );
-
-        $this->add_responsive_control(
-            'thgp',
-            [
-                'label' => esc_html__('Spacing', 'the-pack-addon'),
-                'type' => Controls_Manager::SLIDER,
-                'selectors' => [
-                    '{{WRAPPER}} .flex-control-nav' => 'gap:{{SIZE}}{{UNIT}};',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'tbdc',
-            [
-                'label' => esc_html__('Border color', 'the-pack-addon'),
-                'type' => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .flex-control-thumbs li img' => 'border:1px solid {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_responsive_control(
-            'thbrad',
-            [
-                'label' => esc_html__('Border radius', 'the-pack-addon'),
-                'type' => Controls_Manager::SLIDER,
-                'selectors' => [
-                    '{{WRAPPER}} .flex-control-thumbs li img' => 'border-radius:{{SIZE}}{{UNIT}};',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'tbdca',
-            [
-                'label' => esc_html__('Active border color', 'the-pack-addon'),
-                'type' => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .flex-control-thumbs li img.flex-active,{{WRAPPER}} .flex-control-thumbs li img:hover' => 'border-color:{{VALUE}};',
-                ],
-            ]
-        );
-
         $this->end_controls_section();
 
         $this->start_controls_section(
@@ -571,29 +363,44 @@ class The_Pack_Woo_Thumbnail extends Widget_Base
                 'label' => esc_html__('Dot', 'the-pack-addon'),
                 'tab' => Controls_Manager::TAB_STYLE,
                 'condition' => [
-                    'controlnav' => 'true',
+                    'navi' => 'dot',
                 ],                
             ]
         );
 
         $this->add_control(
-            'dpclr',
+            'dal',
             [
-                'label' => esc_html__('Primary color', 'the-pack-addon'),
-                'type' => Controls_Manager::COLOR,
+                'label' => esc_html__('Alignment', 'the-pack-addon'),
+                'type' => Controls_Manager::CHOOSE,
+                'options' => [
+                    'left' => [
+                        'title' => esc_html__('Left', 'the-pack-addon'),
+                        'icon' => 'eicon-h-align-left',
+                    ],
+                    'center' => [
+                        'title' => esc_html__('Center', 'the-pack-addon'),
+                        'icon' => 'eicon-v-align-top',
+                    ],
+                    'right' => [
+                        'title' => esc_html__('Right', 'the-pack-addon'),
+                        'icon' => 'eicon-h-align-right',
+                    ]
+                ],
+                'default' => 'center',
                 'selectors' => [
-                    '{{WRAPPER}} .flex-control-paging li a' => 'background: {{VALUE}};',
+                    '{{WRAPPER}} .swiper-pagination' => 'text-align: {{VALUE}};',
                 ],
             ]
         );
 
-        $this->add_control(
-            'dsclr',
+        $this->add_responsive_control(
+            'dot_sp',
             [
-                'label' => esc_html__('Active color', 'the-pack-addon'),
-                'type' => Controls_Manager::COLOR,
+                'label' => esc_html__('Spacing', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
                 'selectors' => [
-                    '{{WRAPPER}} .flex-control-paging li a.flex-active' => 'background: {{VALUE}};',
+                    '{{WRAPPER}} .swiper-pagination-bullets .swiper-pagination-bulle' => 'margin:0px {{SIZE}}{{UNIT}};',
                 ],
             ]
         );
@@ -609,52 +416,56 @@ class The_Pack_Woo_Thumbnail extends Widget_Base
                         'max' => 500,
                         'step' => 1,
                     ],
-                ],                
+
+                ],
+                'size_units' => ['px', '%'],
                 'selectors' => [
-                    '{{WRAPPER}} .flex-control-nav' => 'bottom: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .swiper-pagination' => 'bottom:{{SIZE}}{{UNIT}};',
                 ],
 
             ]
         );
 
-        $this->add_responsive_control(
-            'dspc',
+        $this->add_control(
+            'dt-m',
             [
-                'label' => esc_html__('Gap', 'the-pack-addon'),
-                'type' => Controls_Manager::SLIDER,
+                'label' => esc_html__('Main color', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .flex-control-nav' => 'gap: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .swiper-pagination span' => 'background: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'dt-s',
+            [
+                'label' => esc_html__('Active color', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .swiper-pagination span.swiper-pagination-bullet-active' => 'background: {{VALUE}};',
                 ],
             ]
         );
 
         $this->end_controls_section();
 
+        $this->start_controls_section(
+            'section_hidepld',
+            [
+                'label' => esc_html__('Fullscreen Icon', 'the-pack-addon'),
+                'tab' => Controls_Manager::TAB_STYLE,      
+                'condition' => [
+                    'hideplus!' => 'true',
+                ],                        
+            ]
+        );
+
+        do_action('the_pack_box_control', $this,'fxd_','.swiper-slide a::before',['bg','radius','border','width','height']);
+
+        $this->end_controls_section();
+
     }
-
-    public function product_page_script(){ ?>
-
-        <script>
-            jQuery('.woocommerce-product-gallery').each( function() {
-                const that = this;
-                jQuery( this ).trigger( 'wc-product-gallery-before-init', [ this, wc_single_product_params ] );
-                setTimeout( function(){
-                    jQuery(that).wc_product_gallery(wc_single_product_params);
-                }, 1000 );
-
-                jQuery( this ).trigger('wc-product-gallery-after-init', [ this, wc_single_product_params ]);
-                jQuery('.woocommerce-product-gallery').before('<span class="tp-onsale">-$5</span>');
-            } );
-
-        </script>
-        <style>
-            .woocommerce div.product div.images.woocommerce-product-gallery{
-                width:100%;
-            }
-        </style>
-
-    <?php }  
-
 
     public function flash_sale($html, $post, $product){
         $settings = $this->get_settings();
@@ -665,13 +476,12 @@ class The_Pack_Woo_Thumbnail extends Widget_Base
         call_user_func('The_Pack_Woo_Helper::on_sale', $product,$option);
     }
     protected function render()
-    {   
+    {    
         global $product;
         $settings = $this->get_settings();  
         add_filter( 'woocommerce_sale_flash', [ $this, 'flash_sale' ] ,9,3);  
         $preview  = isset( $_GET['preview'] ) ? sanitize_text_field(wp_unslash($_GET['preview'])) : '';//phpcs:disable WordPress.Security.NonceVerification.Recommended
         if (Plugin::instance()->editor->is_edit_mode() || $preview == 'true') {
-            $this->product_page_script(); 
             $product = wc_get_product($settings['preview']);        
         }        
         require dirname(__FILE__) . '/view.php'; 

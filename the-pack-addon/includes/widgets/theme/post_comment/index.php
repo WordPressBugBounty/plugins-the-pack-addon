@@ -499,7 +499,7 @@ class thepack_post_comment extends Widget_Base
                 ],
             ]
         );
-
+ 
         $this->add_group_control(
             Group_Control_Typography::get_type(),
             [

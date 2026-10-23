@@ -534,7 +534,7 @@ class Group_Control_Motion_Fx extends Group_Control_Base {
 
                 $fields[ $effect_name . '_' . $field_name ] = $field;
             }
-        }
+        } 
     }
 }
 

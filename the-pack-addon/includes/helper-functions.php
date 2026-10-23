@@ -12,11 +12,37 @@ if (!defined('ABSPATH')) {
 function the_pack_html_escaped($html) {
     return wp_kses_post($html);
 }
+
+function the_pack_get_global_settings($key){
+    $post_id = get_option('elementor_active_kit');
+    if($post_id){
+        $meta = get_post_meta( $post_id,'_elementor_page_settings',true );
+        $data = isset( $meta[$key] ) ? $meta[$key] : '';
+        return $data;
+    }
+}
+
 function currentYear( $atts ){
     return date('Y');
 }
 add_shortcode( 'currentyear', 'currentYear' );
 
+function tp_get_elementor_options($post_id,$widget_id){
+
+    $document = \Elementor\Plugin::instance()->documents->get( $post_id );
+    if( $document ){
+        $document_data = $document->get_elements_data();
+    }
+    $findings = [];
+
+    \Elementor\Plugin::instance()->db->iterate_data( $document_data, function( $element ) use ( $widget_id, &$findings ){
+        if( $widget_id === $element['id'] ){
+            $findings[] = $element;
+        }
+    });
+
+    return $findings[0]['settings'];
+}
 function tp_only_alpha_num($string){
     if (!preg_match("/[^[:alnum:]_\/-]/",$string)) {
         return $string;
@@ -42,7 +68,11 @@ function the_render_attribute($data,$value,$element){
 function the_pack_render_icon($icon, $class = '')
 {
     if ($icon['library'] == 'svg') {
-        $out = wp_get_attachment_image($icon['value']['id'], 'full', '', ['class' => $class]);
+        ob_start();
+        echo '<span class="tp-custom-svg ' . esc_attr($class) . '">';
+        Icons_Manager::render_icon($icon, ['class' => $class, 'aria-hidden' => 'true']);
+        echo '</span>';
+        $out = ob_get_clean();
     } else {
         ob_start();
         Icons_Manager::render_icon($icon, ['class' => $class, 'aria-hidden' => 'true']);
@@ -68,17 +98,17 @@ function render_nav_menu($menu)
 
 function menu_item_class($menu)
 {
-    $icon = $menu['icon'];
-    $menu_location = $menu['menu_register'];
-    $sub_type = $menu['sub_type'];
+    $icon = $menu['icon'] ?? '';
+    $menu_location = $menu['menu_register'] ?? '';
+    $sub_type = $menu['sub_type'] ?? '';
+    $sub_menu = $menu['sub_menu'] ?? '';
     $menu_item_class = [
         'menu-item',
         'menu-item-type-custom',
     ];
 
     if ('yes' === $menu['has_sub']) {
-        if ('no' !== $menu['sub_menu'] && 'mega' === $sub_type) {
-            $item_class = ' menu-item-has-children current-menu-parent menu-item-has-mega';
+        if ('no' !== $sub_menu && 'mega' === $sub_type) {
             array_push($menu_item_class, 'menu-item-has-children', 'tp_mega_menu');
         }
         if ($menu_location && 'default' === $sub_type) {
@@ -112,28 +142,19 @@ function rendor_custom_nav_menu($setting_menu)
     <ul class="tp-menu-wrap">
 
 		<?php foreach ($setting_menu as $menu) {
-        $icon = $menu['icon'];
-        $sub_id = (int) $menu['sub_menu'];
-        $sub_type = $menu['sub_type'];
-        $menu_location = $menu['menu_register'];
+        $icon = $menu['icon'] ?? '';
+        $sub_id = $menu['sub_menu'] ?? '';
+        $sub_type = $menu['sub_type'] ?? '';
+        $menu_location = $menu['menu_register'] ?? '';
         $arrow = $menu['has_sub'] ? '<svg class="drop-icon" width="10" height="10" viewBox="0 0 10 10" fill="#575757" xmlns="http://www.w3.org/2000/svg"><path d="M9.78571 2.21429C9.5 1.92857 9.07143 1.92857 8.78571 2.21429L5 6L1.21429 2.21429C0.928571 1.92857 0.5 1.92857 0.214286 2.21429C-0.0714286 2.5 -0.0714286 2.92857 0.214286 3.21429L4.5 7.5C4.64286 7.64286 4.85714 7.71429 5 7.71429C5.14286 7.71429 5.35714 7.64286 5.5 7.5L9.78571 3.21429C10.0714 2.92857 10.0714 2.5 9.78571 2.21429Z"></path></svg>' : '';
         $item_class = '';
+        $icon = the_pack_render_icon($menu['icon'],'menu-item-icon');
         $classes = menu_item_class($menu); ?>
             <li class="<?php echo esc_attr($classes); ?>">
 
                 <a href="<?php echo esc_url($menu['link']['url']); ?>">
                 <span class="menu-item-main-info">
-                    <?php
-                    if (!empty($icon['value'])) :
-                        if (is_string($icon['value'])) :
-                            ?>
-                            <span class="menu-item-icon <?php echo esc_attr($icon['value']); ?>"></span>
-	                    <?php else : ?>
-
-	                    <?php
-                        endif;
-        endif; ?>
-
+                    <?php echo $icon;?>
                     <span class="menu-item-text">
                         <?php echo esc_html($menu['item_text']); ?>
                     </span>
@@ -375,8 +396,17 @@ function thepack_overlay_link($url)
 } 
 
 function thepack_ft_images($id = '', $thumb = '',$class='')
-{
-    //return wp_get_attachment_image($id, $thumb);
+{   
+    if(empty($id)){
+        return;
+    }
+    $post_type = get_post_type($id);
+    if($post_type === 'attachment'){
+        $id = $id;
+    } else {
+        $id = get_post_thumbnail_id( $id );
+    }
+
     $img_src = wp_get_attachment_image_url( $id, $thumb ); 
     $alt_text = get_post_meta( $id, '_wp_attachment_image_alt', true );
     $image_attributes = wp_get_attachment_image_src( $id,$thumb );
@@ -791,6 +821,10 @@ function tp_flex_control($wb,$prefix,$selector,$support=[]){
                         'title' => __('End','the-pack-addon'),
                         'icon' => 'eicon-image-rollover',
                     ],
+                    'space-between' => [
+                        'title' => __('Space between','the-pack-addon'),
+                        'icon' => 'eicon-image-rollover',
+                    ],                    
                 ],
                 'label_block' => true,
                 'selectors' => [
@@ -798,6 +832,132 @@ function tp_flex_control($wb,$prefix,$selector,$support=[]){
                 ],                
             ]
         );
+}  
+
+add_action( 'the_pack_box_control', 'tp_box_control',10,4);
+
+function tp_box_control($wb,$prefix,$selector,$support=[]){
+
+    if (in_array("bg", $support)){
+        $wb->add_control(
+            $prefix.'bg',
+            [
+                'label' => esc_html__('Background', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} '.$selector => 'background: {{VALUE}};',
+                ],
+            ]
+        );
+    }
+
+    if (in_array("color", $support)){
+        $wb->add_control(
+            $prefix.'clr',
+            [
+                'label' => esc_html__('Color', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} '.$selector => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+    }
+
+    if (in_array("margin", $support)){
+        $wb->add_responsive_control(
+            $prefix.'mrgn',
+            [
+                'label' => esc_html__('Margin', 'the-pack-addon'),
+                'type' => Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', 'em'],
+                'selectors' => [
+                    '{{WRAPPER}} '.$selector => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+    }
+    if (in_array("padding", $support)){
+        $wb->add_responsive_control(
+            $prefix.'pd',
+            [
+                'label' => esc_html__('Padding', 'the-pack-addon'),
+                'type' => Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', 'em'],
+                'selectors' => [
+                    '{{WRAPPER}} '.$selector => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+    }
+    if (in_array("radius", $support)){
+        $wb->add_responsive_control(
+            $prefix.'brd',
+            [
+                'label' => esc_html__('Border radius', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'selectors' => [
+                    '{{WRAPPER}} '.$selector => 'border-radius:{{SIZE}}{{UNIT}};',
+                ],
+
+            ]
+        );
+    }
+    if (in_array("border", $support)){
+        $wb->add_control(
+            $prefix.'brk',
+            [
+                'label' => esc_html__('Border color', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} '.$selector => 'border:1px solid {{VALUE}};',
+                ],
+            ]
+        );
+    }
+    if (in_array("width", $support)){
+        $wb->add_responsive_control(
+            $prefix.'wid',
+            [ 
+                'label' => esc_html__('Width', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'size_units' => ['px','%'],
+                'selectors' => [
+                    '{{WRAPPER}} '.$selector => 'width:{{SIZE}}{{UNIT}};',
+                ],
+
+            ]
+        );
+    }
+
+    if (in_array("height", $support)){
+        $wb->add_responsive_control(
+            $prefix.'ht',
+            [
+                'label' => esc_html__('Height', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'selectors' => [
+                    '{{WRAPPER}} '.$selector => 'height:{{SIZE}}{{UNIT}};',
+                ],
+
+            ]
+        ); 
+    }
+
+    if (in_array("font-size", $support)){
+        $wb->add_responsive_control(
+            $prefix.'fs',
+            [
+                'label' => esc_html__('Font size', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'selectors' => [
+                    '{{WRAPPER}} '.$selector => 'font-size:{{SIZE}}{{UNIT}};',
+                ],
+
+            ]
+        ); 
+    }
+
 }
 
 add_action( 'the_pack_typo', 'tp_typo_control',10,4);
@@ -819,6 +979,7 @@ function tp_typo_control($wb,$prefix,$selector,$support=[]){
             'type' => Controls_Manager::COLOR,
             'selectors' => [
                 '{{WRAPPER}} '.$selector => 'color: {{VALUE}};',
+                '{{WRAPPER}} '.$selector.' a' => 'color: {{VALUE}};',
             ],
         ]
     );
@@ -865,9 +1026,10 @@ function tp_typo_control($wb,$prefix,$selector,$support=[]){
     if (in_array("width", $support)){
         $wb->add_responsive_control(
             $prefix.'wid',
-            [
+            [ 
                 'label' => esc_html__('Width', 'the-pack-addon'),
                 'type' => Controls_Manager::SLIDER,
+                'size_units' => ['px','%'],
                 'selectors' => [
                     '{{WRAPPER}} '.$selector => 'width:{{SIZE}}{{UNIT}};',
                 ],
@@ -875,6 +1037,34 @@ function tp_typo_control($wb,$prefix,$selector,$support=[]){
             ]
         );
     }
+    if (in_array("min-width", $support)){
+        $wb->add_responsive_control(
+            $prefix.'mnwid',
+            [
+                'label' => esc_html__('Min width', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'selectors' => [
+                    '{{WRAPPER}} '.$selector => 'min-width:{{SIZE}}{{UNIT}};',
+                ],
+
+            ]
+        );
+    }
+
+    if (in_array("clamp", $support)){
+        $wb->add_responsive_control(
+            $prefix.'cmp',
+            [
+                'label' => esc_html__('Line clamp', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER,
+                'selectors' => [
+                    '{{WRAPPER}} '.$selector => '-webkit-line-clamp:{{SIZE}};',
+                ],
+
+            ]
+        ); 
+    }
+
     if (in_array("height", $support)){
         $wb->add_responsive_control(
             $prefix.'ht',
@@ -886,7 +1076,7 @@ function tp_typo_control($wb,$prefix,$selector,$support=[]){
                 ],
 
             ]
-        );
+        ); 
     }
     if (in_array("radius", $support)){
         $wb->add_responsive_control(
@@ -995,9 +1185,9 @@ function tp_typo_gradient($wb,$prefix,$selector){
 
 }
 
-add_action( 'the_pack_number_pagination', 'number_pagination');
+add_action( 'the_pack_number_pagination', 'number_pagination',10,2);
 
-function number_pagination($wb){
+function number_pagination($wb,$selector){
 
     $wb->add_responsive_control(
         'pgtsp',
@@ -1005,7 +1195,7 @@ function number_pagination($wb){
             'label' => esc_html__('Top spacing', 'the-pack-addon'),
             'type' => Controls_Manager::SLIDER,
             'selectors' => [
-                '{{WRAPPER}} .tp-post-pagination' => 'margin-top: {{SIZE}}{{UNIT}};',
+                '{{WRAPPER}} '.$selector => 'margin-top:{{SIZE}}{{UNIT}};',
             ],
         ]
     );
@@ -1016,7 +1206,7 @@ function number_pagination($wb){
             'label' => esc_html__('Spacing', 'the-pack-addon'),
             'type' => Controls_Manager::SLIDER,
             'selectors' => [
-                '{{WRAPPER}} .page-numbers' => 'gap:{{SIZE}}{{UNIT}};',
+                '{{WRAPPER}} '.$selector.'>.page-numbers' => 'gap:{{SIZE}}{{UNIT}};',
             ],
         ]
     );
@@ -1041,7 +1231,7 @@ function number_pagination($wb){
                 ]
             ],
             'selectors' => [
-                '{{WRAPPER}} .page-numbers' => 'justify-content: {{VALUE}};',
+                '{{WRAPPER}} '.$selector.'>.page-numbers' => 'justify-content: {{VALUE}};',
             ],
         ]
     );
@@ -1074,7 +1264,7 @@ function number_pagination($wb){
             'label' => esc_html__('Border color', 'the-pack-addon'),
             'type' => Controls_Manager::COLOR,
             'selectors' => [
-                '{{WRAPPER}} .page-numbers li a,{{WRAPPER}} .page-numbers li span' => 'border-color: {{VALUE}};',
+                '{{WRAPPER}} .page-numbers li a,{{WRAPPER}} .page-numbers li span' => 'border:1px solid {{VALUE}};',
             ],
         ]
     );
@@ -1135,7 +1325,7 @@ function number_pagination($wb){
 
 add_action( 'the_pack_swiper_control', 'swiper_control',10,2);
 
-function swiper_control($wb,$condition){
+function swiper_control($wb,$condition){ 
 
     if ($condition) {
         $wb->start_controls_section(
@@ -1634,4 +1824,27 @@ function swiper_control($wb,$condition){
 
     $wb->end_controls_section();
     
+}
+
+add_filter( 'display_post_states', 'custom_special_page_states', 10, 2 );
+
+function custom_special_page_states( $post_states, $post ) {
+    
+    $special_pages = [];
+    $quick_view = the_pack_get_global_settings('tpwooquick');
+    $wish_list_page = the_pack_get_global_settings('tpwoowish');
+    if($quick_view){
+        $special_pages[$quick_view] = 'Quick View';
+    }
+    if($wish_list_page){
+        $special_pages[$wish_list_page] = 'Wish List';
+    }
+
+    foreach ( $special_pages as $page_id => $label ) {
+        if ( $post->ID == $page_id ) {
+            $post_states[] = $label;
+        }
+    }
+
+    return $post_states;
 }

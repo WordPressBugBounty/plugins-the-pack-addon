@@ -50,9 +50,27 @@ class The_Pack_Woo_Add_To_Cart extends Widget_Base
                 'label' => esc_html__('Preview product', 'the-pack-addon'),
                 'type' => Controls_Manager::SELECT2,
                 'label_block' => true,
-                'options' => thepack_drop_posts('product',10),
+                'options' => thepack_drop_posts('product'),
                 'multiple' => false,
             ]
+        );
+
+        $this->add_control(
+            'buynow',
+            [
+                'label' => esc_html__('Add Buy Now Button', 'the-pack-addon'),
+                'type' => Controls_Manager::SWITCHER,
+            ] 
+        );
+
+        $this->add_control(
+            'buynowt',
+            [
+                'label' => esc_html__('Buy Now label', 'the-pack-addon'),
+                'type' => Controls_Manager::TEXT,
+                'default' => 'Buy Now',
+                'label_block' => true,
+            ] 
         );
 
         $this->add_control(
@@ -66,14 +84,6 @@ class The_Pack_Woo_Add_To_Cart extends Widget_Base
                     'checkout' => esc_html__('Redirect to checkout', 'the-pack-addon'),
                 ]
             ]
-        );
-
-        $this->add_control(
-            'hide_stock',
-            [
-                'label' => esc_html__('Hide stock message', 'the-pack-addon'),
-                'type' => Controls_Manager::SWITCHER,
-            ] 
         );
 
         $this->add_control(
@@ -102,18 +112,6 @@ class The_Pack_Woo_Add_To_Cart extends Widget_Base
             ] 
         );
 
-        $this->add_control(
-            'cicon',
-            [
-                'type' => Controls_Manager::ICONS,
-                'label' => esc_html__('Cart icon', 'the-pack-addon'),
-                'default' => [
-                    'value' => 'fas fa-cart-plus',
-                    'library' => 'solid',
-                ],
-            ]
-        );
-
         $this->end_controls_section();
 
         $this->start_controls_section(
@@ -130,9 +128,9 @@ class The_Pack_Woo_Add_To_Cart extends Widget_Base
                 'label' => esc_html__('Gap', 'the-pack-addon'),
                 'type' => Controls_Manager::SLIDER,
                 'selectors' => [
-                    '{{WRAPPER}} form.cart,{{WRAPPER}} .woocommerce-variation-add-to-cart' => 'gap: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .tpsinglecart:not(.external) form.cart,{{WRAPPER}} .woocommerce-variation-add-to-cart' => 'gap: {{SIZE}}{{UNIT}};', 
                     '{{WRAPPER}} form.cart:not(.variations_form) .quantity' => 'margin-left: -{{SIZE}}{{UNIT}};',
-                    '{{WRAPPER}} form.cart:not(.variations_form) .tp-add-to-cart' => 'margin-right: -{{SIZE}}{{UNIT}};',
+                    // '{{WRAPPER}} form.cart:not(.variations_form) .tp-add-to-cart' => 'margin-right: -{{SIZE}}{{UNIT}};',
                 ],
 
             ]
@@ -160,6 +158,193 @@ class The_Pack_Woo_Add_To_Cart extends Widget_Base
                 ],
             ]
         );
+
+        $this->end_controls_section();
+
+        $this->start_controls_section(
+            'section_swatch',
+            [
+                'label' => esc_html__('Swatch', 'the-pack-addon'),
+                'tab' => Controls_Manager::TAB_STYLE,
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Typography::get_type(),
+            [
+                'name' => 'swlty',
+                'selector' => '{{WRAPPER}} .cart .variations label',
+                'label' => esc_html__('Label Typography', 'the-pack-addon'),
+            ]
+        );
+
+        $this->add_control(
+            'swklrt',
+            [
+                'label' => esc_html__('Label Color', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .cart .variations label' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'sw2lin',
+            [
+                'label' => esc_html__('Linebreak after label', 'the-pack-addon'),
+                'type' => Controls_Manager::SWITCHER,
+                'selectors' => [
+                    '{{WRAPPER}} .variations tr' => 'flex-direction: column;',
+                ],
+            ]
+        );
+        $this->add_responsive_control(
+            'swgp',   
+            [
+                'label' => esc_html__('Label gap', 'the-pack-addon'), 
+                'type' => Controls_Manager::SLIDER,                    
+                'selectors' => [
+                    '{{WRAPPER}} .variations tr' => 'gap: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+        $this->add_responsive_control(
+            'swidf',   
+            [
+                'label' => esc_html__('Label width', 'the-pack-addon'), 
+                'type' => Controls_Manager::SLIDER,   
+                'range' => [
+                    'px' => [
+                        'max' => 200,
+                    ]
+                ],                                 
+                'selectors' => [
+                    '{{WRAPPER}} .variations th' => 'flex:0 0 {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'swcrk',
+            [
+                'label' => esc_html__('Cross color', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .with_cross:after,{{WRAPPER}} .with_cross:before' => 'background: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->start_controls_tabs('itb');
+
+        $this->start_controls_tab(
+            'itb1',
+            [
+                'label' => esc_html__('Color', 'the-pack-addon'),
+            ]
+        );
+
+        $this->add_responsive_control(
+            'swcw',   
+            [
+                'label' => esc_html__('Width & height', 'the-pack-addon'), 
+                'type' => Controls_Manager::SLIDER,    
+                'default' => [
+                    'size' => 30,
+                ],                                
+                'selectors' => [
+                    '{{WRAPPER}} .wcvs-swatch-color > .variation_check' => 'width: {{SIZE}}{{UNIT}};height: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+        $this->add_control(
+            'swkbrgp',   
+            [
+                'label' => esc_html__('Border radius', 'the-pack-addon'), 
+                'type' => Controls_Manager::SLIDER,                    
+                'selectors' => [
+                    '{{WRAPPER}} .wcvs-swatch-color > .variation_check' => 'border-radius: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->end_controls_tab();
+
+        $this->start_controls_tab(
+            'itb2',
+            [
+                'label' => esc_html__('Label', 'the-pack-addon'),
+            ]
+        );
+
+        do_action('the_pack_typo', $this,'swlb_','.wcvs-swatch-label .variation_check',['bg','padding','border','radius']);
+
+        $this->end_controls_tab();
+
+        $this->start_controls_tab(
+            'itb3',
+            [
+                'label' => esc_html__('Image', 'the-pack-addon'),
+            ]
+        );
+
+        $this->add_responsive_control(
+            'swigwd',   
+            [
+                'label' => esc_html__('Width', 'the-pack-addon'), 
+                'type' => Controls_Manager::SLIDER,                    
+                'selectors' => [
+                    '{{WRAPPER}} .wcvs-swatch-image img' => 'width: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'swight',   
+            [
+                'label' => esc_html__('Height', 'the-pack-addon'), 
+                'type' => Controls_Manager::SLIDER,                    
+                'selectors' => [
+                    '{{WRAPPER}} .wcvs-swatch-image img' => 'height: {{SIZE}}{{UNIT}};object-fit:cover;',
+                ],
+            ]
+        );
+        $this->add_control(
+            'swkiggp',   
+            [
+                'label' => esc_html__('Border radius', 'the-pack-addon'), 
+                'type' => Controls_Manager::SLIDER,                    
+                'selectors' => [
+                    '{{WRAPPER}} .wcvs-swatch-image img' => 'border-radius: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->end_controls_tab();
+
+        $this->start_controls_tab(
+            'itb4',
+            [
+                'label' => esc_html__('Tooltip', 'the-pack-addon'),
+            ]
+        );
+        $this->add_control(
+            'swttbg',
+            [
+                'label' => esc_html__('Background', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .wcvs-color-tooltip' => 'background: {{VALUE}};',
+                    '{{WRAPPER}} .wcvs-color-tooltip:after' => 'border-top-color: {{VALUE}};',
+                ],
+            ]
+        );
+        do_action('the_pack_typo', $this,'swtt_','.wcvs-color-tooltip',['padding','radius']);
+
+        $this->end_controls_tab();
+
+        $this->end_controls_tabs();
 
         $this->end_controls_section();
 
@@ -199,7 +384,7 @@ class The_Pack_Woo_Add_To_Cart extends Widget_Base
                 'label' => esc_html__('Background', 'the-pack-addon'),
                 'type' => Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .single_add_to_cart_button,{{WRAPPER}} .wc-forward' => 'background: {{VALUE}};',
+                    '{{WRAPPER}} .single_add_to_cart_button,{{WRAPPER}} .wc-forward' => 'background-color: {{VALUE}} !important;',
                 ],
             ]
         );
@@ -210,7 +395,7 @@ class The_Pack_Woo_Add_To_Cart extends Widget_Base
                 'label' => esc_html__('Color', 'the-pack-addon'),
                 'type' => Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .single_add_to_cart_button,{{WRAPPER}} .wc-forward' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .single_add_to_cart_button,{{WRAPPER}} .wc-forward' => 'color: {{VALUE}}!important;',
                 ],
             ]
         );
@@ -221,7 +406,7 @@ class The_Pack_Woo_Add_To_Cart extends Widget_Base
                 'label' => esc_html__('Hover background', 'the-pack-addon'),
                 'type' => Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .single_add_to_cart_button:hover,{{WRAPPER}} .wc-forward:hover' => 'background: {{VALUE}};',
+                    '{{WRAPPER}} .single_add_to_cart_button:hover,{{WRAPPER}} .wc-forward:hover' => 'background-color: {{VALUE}}!important;',
                 ],
             ]
         );
@@ -232,7 +417,7 @@ class The_Pack_Woo_Add_To_Cart extends Widget_Base
                 'label' => esc_html__('Hover color', 'the-pack-addon'),
                 'type' => Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .single_add_to_cart_button:hover,{{WRAPPER}} .wc-forward:hover' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .single_add_to_cart_button:hover,{{WRAPPER}} .wc-forward:hover' => 'color: {{VALUE}} !important;',
                 ],
             ]
         );
@@ -335,7 +520,44 @@ class The_Pack_Woo_Add_To_Cart extends Widget_Base
             ]
         );
 
-        $this->end_controls_section();        
+        $this->end_controls_section();     
+
+        $this->start_controls_section(
+            'section_vpdr',
+            [
+                'label' => esc_html__('Variation Price', 'the-pack-addon'),
+                'tab' => Controls_Manager::TAB_STYLE,
+            ]
+        );
+
+        $this->start_controls_tabs('gtt');
+
+        $this->start_controls_tab(
+            't1t',
+            [
+                'label' => esc_html__('Sale', 'the-pack-addon'),
+            ]
+        );
+
+        do_action('the_pack_typo', $this,'stl_','del bdi',['']);
+
+        $this->end_controls_tab();
+
+        $this->start_controls_tab(
+            't2t',
+            [
+                'label' => esc_html__('Regular', 'the-pack-addon'),
+            ]
+        );
+   
+        do_action('the_pack_typo', $this,'rtg_','bdi',['']);
+
+        $this->end_controls_tab();
+
+        $this->end_controls_tabs();
+
+        $this->end_controls_section();
+
     }
 
     public function minus() {
@@ -377,12 +599,31 @@ class The_Pack_Woo_Add_To_Cart extends Widget_Base
     }
 
     public function start_btn_wrap(){
+		global $product;
+		if ( $product->get_type() == 'external' ) {
+			return;
+		}        
         echo '<div class="tp-add-to-cart">'; 
     }
 
     public function end_btn_wrap(){
+		global $product;
+		if ( $product->get_type() == 'external' ) {
+			return;
+		}        
         echo '</div>'; 
     }
+
+	public function buy_now_button() {
+
+		global $product;
+		if ( $product->get_type() == 'external' ) {
+			return;
+		}
+        $settings = $this->get_settings();
+
+		printf( '<button value="%d" class="single_add_to_cart_button buy_now_button button alt">%s</button>', $product->get_ID(), esc_attr($settings['buynowt']) );
+	}
 
     protected function render()
     {    
@@ -392,16 +633,21 @@ class The_Pack_Woo_Add_To_Cart extends Widget_Base
         add_action( 'woocommerce_after_quantity_input_field', [ $this, 'plus' ] ,9);
         add_action( 'woocommerce_after_add_to_cart_quantity', [ $this, 'start_btn_wrap'],9);
         add_action( 'woocommerce_after_add_to_cart_button', [ $this, 'end_btn_wrap'],9);
+        
+        if ( $settings['buynow']){
+            add_action( 'woocommerce_after_add_to_cart_button', array( $this, 'buy_now_button' ), 80 );
+        }
+
         if ( $settings['cart_txt'] || $settings['cart_txt_ex'] ){
             add_action( 'woocommerce_product_single_add_to_cart_text', [ $this, 'single_add_cart' ] ,9);
-        }
+        } 
 
         $preview  = isset( $_GET['preview'] ) ? sanitize_text_field(wp_unslash($_GET['preview'])) : '';//phpcs:disable WordPress.Security.NonceVerification.Recommended 
         if (Plugin::instance()->editor->is_edit_mode() || $preview == 'true' || $settings['btnuz'] ) {
             $product = wc_get_product($settings['preview']);
         }        
         require dirname(__FILE__) . '/view.php';
-    }
+    } 
 }
 
 $widgets_manager->register(new \ThePackAddon\Widgets\The_Pack_Woo_Add_To_Cart());

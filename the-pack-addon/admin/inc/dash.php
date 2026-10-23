@@ -282,7 +282,8 @@ class The_Pack_Demo_Sites_Dash {
 
 	}
 }
-new The_Pack_Demo_Sites_Dash();
+
+//new The_Pack_Demo_Sites_Dash();
 
 
 

@@ -408,6 +408,93 @@ if ( ! class_exists( 'LaStudio_Kit_Helper' ) ) {
 
             return $title;
         }
+		/**
+		 * Returns array with numbers in $index => $name format for numeric selects
+		 *
+		 * @param  integer $to Max numbers
+		 * @return array
+		 */
+		public function get_select_range( $to = 10 ) {
+			$range = range( 1, $to );
+			return array_combine( $range, $range );
+		}
+
+		public function get_active_breakpoints( $reverse_key = false, $label_with_breakpoint = false ){
+            $breakpoints = [];
+			$active_breakpoints = Elementor\Plugin::$instance->breakpoints->get_active_breakpoints();
+			foreach ($active_breakpoints as $k => $v){
+				if($reverse_key){
+					$breakpoints[$v->get_value()] = $label_with_breakpoint ? sprintf('%1$s(< %2$spx)', $v->get_label(), ($v->get_value() + 1)) : $k;
+				}
+				else{
+					$breakpoints[$k] = $label_with_breakpoint ? sprintf('%1$s(< %2$spx)', $v->get_label(), ($v->get_value() + 1)) : $v->get_value();
+				}
+			}
+            return $breakpoints;
+        }
+
+		public function get_attribute_with_all_breakpoints( $atts = '', $settings = [], $inherit = true, $only_device = '' ) {
+
+		    $data = [];
+
+            $config = $this->get_active_breakpoints();
+
+		    if(!empty($atts) && !empty($settings)){
+		        if(isset($settings[$atts])){
+                    $data['desktop'] = $settings[$atts];
+                }
+		        if(!empty($config)){
+		            foreach ($config as $k => $v){
+		                if(isset($settings[$atts.'_' . $k])){
+                            $data[$k] = $settings[$atts.'_' . $k];
+                        }
+                    }
+                }
+            }
+		    if( $inherit && isset($config['laptop']) && empty($data['laptop']) && !empty($data['desktop'])){
+                $data['laptop'] = $data['desktop'];
+            }
+            if( $inherit && empty($data['tablet'])){
+                $data['tablet'] =  !empty($data['laptop']) ? $data['laptop'] : ($data['desktop'] ?? 1);
+            }
+		    if( $inherit && isset($config['tabletportrait']) && empty($data['tabletportrait']) && !empty($data['tablet'])){
+                $data['tabletportrait'] = $data['tablet'];
+            }
+		    if( $inherit && isset($config['mobile_extra']) && empty($data['mobile_extra']) && !empty($data['tablet'])){
+                $data['mobile_extra'] = $data['tablet'];
+            }
+
+		    if(!empty($only_device)){
+		        if(isset($data[$only_device])){
+		            return $data[$only_device];
+                }
+		        else{
+		            return '';
+                }
+            }
+
+            return $data;
+        }
+
+        
+        public function get_css_by_responsive_columns( $columns, $css_selector ){
+            if(empty($columns['desktop'])){
+                return '';
+            }
+            $breakpoints = $this->get_active_breakpoints();
+            arsort($breakpoints);
+
+            $css = [];
+            $css[] = sprintf('%1$s{--e-c-col:%2$s}', $css_selector, $columns['desktop'] ?? 1);
+
+            foreach ($breakpoints as $k => $vl){
+                if( isset($columns[$k]) ){
+                    $css[] = sprintf('@media(max-width: %3$spx){%1$s{--e-c-col:%2$s}}', $css_selector, $columns[$k], $vl);
+                }
+            }
+            return join('', $css);
+        }
+
 
         /**
          * Remove words from a sentence.

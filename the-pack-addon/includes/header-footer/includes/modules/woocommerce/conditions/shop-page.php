@@ -6,7 +6,7 @@ use ThePackKitThemeBuilder\Modules\ThemeBuilder as ThemeBuilder;
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
-
+  
 class Shop_Page extends ThemeBuilder\Conditions\Condition_Base {
 
 	public static function get_type() {

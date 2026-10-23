@@ -48,67 +48,87 @@ class Woo_Product_Tabs extends Widget_Base {
                 'label' => esc_html__('Preview product', 'the-pack-addon'),
                 'type' => Controls_Manager::SELECT2,
                 'label_block' => true,
-                'options' => thepack_drop_posts('product',10),
+                'options' => thepack_drop_posts('product'),
                 'multiple' => false,
             ]
         );
 
-		$repeater = new \Elementor\Repeater();
-
-		$repeater->add_control(
-            'lbl',
+        $this->add_control(
+            'hide_desc',
             [
-                'label' => esc_html__('Label', 'the-pack-addon'),
+                'label' => esc_html__('Hide description', 'the-pack-addon'),
+                'type' => Controls_Manager::SWITCHER,
+            ]
+        );
+
+        $this->add_control(
+            'hide_info',
+            [
+                'label' => esc_html__('Hide additional info', 'the-pack-addon'),
+                'type' => Controls_Manager::SWITCHER,
+            ]
+        );
+
+        $this->add_control(
+            'hide_review',
+            [
+                'label' => esc_html__('Hide review', 'the-pack-addon'),
+                'type' => Controls_Manager::SWITCHER,
+            ]
+        );
+
+        $this->add_control(
+            'des_lbl',
+            [
+                'label' => esc_html__('Description label', 'the-pack-addon'),
                 'type' => Controls_Manager::TEXT,
                 'label_block' => true,
+                'condition' => [
+                    'hide_desc!' => 'yes',
+                ],                
             ]
         );
 
-		$repeater->add_control(
-            'icn',
+        $this->add_control(
+            'adi_lbl',
             [
-                'label' => esc_html__('Icon', 'the-pack-addon'),
-                'type' => Controls_Manager::ICONS,
-                'label_block' => true,
-            ]
-        );
-
-		$repeater->add_control(
-            'callback',
-            [
-                'label' => esc_html__('Callback', 'the-pack-addon'),
-                'type' => Controls_Manager::SELECT,
-                'label_block' => true,
-				'options' => [
-					'woocommerce_product_description_tab' => esc_html__( 'Description', 'the-pack-addon'  ),
-					'tp_woo_comments_template' => esc_html__( 'Reviews', 'the-pack-addon'  ),
-                    'woocommerce_product_additional_information_tab' => esc_html__( 'Additional information', 'the-pack-addon'  ),
-					'template' => esc_html__( 'Elementor template', 'the-pack-addon'  ),
-				],				
-            ]
-        );
-        
-		$repeater->add_control(
-            'template',
-            [
-                'type' => Controls_Manager::SELECT2,
-                'options' => thepack_footer_select(),
-                'multiple' => false,
-                'label' => esc_html__('Template', 'the-pack-addon'),
+                'label' => esc_html__('Info label', 'the-pack-addon'),
+                'type' => Controls_Manager::TEXT,
                 'label_block' => true,
                 'condition' => [
-                    'callback' => 'template',
-                ],
+                    'hide_info!' => 'yes',
+                ],                
             ]
         );
 
-		$this->add_control(
-            'items',
+        $this->add_control(
+            'rate_lbl',
             [
-                'type' => Controls_Manager::REPEATER,
-                'fields' => $repeater->get_controls(),
-                'prevent_empty' => false,
-                'title_field' => '{{{ lbl }}}',
+                'label' => esc_html__('Review label', 'the-pack-addon'),
+                'type' => Controls_Manager::TEXT,
+                'label_block' => true,
+                'condition' => [
+                    'hide_review!' => 'yes',
+                ],                
+            ]
+        );
+
+        $this->add_control(
+            'disp',
+            [
+                'label' => esc_html__('Display', 'the-pack-addon'),
+                'type' => Controls_Manager::CHOOSE,
+                'options' => [
+                    'tab' => [
+                        'title' => esc_html__('Tab', 'the-pack-addon'),
+                        'icon' => 'eicon-folder',
+                    ],
+                    'accordion' => [
+                        'title' => esc_html__('Accordion', 'the-pack-addon'),
+                        'icon' => 'eicon-folder-o',
+                    ]
+                ],
+                'default' => 'tab',
             ]
         );
 
@@ -120,12 +140,20 @@ class Woo_Product_Tabs extends Widget_Base {
             ]
         );
 
+        $this->add_control(
+            'closed',
+            [
+                'label' => esc_html__('Collapsed all', 'the-pack-addon'),
+                'type' => Controls_Manager::SWITCHER,
+            ]
+        );
+
 		$this->end_controls_section();
 
         $this->start_controls_section(
-            'section_tab_title',
+            'section_gen_style',
             [
-                'label' => esc_html__('Tab Title', 'the-pack-addon'),
+                'label' => esc_html__('General', 'the-pack-addon'),
                 'tab' => Controls_Manager::TAB_STYLE,
             ]
         );
@@ -147,342 +175,129 @@ class Woo_Product_Tabs extends Widget_Base {
                 ],
             ]
         );
-
-        $this->add_responsive_control(
-            'thsp',
-            [
-                'label' => esc_html__('Spacing', 'the-pack-addon'),
-                'type' => Controls_Manager::SLIDER,
-                'selectors' => [
-                    '{{WRAPPER}} .tab-area' => 'gap: {{SIZE}}{{UNIT}};',
-                ],
-
-            ]
-        );
-
         $this->add_group_control(
             Group_Control_Typography::get_type(),
             [
-                'name' => 'thtypo',
-                'selector' => '{{WRAPPER}} .tab-area li',
+                'name' => 'title_typo',
+                'selector' => '{{WRAPPER}} .tab-name',
                 'label' => esc_html__('Typography', 'the-pack-addon'),
             ]
         );
 
-        $this->add_control(
-            'th_col',
-            [
-                'label' => esc_html__('Normal color', 'the-pack-addon'),
-                'type' => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .tab-area li' => 'color: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'th_cola',
-            [
-                'label' => esc_html__('Active color', 'the-pack-addon'),
-                'type' => Controls_Manager::COLOR,
-                'default' => '#000',
-                'selectors' => [
-                    '{{WRAPPER}} .tab-area li.active' => 'color: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'th_bg',
-            [
-                'label' => esc_html__('Normal background', 'the-pack-addon'),
-                'type' => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .tab-area li' => 'background: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'th_bga',
-            [
-                'label' => esc_html__('Active background', 'the-pack-addon'),
-                'type' => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .tab-area li.active' => 'background: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'thbr_col',
-            [
-                'label' => esc_html__('Border color', 'the-pack-addon'),
-                'type' => Controls_Manager::COLOR,
-                'default' => '#eee',
-                'selectors' => [
-                    '{{WRAPPER}} .sone .tab-area' => 'border-bottom:1px solid {{VALUE}};',
-                    '{{WRAPPER}} .stwo .tab-area li' => 'border:1px solid {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'thbr_cola',
-            [
-                'label' => esc_html__('Active border color', 'the-pack-addon'),
-                'type' => Controls_Manager::COLOR,
-                'condition' => [
-                    'tbstyle' => 'stwo',
-                ],
-                'selectors' => [
-                    '{{WRAPPER}} .stwo .tab-area li.active' => 'border:1px solid {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'th_colabr',
-            [
-                'label' => esc_html__('Bar color', 'the-pack-addon'),
-                'type' => Controls_Manager::COLOR,
-                'default' => '#000',
-                'condition' => [
-                    'tbstyle' => 'sone',
-                ],                 
-                'selectors' => [
-                    '{{WRAPPER}} .sone .tab-area li:after' => 'background: {{VALUE}};',
-                ],
-            ]
-        );
-
         $this->add_responsive_control(
-            'thbr_tsp',
+            'gap',
             [
-                'label' => esc_html__('Border top spacing', 'the-pack-addon'),
+                'label' => esc_html__('Gap','the-pack-addon'),
                 'type' => Controls_Manager::SLIDER,
-                'default' => [
-                    'size' => 12,
-                ],      
-                'condition' => [
-                    'tbstyle' => 'sone',
-                ],                          
                 'selectors' => [
-                    '{{WRAPPER}} .sone .tab-area' => 'padding-bottom: {{SIZE}}{{UNIT}};',
-                    '{{WRAPPER}} .sone> .tab-area li:after' => 'bottom: -{{SIZE}}{{UNIT}};',
-                ],
-
+                    '{{WRAPPER}} .tpwootab .wc-tabs' => 'gap:{{SIZE}}{{UNIT}};',
+                ],               
             ]
         );
 
         $this->add_responsive_control(
-            'thpd',
+            'tpad',
             [
                 'label' => esc_html__('Padding', 'the-pack-addon'),
                 'type' => Controls_Manager::DIMENSIONS,
-                'condition' => [
-                    'tbstyle' => 'stwo',
-                ], 
+                'size_units' => ['em', 'px'],
                 'selectors' => [
-                    '{{WRAPPER}} .stwo .tab-area li' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                    '{{WRAPPER}} .tab-name' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
             ]
         );
-
-        $this->add_responsive_control(
-            'thbr_tbrd',
-            [
-                'label' => esc_html__('Border radius', 'the-pack-addon'),
-                'type' => Controls_Manager::SLIDER,
-                'condition' => [
-                    'tbstyle' => 'stwo',
-                ],                          
-                'selectors' => [
-                    '{{WRAPPER}} .stwo .tab-area li' => 'border-radius: {{SIZE}}{{UNIT}};',
-                ],
-
-            ]
-        );
-
-        $this->end_controls_section();
-        
-        $this->start_controls_section(
-            'section_content',
-            [
-                'label' => esc_html__('Content', 'the-pack-addon'),
-                'tab' => Controls_Manager::TAB_STYLE,              
-            ]
-        );
-
-        $this->add_group_control(
-            Group_Control_Typography::get_type(),
-            [
-                'name' => 'ttctypo',
-                'selector' => '{{WRAPPER}} .tab-content> h2,{{WRAPPER}} .woocommerce-Reviews-title',
-                'label' => esc_html__('Heading typography', 'the-pack-addon'),
-            ]
-        );
-
         $this->add_control(
-            'ttc_col',
+            'btbdr',
             [
-                'label' => esc_html__('Heading color', 'the-pack-addon'),
+                'label' => esc_html__('Bottom border', 'the-pack-addon'),
                 'type' => Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .tab-content> h2' => 'color: {{VALUE}};',
-                    '{{WRAPPER}} .woocommerce-Reviews-title' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .wc-tabs' => 'border-bottom:1px solid {{VALUE}};',
+                    '{{WRAPPER}} .tpwooaccordion details' => 'border-top:1px solid {{VALUE}};',
                 ],
             ]
         );
-
-        $this->add_responsive_control(
-            'ttc_mr',
-            [
-                'label' => esc_html__('Heading margin', 'the-pack-addon'),
-                'type' => Controls_Manager::DIMENSIONS,
-                'selectors' => [
-                    '{{WRAPPER}} .tab-content> h2,{{WRAPPER}} .woocommerce-Reviews-title' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-                ],
-            ]
-        );
-
-        $this->add_group_control(
-            Group_Control_Typography::get_type(),
-            [
-                'name' => 'tctypo',
-                'selector' => '{{WRAPPER}} .tab-content',
-                'label' => esc_html__('Typography', 'the-pack-addon'),
-            ]
-        );
-
         $this->add_control(
-            'tc_col',
+            'thck',
             [
                 'label' => esc_html__('Color', 'the-pack-addon'),
                 'type' => Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .tab-content' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .tab-name' => 'color:{{VALUE}};',
                 ],
             ]
         );
-
         $this->add_control(
-            'tc_bg',
+            'thckhr',
             [
-                'label' => esc_html__('Background', 'the-pack-addon'),
+                'label' => esc_html__('Hover color', 'the-pack-addon'),
                 'type' => Controls_Manager::COLOR,
-                'condition' => [
-                    'tbstyle' => 'stwo',
-                ],                  
                 'selectors' => [
-                    '{{WRAPPER}} .stwo .tab-content' => 'background:{{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'tc_bdcr',
-            [
-                'label' => esc_html__('Border', 'the-pack-addon'),
-                'type' => Controls_Manager::COLOR,
-                'condition' => [
-                    'tbstyle' => 'stwo',
-                ],                  
-                'selectors' => [
-                    '{{WRAPPER}} .stwo .tab-content' => 'border:1px solid {{VALUE}};',
+                    '{{WRAPPER}} .tab-name:hover,{{WRAPPER}} .active .tab-name,{{WRAPPER}} .woocommerce-tabs [open] .tab-name' => 'color:{{VALUE}};',
                 ],
             ]
         );
 
         $this->add_responsive_control(
-            'tcpd',
+            'tcmpad',
             [
-                'label' => esc_html__('Padding', 'the-pack-addon'),
+                'label' => esc_html__('Content margin', 'the-pack-addon'),
                 'type' => Controls_Manager::DIMENSIONS,
-                'condition' => [
-                    'tbstyle' => 'stwo',
-                ],                  
+                'size_units' => ['em', 'px'],
                 'selectors' => [
-                    '{{WRAPPER}} .stwo .tab-content' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                    '{{WRAPPER}} .woocommerce-tabs .panel' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
             ]
         );
 
-        $this->add_responsive_control(
-            'tc_tsp',
-            [
-                'label' => esc_html__('Top spacing', 'the-pack-addon'),
-                'type' => Controls_Manager::SLIDER,      
-                'default' => [
-                    'size' => 12,
-                ],   
-                'condition' => [
-                    'tbstyle' => 'stwo',
-                ],                                                     
-                'selectors' => [
-                    '{{WRAPPER}} .stwo .tab-content' => 'margin-top: {{SIZE}}{{UNIT}};',
-                ],
-
-            ]
-        );
-
-        $this->add_responsive_control(
-            'tc_tbrd',
-            [
-                'label' => esc_html__('Border radius', 'the-pack-addon'),
-                'type' => Controls_Manager::SLIDER,
-                'condition' => [
-                    'tbstyle' => 'stwo',
-                ],                                           
-                'selectors' => [
-                    '{{WRAPPER}} .stwo .tab-content' => 'border-radius: {{SIZE}}{{UNIT}};',
-                ],
-
-            ]
-        );
 
         $this->end_controls_section();
 
         $this->start_controls_section(
-            'section_info',
+            'section_descr',
             [
-                'label' => esc_html__('Additional information', 'the-pack-addon'),
+                'label' => esc_html__('Description', 'the-pack-addon'),
                 'tab' => Controls_Manager::TAB_STYLE,              
             ]
         );
 
-        $this->add_responsive_control(
-            'ai_wd',
-            [
-                'label' => esc_html__('Label width', 'the-pack-addon'),
-                'type' => Controls_Manager::SLIDER, 
-                'range' => [
-                    'px' => [
-                        'min' => 0,
-                        'max' => 500,
-                        'step' => 1,
-                    ],
-                ],                                                                          
-                'selectors' => [
-                    '{{WRAPPER}} .shop_attributes th' => 'width: {{SIZE}}{{UNIT}};',
-                ],
+        do_action('the_pack_typo', $this,'dsc_','.woocommerce-Tabs-panel--description',[]);
 
+        $this->end_controls_section();
+
+        $this->start_controls_section(
+            'section_additional',
+            [
+                'label' => esc_html__('Additional Information', 'the-pack-addon'),
+                'tab' => Controls_Manager::TAB_STYLE,              
             ]
         );
 
-        $this->add_responsive_control(
-            'ai_pad',
-            [
-                'label' => esc_html__('Item padding', 'the-pack-addon'),
-                'type' => Controls_Manager::SLIDER,                                          
-                'selectors' => [
-                    '{{WRAPPER}} .shop_attributes th' => 'padding: {{SIZE}}{{UNIT}};',
-                    '{{WRAPPER}} .shop_attributes' => 'margin-left: -{{SIZE}}{{UNIT}};',
-                    '{{WRAPPER}} .shop_attributes td p' => 'padding: {{SIZE}}{{UNIT}} 0px;',
-                ],
+        $this->start_controls_tabs('gtx');
 
+        $this->start_controls_tab(
+            't1d',
+            [
+                'label' => esc_html__('Label', 'the-pack-addon'),
             ]
         );
+
+        do_action('the_pack_typo', $this,'adl_','.shop_attributes th',[]);
+
+        $this->end_controls_tab();
+
+        $this->start_controls_tab(
+            't2x',
+            [
+                'label' => esc_html__('Value', 'the-pack-addon'),
+            ]
+        );
+
+        do_action('the_pack_typo', $this,'adlv_','.shop_attributes td',[]);
+
+        $this->end_controls_tab();
+
+        $this->end_controls_tabs();
 
         $this->end_controls_section();
 
@@ -493,6 +308,8 @@ class Woo_Product_Tabs extends Widget_Base {
                 'tab' => Controls_Manager::TAB_STYLE,              
             ]
         );
+
+        do_action('the_pack_typo', $this,'cmt_','.woocommerce-Reviews-title',['margin']);
 
         $this->start_controls_tabs('gt');
 
@@ -517,7 +334,18 @@ class Woo_Product_Tabs extends Widget_Base {
 
             ]
         );
+        $this->add_responsive_control(
+            'thm_brd',
+            [
+                'label' => esc_html__('Border radius', 'the-pack-addon'),
+                'type' => Controls_Manager::SLIDER, 
+                                                                         
+                'selectors' => [
+                    '{{WRAPPER}} .tp-woocomment-comment .avatar-wrap img' => 'border-radius:{{SIZE}}{{UNIT}};',
+                ],
 
+            ]
+        );
         $this->end_controls_tab();
 
         $this->start_controls_tab(
@@ -532,9 +360,9 @@ class Woo_Product_Tabs extends Widget_Base {
             [
                 'label' => esc_html__('Comment list wrapper spacing', 'the-pack-addon'),
                 'type' => Controls_Manager::SLIDER, 
-                                                                           
+                                                         
                'selectors' => [
-                    '{{WRAPPER}} .tp-woocomment-comment' => 'padding:{{SIZE}}{{UNIT}} 0px;',
+                    '{{WRAPPER}} .tp-woocomment-comment li' => 'gap:{{SIZE}}{{UNIT}};',
                 ],
 
             ]
@@ -569,7 +397,7 @@ class Woo_Product_Tabs extends Widget_Base {
                 'type' => Controls_Manager::SLIDER, 
                                                                            
                'selectors' => [
-                    '{{WRAPPER}} .tp-woocomment-comment  .tscore' => 'font-size:{{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .tp-woocomment-comment  .tscore,{{WRAPPER}} .stars a' => 'font-size:{{SIZE}}{{UNIT}};',
                 ],
 
             ]
@@ -592,7 +420,7 @@ class Woo_Product_Tabs extends Widget_Base {
                 'label' => esc_html__('Active color', 'the-pack-addon'),
                 'type' => Controls_Manager::COLOR,            
                 'selectors' => [
-                    '{{WRAPPER}} .tp-woocomment-comment  .tscore span' => 'color:{{VALUE}};',
+                    '{{WRAPPER}} .tp-woocomment-comment  .tscore span,{{WRAPPER}} .stars a' => 'color:{{VALUE}};',
                 ],
             ]
         );
@@ -622,7 +450,7 @@ class Woo_Product_Tabs extends Widget_Base {
             [
                 'name' => 'nmypo',
                 'selector' => '{{WRAPPER}} .tp-woocomment-comment  .author-meta .author',
-                'label' => esc_html__('Name ypography', 'the-pack-addon'),
+                'label' => esc_html__('Name typography', 'the-pack-addon'),
             ]
         );
 
@@ -657,6 +485,26 @@ class Woo_Product_Tabs extends Widget_Base {
             ]
         );
 
+        $this->add_group_control(
+            Group_Control_Typography::get_type(),
+            [
+                'name' => 'ctxpo',
+                'selector' => '{{WRAPPER}} .tp-comment-content',
+                'label' => esc_html__('Comment typography', 'the-pack-addon'),
+            ]
+        );
+
+        $this->add_control(
+            'ctx_clr',
+            [
+                'label' => esc_html__('Comment color', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,            
+                'selectors' => [
+                    '{{WRAPPER}} .tp-comment-content' => 'color:{{VALUE}};',
+                ],
+            ]
+        );
+
         $this->end_controls_tab();
 
         $this->start_controls_tab(
@@ -666,6 +514,155 @@ class Woo_Product_Tabs extends Widget_Base {
             ]
         );
 
+        $this->add_control(
+            'inbg',
+            [
+                'label' => esc_html__('Background', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .form-control' => 'background: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'inlr',
+            [
+                'label' => esc_html__('Color', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .form-control' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'inbdclr',
+            [
+                'label' => esc_html__('Border color', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .form-control' => 'border-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'in_pad',
+            [
+                'label' => esc_html__('Padding', 'the-pack-addon'),
+                'type' => Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', 'em', '%'],
+                'selectors' => [
+                    '{{WRAPPER}} .form-control' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'in_bdwd',
+            [
+                'label' => esc_html__('Border width', 'the-pack-addon' ),
+                'type' => Controls_Manager::DIMENSIONS,
+                'selectors' => [
+                    '{{WRAPPER}} .form-control' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};border-style:solid;',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Typography::get_type(),
+            [
+                'name' => 'intyp',
+                'label' => esc_html__('Typography', 'the-pack-addon'),
+                'selector' => '{{WRAPPER}} .form-control',
+            ]
+        );
+
+        $this->add_responsive_control(
+            'nm_hdz',
+            [
+                'label' => esc_html__('Submit button', 'the-pack-addon'),
+                'type' =>Controls_Manager::HEADING,
+                'separator' => 'after',                                                            
+            ]
+        );
+
+        $this->add_responsive_control(
+            'wibt',   
+            [
+                'label' => esc_html__('Width', 'the-pack-addon'), 
+                'type' => Controls_Manager::SLIDER, 
+                'size_units' => ['px', '%'],                   
+                'selectors' => [
+                    '{{WRAPPER}} .submit' => 'width: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'brsbt',   
+            [
+                'label' => esc_html__('Border radius', 'the-pack-addon'), 
+                'type' => Controls_Manager::SLIDER, 
+                'size_units' => ['px', '%'],                   
+                'selectors' => [
+                    '{{WRAPPER}} .submit' => 'border-radius: {{SIZE}}{{UNIT}} !important;',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Typography::get_type(),
+            [
+                'name' => 'tybt',
+                'selector' => '{{WRAPPER}} .submit',
+                'label' => esc_html__('Typography', 'the-pack-addon'),
+            ]
+        );
+
+        $this->add_control(
+            'tycl',
+            [
+                'label' => esc_html__('Color', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .submit' => 'color: {{VALUE}} !important;',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'tycbg',
+            [
+                'label' => esc_html__('Background', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .submit' => 'background-color: {{VALUE}} !important;',
+                ],
+            ]
+        );
+        $this->add_control(
+            'tyclh',
+            [
+                'label' => esc_html__('Hover color', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .submit:hover' => 'color: {{VALUE}} !important;',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'tycbgh',
+            [
+                'label' => esc_html__('Hover background', 'the-pack-addon'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .submit:hover' => 'background-color: {{VALUE}} !important;',
+                ],
+            ]
+        );
         $this->end_controls_tab();
 
         $this->end_controls_tabs();
@@ -697,10 +694,53 @@ class Woo_Product_Tabs extends Widget_Base {
 	}
 
     public function the_hooks( $control = null ) {
+
 		if ( ! $control ) {
 			return;
 		}  
-        add_filter( 'body_class', [ $this, 'footer' ],1,1);
+        if ($control['hide_heading']){
+
+            add_filter( 'woocommerce_product_description_heading', '__return_null' );
+
+            add_filter( 'woocommerce_product_additional_information_heading', '__return_null' );
+
+            remove_action( 'set_comment_cookies', 'wp_set_comment_cookies' );
+
+        }
+
+        add_filter( 'woocommerce_product_tabs',function( $tabs ) use ( $control ) {
+            
+                if ( ! $control ) {
+                    return;
+                }   
+
+                if ($control['des_lbl']){
+                    $tabs[ 'description' ][ 'title' ] = $control['des_lbl'];
+                } 
+
+                if ($control['adi_lbl']){
+                    $tabs[ 'additional_information' ][ 'title' ] = $control['adi_lbl'];
+                }
+
+                if ($control['rate_lbl']){
+                    $tabs[ 'reviews' ][ 'title' ] = str_replace( 'Reviews', $control['rate_lbl'], $tabs[ 'reviews' ][ 'title' ] );
+                }
+
+                $tabs['reviews'][ 'callback' ] = 'tp_woo_comments_template';
+
+                if ($control['hide_desc']){
+                    unset( $tabs['description'] );
+                }  
+                if ($control['hide_info']){
+                    unset( $tabs['additional_information'] );
+                } 
+                if ($control['hide_review']){
+                    unset( $tabs['reviews'] );
+                }  
+
+                return $tabs;
+
+        } );
 
 	}
 
@@ -718,7 +758,9 @@ class Woo_Product_Tabs extends Widget_Base {
             $this->product_page_script();
             $product = wc_get_product($settings['preview']);
         }
-        require dirname(__FILE__) . '/view.php';
+        if (!preg_match("/[^[:alnum:]_\/-]/",$settings['disp'])) {
+            include plugin_dir_path(__FILE__) . $settings['disp'] . '.php';
+        }        
 	} 
 
 }

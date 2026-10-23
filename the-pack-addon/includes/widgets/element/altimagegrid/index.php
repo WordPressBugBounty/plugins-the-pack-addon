@@ -237,7 +237,9 @@ class thepack_altimggrid extends Widget_Base
                 'label' => esc_html__('Title', 'the-pack-addon'),
             ]
         );
+
         do_action('the_pack_typo', $this,'tl_','.title',['margin']);
+        
         $this->end_controls_tab();
 
         $this->start_controls_tab(

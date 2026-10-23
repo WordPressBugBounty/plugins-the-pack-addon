@@ -29,6 +29,7 @@ class The_Pack_Activation_Class
         }
 
         The_Pack_Script::generate_css();
+        update_option( 'elementor_experiment-e_optimized_markup', 'inactive' );
     }
 }
 

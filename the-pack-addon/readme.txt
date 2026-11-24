@@ -2,8 +2,8 @@
 Contributors: webangon
 Tags:addons, elementor, elementor widgets, header footer,template library
 Requires at least: 5.0
-Tested up to: 6.8
-Stable tag: 2.1.6
+Tested up to: 6.9
+Stable tag: 2.1.7
 Requires PHP: 7.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -82,5 +82,22 @@ Login your WordPress dashboard,  From the left menu click the pack menu.
 It's due to your server PHP settings. Increase your server PHP memory limit from the wp-config.php file or php.ini file.  If you don't have an idea about it. Please contact your hosting provider and ask to increase
 * PHP memory_limit = 512M
 * max_execution_time = 300
+
+
+== Changelog ==
+
+= 2.1.7 =
+* Security: Fixed an authenticated (Subscriber+) stored XSS in the popup display-settings save action. The `lakit_popup_save_display_settings` editor action now verifies that the target is a popup document and that the current user is allowed to edit it before saving its trigger/timing settings.
+* Security: Popup display settings are now sanitized server-side before being stored in post meta.
+* Security: Hardened the popup "On Scroll To Element" trigger so a stored selector value is always treated as a CSS selector and never parsed as HTML.
+
+= 2.1.6 =
+* Maintenance and compatibility updates.
+
+
+== Upgrade Notice ==
+
+= 2.1.7 =
+Security release. Fixes an authenticated stored XSS in the popup module. Update immediately.
 
 

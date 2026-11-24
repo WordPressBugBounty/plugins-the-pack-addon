@@ -109,7 +109,36 @@ class Document extends Theme_Section_Document {
 	}
 
 	public function save_display_settings_data( $display_settings_data ) {
-		$this->update_main_meta( self::DISPLAY_SETTINGS_META_KEY, $display_settings_data );
+		$this->update_main_meta( self::DISPLAY_SETTINGS_META_KEY, $this->sanitize_display_settings_data( $display_settings_data ) );
+	}
+
+	/**
+	 * Recursively sanitize the popup display settings before they are stored.
+	 *
+	 * All legitimate values are scalars (CSS selectors, numbers, switcher
+	 * flags), so string values are passed through sanitize_text_field(), which
+	 * strips any HTML tags. This prevents a stored value such as an
+	 * "<img onerror>" selector from being persisted to post meta.
+	 *
+	 * @param mixed $data
+	 * @return mixed
+	 */
+	private function sanitize_display_settings_data( $data ) {
+		if ( is_array( $data ) ) {
+			$sanitized = [];
+
+			foreach ( $data as $key => $value ) {
+				$sanitized[ sanitize_text_field( $key ) ] = $this->sanitize_display_settings_data( $value );
+			}
+
+			return $sanitized;
+		}
+
+		if ( is_string( $data ) ) {
+			return sanitize_text_field( $data );
+		}
+
+		return $data;
 	}
 
 	public function get_frontend_settings() {

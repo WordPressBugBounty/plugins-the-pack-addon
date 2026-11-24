@@ -86,8 +86,20 @@ class Module extends \Elementor\Core\Base\Module {
 	}
 
 	public function save_display_settings( $data ) {
+		if ( empty( $data['editor_post_id'] ) ) {
+			throw new \Exception( 'Missing post id.' );
+		}
+
 		/** @var Document $popup_document */
 		$popup_document = thepack_kit()->elementor()->documents->get( $data['editor_post_id'] );
+
+		if ( ! $popup_document instanceof Document ) {
+			throw new \Exception( 'Document not found.' );
+		}
+
+		if ( ! $popup_document->is_editable_by_current_user() ) {
+			throw new \Exception( 'Access denied.' );
+		}
 
 		$popup_document->save_display_settings_data( $data['settings'] );
 	}

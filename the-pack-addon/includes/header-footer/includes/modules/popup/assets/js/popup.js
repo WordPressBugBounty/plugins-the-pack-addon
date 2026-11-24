@@ -1112,7 +1112,10 @@
             let $targetElement;
 
             try {
-                $targetElement = jQuery(this.getTriggerSetting('selector'));
+                // Use .find() so the stored value is always treated as a
+                // selector and never parsed as HTML (prevents stored XSS via a
+                // value beginning with "<").
+                $targetElement = jQuery(document).find(this.getTriggerSetting('selector'));
             } catch (e) {
                 return;
             }
